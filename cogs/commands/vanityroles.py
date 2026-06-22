@@ -1,144 +1,194 @@
-
 import discord
 import json
 from discord.ext import commands
-import datetime
-
-
+from discord import app_commands
 from utils.emojis import e
+from utils.Tools import blacklist_check, ignore_check
+
+
 class Vanityroles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # ── Slash command group ───────────────────────────────────────────────
 
-    @commands.group(aliases=['vr'])
-    @commands.has_permissions(administrator=True)
-    async def vanityroles(self, ctx):
-     if ctx.subcommand_passed is None:
-        await ctx.send_help(ctx.command)
-        ctx.command.reset_cooldown(ctx)
-      
-    @vanityroles.command()
-    @commands.has_permissions(administrator=True)
-    async def setup(self, ctx, vanity,
-                     channel: discord.TextChannel,role: discord.Role):
+    vr_group = app_commands.Group(
+        name="vanityroles",
+        description="Configure vanity role rewards for your server",
+        guild_only=True,
+        default_permissions=discord.Permissions(administrator=True),
+    )
+
+    @vr_group.command(name="setup", description="Set up vanity roles: keyword, reward role, and log channel")
+    @app_commands.describe(
+        keyword="The text members must put in their status (e.g. discord.gg/yourserver)",
+        role="Role to give when a member adds the keyword",
+        channel="Channel to log vanity status changes",
+    )
+    async def vr_setup(self, interaction: discord.Interaction,
+                       keyword: str,
+                       role: discord.Role,
+                       channel: discord.TextChannel):
+        if interaction.user.id != interaction.guild.owner_id and not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ You need **Administrator** permission.", color=0x2f3136),
+                ephemeral=True
+            )
+        if role.permissions.administrator or role.permissions.ban_members or role.permissions.kick_members:
+            return await interaction.response.send_message(
+                embed=discord.Embed(
+                    description="❌ Vanity role cannot have **Administrator**, **Ban** or **Kick** permissions.",
+                    color=0x2f3136
+                ),
+                ephemeral=True
+            )
+
         with open("vanityroles.json", "r") as f:
-            idk = json.load(f)
-            if ctx.author == ctx.guild.owner or ctx.guild.me.top_role <= ctx.author.top_role:
-                if role.permissions.administrator or role.permissions.ban_members or role.permissions.kick_members:
-                    embed1 = discord.Embed(
-                        description=
-                        "Vanity roles won't be setup while role have administrator",
-                        color=0x2f3136)
-                    await ctx.send(embed=embed1)
-                else:
-                    pop = {
-                        "vanity": vanity,
-                        "role": role.id,
-                        "channel": channel.id
-                    }
-                    idk[str(ctx.guild.id)] = pop
-                    embed = discord.Embed(color=0x2f3136)
-                    embed.set_author(name=f"Vanity Roles Config For {ctx.guild}", icon_url=ctx.author.display_avatar.url, url="https://discord.gg/W9GQPFCKqq")
-                    embed.add_field(name=f"{e.dot_white} **__Vanity__**", value='Not Set' if vanity is None else vanity, inline=False)
-                    embed.add_field(name=f"{e.dot_white} **__Role__**", value='Not Set' if role is None else role.mention, inline=False)
-                    embed.add_field(name=f"{e.dot_white} **__Channel__**", value='Not Set' if channel is None else channel.mention, inline=False)
+            data = json.load(f)
 
-                    await ctx.send(embed=embed, mention_author=False)
-                    with open("vanityroles.json", "w") as f:
-                        json.dump(idk, f, indent=4)
-            else:
-                embed5 = discord.Embed(
-                    description=
-                    """You have to be top of my role""",
-                    color=0x2f3136)
-                await ctx.reply(embed=embed5, mention_author=False)
+        data[str(interaction.guild.id)] = {
+            "vanity": keyword,
+            "role": role.id,
+            "channel": channel.id
+        }
 
-  
-    @vanityroles.command(aliases=[('delete','remove')])
-    @commands.has_permissions(administrator=True)
-    async def reset(self, ctx):
+        with open("vanityroles.json", "w") as f:
+            json.dump(data, f, indent=4)
+
+        embed = discord.Embed(title="✅ Vanity Roles Set Up", color=0x2f3136)
+        embed.add_field(name=f"{e.dot_white} Keyword", value=f"`{keyword}`", inline=False)
+        embed.add_field(name=f"{e.dot_white} Reward Role", value=role.mention, inline=False)
+        embed.add_field(name=f"{e.dot_white} Log Channel", value=channel.mention, inline=False)
+        embed.set_author(name=str(interaction.user), icon_url=interaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=embed)
+
+    @vr_group.command(name="remove", description="Remove the vanity roles setup for this server")
+    async def vr_remove(self, interaction: discord.Interaction):
+        if interaction.user.id != interaction.guild.owner_id and not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ You need **Administrator** permission.", color=0x2f3136),
+                ephemeral=True
+            )
         with open("vanityroles.json", "r") as f:
-            xd = json.load(f)
-            if ctx.author == ctx.guild.owner or ctx.guild.me.top_role <= ctx.author.top_role:
-                if str(ctx.guild.id) not in xd:
-                    embed1 = discord.Embed(
-                        description=
-                        "Please add vanity roles first",
-                        color=0x2f3136)
-                    await ctx.reply(embed=embed1, mention_auto=False)
-                else:
-                    xd.pop(str(ctx.guild.id))
-                    await ctx.reply(embed=discord.Embed(color=0x2f3136, description="Successfully Removed Vanity-Roles Setup"),
-                        mention_author=False)
-                    with open('vanityroles.json', 'w') as f:
-                        json.dump(xd, f, indent=4)
-            else:
-                embed5 = discord.Embed(
-                    description=
-                    """You have to be top of my role""",
-                    color=0x2f3136)
-                await ctx.reply(embed=embed5, mention_author=False)
+            data = json.load(f)
 
-    @vanityroles.command(aliases=[("show")])
-    
-    
-    
-    @commands.has_permissions(administrator=True)
-    async def config(self, ctx):
+        if str(interaction.guild.id) not in data:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ No vanity roles are set up for this server.", color=0x2f3136),
+                ephemeral=True
+            )
+
+        data.pop(str(interaction.guild.id))
+        with open("vanityroles.json", "w") as f:
+            json.dump(data, f, indent=4)
+
+        await interaction.response.send_message(
+            embed=discord.Embed(description=f"{e.green_tick} | Vanity roles setup has been removed.", color=0x2f3136)
+        )
+
+    @vr_group.command(name="config", description="Show the current vanity roles config")
+    async def vr_config(self, interaction: discord.Interaction):
         with open("vanityroles.json", "r") as f:
-            xd = json.load(f)
-        if str(ctx.guild.id) not in xd:
-            embed1 = discord.Embed(
-                        description=
-                        "Please add vanity roles first",
-                        color=0x2f3136)
-            await ctx.reply(embed=embed1, mention_author=False)
-        elif str(ctx.guild.id) in xd:
-            vanity = xd[str(ctx.guild.id)]["vanity"]
-            role = xd[str(ctx.guild.id)]["role"]
-            channel = xd[str(ctx.guild.id)]["channel"]
-            channel = self.bot.get_channel(channel)
-            role = ctx.guild.get_role(role)
-            embed = discord.Embed(color=0x2f3136)
-            embed.set_author(name=f"Vanity Roles Config For {ctx.guild}", icon_url=ctx.author.display_avatar.url, url="https://discord.gg/W9GQPFCKqq")
-            embed.add_field(name=f"{e.dot_white} **__Vanity__**", value='Not Set' if vanity is None else vanity, inline=False)
-            embed.add_field(name=f"{e.dot_white} **__Role__**", value='Not Set' if role is None else role.mention, inline=False)
-            embed.add_field(name=f"{e.dot_white} **__Channel__**", value='Not Set' if channel is None else channel.mention, inline=False)
+            data = json.load(f)
 
-            await ctx.send(embed=embed, mention_author=False)
+        if str(interaction.guild.id) not in data:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ No vanity roles configured. Use `/vanityroles setup` first.", color=0x2f3136),
+                ephemeral=True
+            )
 
+        cfg = data[str(interaction.guild.id)]
+        vanity = cfg.get("vanity", "Not Set")
+        role = interaction.guild.get_role(cfg.get("role", 0))
+        channel = interaction.guild.get_channel(cfg.get("channel", 0))
 
-    
+        embed = discord.Embed(title="Vanity Roles Config", color=0x2f3136)
+        embed.set_author(name=str(interaction.guild), icon_url=interaction.guild.icon.url if interaction.guild.icon else discord.Embed.Empty)
+        embed.add_field(name=f"{e.dot_white} Keyword", value=f"`{vanity}`", inline=False)
+        embed.add_field(name=f"{e.dot_white} Reward Role", value=role.mention if role else "*(deleted)*", inline=False)
+        embed.add_field(name=f"{e.dot_white} Log Channel", value=channel.mention if channel else "*(deleted)*", inline=False)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    # ── Prefix fallback (vr setup / vr remove / vr config) ───────────────
+
+    @commands.group(name="vr", invoke_without_command=True)
+    @commands.has_permissions(administrator=True)
+    async def vr_prefix(self, ctx):
+        embed = discord.Embed(
+            title="Vanity Roles",
+            description=(
+                "Use the slash commands instead:\n"
+                "`/vanityroles setup` — configure vanity roles\n"
+                "`/vanityroles remove` — remove the config\n"
+                "`/vanityroles config` — view current config"
+            ),
+            color=0x2f3136
+        )
+        await ctx.send(embed=embed)
+
+    # ── Presence listener ─────────────────────────────────────────────────
+
     @commands.Cog.listener()
-    async def on_presence_update(self, before, after):
-        with open("vanityroles.json", "r") as f:
-            jnl = json.load(f)
-        if str(before.guild.id) not in jnl:
-            return
+    async def on_presence_update(self, before: discord.Member, after: discord.Member):
+        try:
+            with open("vanityroles.json", "r") as f:
+                jnl = json.load(f)
 
-        vanity = jnl[str(before.guild.id)]["vanity"]
-        role = jnl[str(before.guild.id)]["role"]
-        channel = jnl[str(before.guild.id)]["channel"]
+            guild_id = str(before.guild.id)
+            if guild_id not in jnl:
+                return
 
-        if str(before.status) == "offline":
-            return
+            cfg = jnl[guild_id]
+            keyword = cfg["vanity"]
+            grole = after.guild.get_role(cfg["role"])
+            gchannel = after.guild.get_channel(cfg["channel"])
 
-        gchannel = self.bot.get_channel(channel)
-        grole = after.guild.get_role(role)
+            if before.bot:
+                return
+            if str(before.status) == "offline":
+                return
 
-        if before.bot or before.guild.id != after.guild.id or before.activity == after.activity:
-            return
+            # Build a searchable string from all activities
+            activity_text = " ".join(
+                str(a) for a in (after.activities or [])
+            ).lower()
 
-        if vanity in str(after.activity).lower() and grole not in after.roles:
-            await after.add_roles(grole, reason=f"Added {vanity} In Status")
-            embed = discord.Embed(color=0x2f3136, title="New Vanity Status!",
-                                  description=f"{after.mention}, Thank you for showing support for `{vanity}` in your status!\n Your support means a lot to us and helps us grow. We truly appreciate it and hope that you continue to enjoy our community. Thank you again!")
-            await gchannel.send(embed=embed)
+            has_keyword = keyword.lower() in activity_text
+            has_role = grole in after.roles if grole else False
 
-        elif vanity not in str(after.activity).lower() and grole in after.roles:
-            await after.remove_roles(grole, reason=f"Removed {vanity} From Status")
-            embed = discord.Embed(color=0x2f3136,
-                                  title="New Vanity Status Remove!",
-                                  description=f"{after.mention}, Thank you for showing support for `{vanity}` in your status!\n Your support means a lot to us and helps us grow. We truly appreciate it and hope that you continue to enjoy our community. Thank you again!")
-            await gchannel.send(embed=embed)
+            if has_keyword and not has_role and grole:
+                await after.add_roles(grole, reason=f"Vanity status: added '{keyword}'")
+                if gchannel:
+                    embed = discord.Embed(
+                        title="🌟 New Vanity Status!",
+                        description=(
+                            f"{after.mention} added `{keyword}` to their status!\n"
+                            f"They've been given the {grole.mention} role. Thank you! 🙏"
+                        ),
+                        color=0x2f3136
+                    )
+                    embed.set_thumbnail(url=after.display_avatar.url)
+                    await gchannel.send(embed=embed)
+
+            elif not has_keyword and has_role and grole:
+                await after.remove_roles(grole, reason=f"Vanity status: removed '{keyword}'")
+                if gchannel:
+                    embed = discord.Embed(
+                        title="Vanity Status Removed",
+                        description=(
+                            f"{after.mention} removed `{keyword}` from their status.\n"
+                            f"The {grole.mention} role has been taken back."
+                        ),
+                        color=0x2f3136
+                    )
+                    embed.set_thumbnail(url=after.display_avatar.url)
+                    await gchannel.send(embed=embed)
+        except Exception:
+            pass
+
+    async def cog_load(self):
+        self.bot.tree.add_command(self.vr_group)
+
+
+async def setup(client):
+    await client.add_cog(Vanityroles(client))

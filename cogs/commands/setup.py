@@ -122,6 +122,97 @@ class Setup(Cog):
         embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
         await ctx.reply(embed=embed, mention_author=False)
 
+    # ── Log channel setup commands ────────────────────────────────────────
+
+    @commands.hybrid_command(
+        name="setbotlog",
+        aliases=["setbotlogchannel"],
+        description="Set the channel for bot command logs.",
+        usage="setbotlog <#channel>",
+    )
+    @blacklist_check()
+    @ignore_check()
+    @server_owner_check()
+    async def set_botlog(self, ctx: Context, channel: discord.TextChannel):
+        data = getConfig(ctx.guild.id)
+        data["botlog"] = channel.id
+        updateConfig(ctx.guild.id, data)
+        embed = discord.Embed(
+            description=f"{e.green_tick} | **Bot log** channel set to {channel.mention}\n"
+                        f"All bot command activity will now be logged there.",
+            color=0x2f3136,
+        )
+        embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+        await ctx.reply(embed=embed, mention_author=False)
+
+    @commands.hybrid_command(
+        name="setantinukelog",
+        aliases=["setantilog", "setnukelog"],
+        description="Set the channel for anti-nuke action logs.",
+        usage="setantinukelog <#channel>",
+    )
+    @blacklist_check()
+    @ignore_check()
+    @server_owner_check()
+    async def set_antinukelog(self, ctx: Context, channel: discord.TextChannel):
+        data = getConfig(ctx.guild.id)
+        data["antinukelog"] = channel.id
+        updateConfig(ctx.guild.id, data)
+        embed = discord.Embed(
+            description=f"{e.green_tick} | **Anti-nuke log** channel set to {channel.mention}\n"
+                        f"All anti-nuke actions (bans, kicks, role strips) will be logged there.",
+            color=0x2f3136,
+        )
+        embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+        await ctx.reply(embed=embed, mention_author=False)
+
+    @commands.hybrid_command(
+        name="setautomodlog",
+        aliases=["setmodlog", "setautomodchannel"],
+        description="Set the channel for automod/antispam action logs.",
+        usage="setautomodlog <#channel>",
+    )
+    @blacklist_check()
+    @ignore_check()
+    @server_owner_check()
+    async def set_automodlog(self, ctx: Context, channel: discord.TextChannel):
+        data = getConfig(ctx.guild.id)
+        data["automodlog"] = channel.id
+        updateConfig(ctx.guild.id, data)
+        embed = discord.Embed(
+            description=f"{e.green_tick} | **Automod log** channel set to {channel.mention}\n"
+                        f"All automod events (link blocks, spam) will be logged there.",
+            color=0x2f3136,
+        )
+        embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+        await ctx.reply(embed=embed, mention_author=False)
+
+    @commands.hybrid_command(
+        name="logchannels",
+        aliases=["logconfig", "logsettings"],
+        description="Show all configured log channels for this server.",
+        usage="logchannels",
+    )
+    @blacklist_check()
+    @ignore_check()
+    @server_owner_check()
+    async def log_channels_status(self, ctx: Context):
+        data = getConfig(ctx.guild.id)
+
+        def _ch(cid):
+            if not cid:
+                return "*(not set)*"
+            ch = ctx.guild.get_channel(int(cid))
+            return ch.mention if ch else f"*(deleted — id {cid})*"
+
+        embed = discord.Embed(title="Log Channel Config", color=0x2f3136)
+        embed.add_field(name="📋 Bot Log", value=_ch(data.get("botlog")), inline=False)
+        embed.add_field(name="🛡️ Anti-Nuke Log", value=_ch(data.get("antinukelog")), inline=False)
+        embed.add_field(name="🔨 Automod Log", value=_ch(data.get("automodlog")), inline=False)
+        embed.set_footer(text="Use setbotlog / setantinukelog / setautomodlog to configure")
+        embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+        await ctx.reply(embed=embed, mention_author=False)
+
     # ── status command ───────────────────────────────────────────────────
 
     @commands.command(

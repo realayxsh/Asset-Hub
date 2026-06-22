@@ -1,71 +1,43 @@
-import os
 import discord
-from discord.ext import commands
-import requests
-import sys
-import setuptools
-from itertools import cycle
-import threading
-import datetime
-import logging
-import time
 import asyncio
-import aiohttp
-from core import Dilbar, Cog
-import tasksio
-from discord.ext import tasks
-import random
-from utils.Tools import *
+import logging
+from discord.ext import commands
+from utils.Tools import getConfig, getanti
+from core import Dilbar
+from cogs.events._antinuke_base import AntiNukeBase
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="\x1b[38;5;197m[\x1b[0m%(asctime)s\x1b[38;5;197m]\x1b[0m -> \x1b[38;5;197m%(message)s\x1b[0m",
-    datefmt="%H:%M:%S",
-)
-
-_proxy_lines = [p for p in open('proxies.txt').read().split('\n') if p.strip()] if os.path.exists('proxies.txt') else []
-proxs = cycle(_proxy_lines) if _proxy_lines else None
-proxies = {"http": 'http://' + next(proxs)} if proxs else {}
-
-class antikick(Cog):
-    def __init__(self, client: Dilbar):
-        self.client = client      
-        self.headers = {"Authorization": f"Bot {os.getenv('TOKEN', '')}"}
+log = logging.getLogger(__name__)
 
 
-        
+class antikick(AntiNukeBase):
+
     @commands.Cog.listener()
-    async def on_member_remove(self, member) -> None:
+    async def on_member_remove(self, member: discord.Member):
+        asyncio.create_task(self._handle(member))
+
+    async def _handle(self, member: discord.Member):
         try:
-            data = getConfig(member.guild.id)
-            anti = getanti(member.guild.id)
-            punishment = data["punishment"]
-            wlrole = data['wlrole']  
-            wled = data["whitelisted"]
             guild = member.guild
-            wlroles = guild.get_role(wlrole)
-            reason = "Kicking Members | Not Whitelisted"
-            async for entry in guild.audit_logs(limit=2):
-              user = entry.user.id
-              hacker = guild.get_member(entry.user.id)
-              api = random.randint(8,9)
-              if str(entry.user.id) in wled or anti == "off" or wlroles in hacker.roles:
+            data = getConfig(guild.id)
+            if getanti(guild.id) == "off":
                 return
-              if entry.action == discord.AuditLogAction.kick:
-                 async with aiohttp.ClientSession(headers=self.headers) as session:
-                  if punishment == "ban":
-                    async with session.put(f"https://discord.com/api/v{api}/guilds/%s/bans/%s" % (guild.id, user), json={"reason": reason}) as r:
-                      if r.status in (200, 201, 204):
-                        logging.info("Successfully banned %s" % (user))
-                  elif punishment == "kick":
-                         async with session.delete(f"https://discord.com/api/v{api}/guilds/%s/members/%s" % (guild.id, user), json={"reason": reason}) as r2:
-                             if r2.status in (200, 201, 204):
-                               logging.info("Successfully kicked %s" % (user))
-                  elif punishment == "none":
-                    mem = guild.get_member(entry.user.id)
-                    await mem.edit(roles=[role for role in mem.roles if not role.permissions.administrator], reason=reason)
-                  else:
-                       return
-        except Exception as error:
-            if isinstance(error, discord.Forbidden):
-              return
+
+            entry = await self._get_recent_entry(guild, discord.AuditLogAction.kick)
+            if not entry:
+                return
+
+            if self._is_safe(entry.user.id, guild, data["whitelisted"], data.get("wlrole")):
+                return
+
+            reason = f"AntiNuke: unauthorized kick by {entry.user}"
+            asyncio.create_task(self._punish(guild, entry.user.id, data["punishment"], reason))
+            asyncio.create_task(self._send_log(
+                guild,
+                self._log_embed("Kick Detected", entry.user, data["punishment"])
+            ))
+        except Exception as err:
+            log.error("antikick: %s", err)
+
+
+async def setup(client: Dilbar):
+    await client.add_cog(antikick(client))

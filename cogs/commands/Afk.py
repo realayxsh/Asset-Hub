@@ -52,8 +52,7 @@ class afk(commands.Cog):
         self.client = client
 
     async def cog_after_invoke(self, ctx):
-      if ctx.author.id == afk:
-        ctx.command.reset_cooldown(ctx)
+        pass
 
     async def update_data(self, afk, user, guild_id):
         if not f'{user.id}' in afk:
@@ -114,9 +113,9 @@ class afk(commands.Cog):
                     meth = int(time.time()) - int(afk[f'{message.author.id}']['time'])
                     been_afk_for = await self.time_formatter(meth)
                     mentionz = afk[f'{message.author.id}']['mentions']
-                    afk[f'{message.author.id}']['AFK'] == 'False'
+                    afk[f'{message.author.id}']['AFK'] = 'False'
                     afk[f'{message.author.id}']['guild'].remove(message.guild.id)
-                    afk[f'{message.author.id}']['reason'] == None
+                    afk[f'{message.author.id}']['reason'] = None
                     wlba = discord.Embed(description=f'Welcome Back {str(message.author.mention)}, You got **{mentionz}** Mentions while You were AFK, I removed your AFK. You were afk for **{been_afk_for}**', color=0x2f3136)
                     await message.channel.send(embed=wlba)
                     content=message.author.mention
@@ -160,9 +159,9 @@ class afk(commands.Cog):
             meth = int(time.time()) - int(afk[f'{message.author.id}']['time'])
             been_afk_for = await self.time_formatter(meth)
             mentionz = afk[f'{message.author.id}']['mentions']
-            afk[f'{message.author.id}']['AFK'] == 'False'
+            afk[f'{message.author.id}']['AFK'] = 'False'
             afk[f'{message.author.id}']['guild'].remove(message.guild.id)
-            afk[f'{message.author.id}']['reason'] == None
+            afk[f'{message.author.id}']['reason'] = None
             wlbat = discord.Embed(description=f'Welcome Back {str(message.author.mention)}, You got **{mentionz}** Mentions while You were AFK, I removed your AFK. You were afk for **{been_afk_for}**', color=0x2f3136)
             await message.channel.send(embed=wlbat)
             content=message.author.mention

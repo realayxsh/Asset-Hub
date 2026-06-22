@@ -40,20 +40,6 @@ class Dilbar(commands.AutoShardedBot):
                                        type=discord.ActivityType.listening,
                                        name='-help'))
 
-        topgg_token = os.getenv("TOPGG_TOKEN", "")
-        if topgg_token:
-            try:
-                async with aiohttp.ClientSession(
-                        headers={"Authorization": topgg_token}) as session:
-                    async with session.post(
-                            "https://top.gg/api/bots/1012627088232165376/stats",
-                            json={
-                                "server_count": len(self.guilds),
-                                "shard_count": len(self.shards)
-                            }) as r:
-                        print("Posted Data On Top GG", r.status)
-            except Exception as ex:
-                print(f"[top.gg] Failed to post stats: {ex}")
 
     async def send_raw(self, channel_id: int, content: str,
                        **kwargs) -> typing.Optional[discord.Message]:

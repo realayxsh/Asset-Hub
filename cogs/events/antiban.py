@@ -1,133 +1,174 @@
 import os
 import discord
 from discord.ext import commands
-from utils.Tools import *
+from utils.Tools import getConfig, getanti
 from core import Dilbar, Cog
-import requests
-import sys
-import setuptools
-from itertools import cycle
-import threading
 import datetime
 import logging
-import time
 import asyncio
 import aiohttp
-import tasksio
 from discord.ext import tasks
-import random
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="\x1b[38;5;197m[\x1b[0m%(asctime)s\x1b[38;5;197m]\x1b[0m -> \x1b[38;5;197m%(message)s\x1b[0m",
-    datefmt="%H:%M:%S",
-)
+log = logging.getLogger(__name__)
 
-_proxy_lines = [p for p in open('proxies.txt').read().split('\n') if p.strip()] if os.path.exists('proxies.txt') else []
-proxs = cycle(_proxy_lines) if _proxy_lines else None
-proxies = {"http": 'http://' + next(proxs)} if proxs else {}
 
 class antiban(Cog):
     def __init__(self, client: Dilbar):
-        self.client = client      
+        self.client = client
         self.headers = {"Authorization": f"Bot {os.getenv('TOKEN', '')}"}
+        self._session: aiohttp.ClientSession | None = None
 
-        self.processing = [
-            
-        ]
+    async def _get_session(self) -> aiohttp.ClientSession:
+        if self._session is None or self._session.closed:
+            self._session = aiohttp.ClientSession(headers=self.headers)
+        return self._session
 
-    @tasks.loop(seconds=15)
-    async def clean_processing(self):
-        self.processing.clear()
+    async def cog_unload(self):
+        if self._session and not self._session.closed:
+            await self._session.close()
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.clean_processing.start()
-
-        
-    @commands.Cog.listener()
-    async def on_member_ban(self, guild, user) -> None:
+    async def _send_antinuke_log(self, guild: discord.Guild, embed: discord.Embed):
         try:
             data = getConfig(guild.id)
-            anti = getanti(guild.id)
-            wlrole = data['wlrole']  
-            punishment = data["punishment"]
-            wled = data["whitelisted"]
-            wlroles = guild.get_role(wlrole)
-            reason = "Banning Members | Not Whitelisted"
-            api = random.randint(8,9)
-            async for entry in guild.audit_logs(
-                limit=1):
-                  user = entry.user.id
-                  hacker = guild.get_member(entry.user.id)
-                  if user == 1103575978770436116:
-                    pass
-                  elif entry.user == guild.owner or str(entry.user.id) in wled or anti == "off" or wlroles in hacker.roles:
-                    pass
-                  else:
-                    async with aiohttp.ClientSession(headers=self.headers) as session:
-                     if entry.action == discord.AuditLogAction.ban:
-                      if punishment == "ban":
-                       async with session.put(f"https://discord.com/api/v{api}/guilds/%s/bans/%s" % (guild.id, user), json={"reason": reason}) as r:
-                         await guild.unban(user=user, reason=reason)
-                         if r.status in (200, 201, 204):
-                           
-                           logging.info("Successfully banned %s" % (user))
-                      elif punishment == "kick":
-                         async with session.delete(f"https://discord.com/api/v{api}/guilds/%s/members/%s" % (guild.id, user), json={"reason": reason}) as r2:
-                             await guild.unban(user=user, reason=reason)
-                             if r2.status in (200, 201, 204):
-                               
-                               logging.info("Successfully kicked %s" % (user))
-                      elif punishment == "none":
-                       mem = guild.get_member(entry.user.id)
-                       await mem.edit(roles=[role for role in mem.roles if not role.permissions.administrator], reason=reason)
-                       await guild.unban(user=user, reason=reason)
-                     else:
-                       return
-        except Exception as error:
-          if isinstance(error, discord.Forbidden):
-              return
+            log_id = data.get("antinukelog")
+            if log_id:
+                ch = guild.get_channel(int(log_id))
+                if ch:
+                    await ch.send(embed=embed)
+        except Exception:
+            pass
+
+    async def _punish_member(self, guild: discord.Guild, user_id: int, punishment: str, reason: str):
+        try:
+            session = await self._get_session()
+            if punishment == "ban":
+                async with session.put(
+                    f"https://discord.com/api/v10/guilds/{guild.id}/bans/{user_id}",
+                    json={"delete_message_seconds": 0, "reason": reason}
+                ) as r:
+                    log.info("Antinuke ban %s in %s — status %s", user_id, guild.id, r.status)
+            elif punishment == "kick":
+                async with session.delete(
+                    f"https://discord.com/api/v10/guilds/{guild.id}/members/{user_id}",
+                    json={"reason": reason}
+                ) as r:
+                    log.info("Antinuke kick %s in %s — status %s", user_id, guild.id, r.status)
+            elif punishment == "none":
+                mem = guild.get_member(user_id)
+                if mem:
+                    safe_roles = [r for r in mem.roles if not r.permissions.administrator and r != guild.default_role]
+                    await mem.edit(roles=safe_roles, reason=reason)
+        except discord.Forbidden:
+            pass
+        except Exception as err:
+            log.error("Antinuke punish error: %s", err)
+
+    async def _get_recent_entry(self, guild: discord.Guild, action: discord.AuditLogAction):
+        """Fetch the most recent audit log entry for the given action (last 5 seconds)."""
+        after = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=5)
+        async for entry in guild.audit_logs(limit=1, action=action, after=after):
+            return entry
+        return None
+
     @commands.Cog.listener()
-    async def on_member_unban(self, guild: discord.Guild, user: discord.User) -> None:
+    async def on_member_ban(self, guild: discord.Guild, user: discord.User):
+        asyncio.create_task(self._handle_ban(guild, user))
+
+    async def _handle_ban(self, guild: discord.Guild, user: discord.User):
         try:
             data = getConfig(guild.id)
-            anti = getanti(guild.id)
+            if getanti(guild.id) == "off":
+                return
             wled = data["whitelisted"]
+            wlrole_id = data.get("wlrole")
             punishment = data["punishment"]
-            wlrole = data['wlrole'] 
-            wlroles = guild.get_role(wlrole)
-            reason = "Unbanning Members | Not Whitelisted"
-            async for entry in guild.audit_logs(
-                limit=1):
-              use = entry.user.id
-              api = random.randint(8,9)
-              hacker = guild.get_member(entry.user.id)
-              if entry.user.id == self.client.user.id or entry.user.id == guild.owner_id or str(entry.user.id) in wled or anti == "off" or wlroles in hacker.roles:
-               return
-              async with aiohttp.ClientSession(headers=self.headers) as session:
-                if entry.action == discord.AuditLogAction.unban:
-                 if punishment == "ban":
-                  async with session.put(f"https://discord.com/api/v{api}/guilds/%s/bans/%s" % (guild.id, use), json={"reason": reason}) as r:
-                    victim = await self.client.fetch_user(user.id)
-                    await guild.ban(victim, reason=reason)
-                    if r.status in (200, 201, 204):
-                      
-                      logging.info("Successfully banned %s" % (use))
-                 elif punishment == "kick":
-                         async with session.delete(f"https://discord.com/api/v{api}/guilds/%s/members/%s" % (guild.id, use), json={"reason": reason}) as r2:
-                           await guild.ban(discord.Object(int(user.id)), reason=reason)
-                           if r2.status in (200, 201, 204):
-                               
-                               logging.info("Successfully kicked %s" % (use))
-                 elif punishment == "none":
-                  mem = guild.get_member(entry.user.id)
-                  await mem.edit(roles=[role for role in mem.roles if not role.permissions.administrator], reason=reason)
-                  await guild.ban(victim, reason=reason)
-                else:
-                       return
-        except Exception as error:
-            logging.error(error)
+
+            entry = await self._get_recent_entry(guild, discord.AuditLogAction.ban)
+            if not entry:
+                return
+
+            actor = entry.user
+            if actor.id == self.client.user.id or actor.id == guild.owner_id:
+                return
+            if str(actor.id) in wled:
+                return
+
+            member = guild.get_member(actor.id)
+            if member and wlrole_id:
+                wlrole = guild.get_role(wlrole_id)
+                if wlrole and wlrole in member.roles:
+                    return
+
+            reason = f"AntiNuke: unauthorized ban by {actor} ({actor.id})"
+            try:
+                await guild.unban(discord.Object(id=user.id), reason=reason)
+            except Exception:
+                pass
+
+            asyncio.create_task(self._punish_member(guild, actor.id, punishment, reason))
+
+            embed = discord.Embed(
+                title="🛡️ Anti-Nuke — Ban Detected",
+                color=0xFF4444,
+                timestamp=discord.utils.utcnow()
+            )
+            embed.add_field(name="Attacker", value=f"{actor.mention} (`{actor.id}`)", inline=True)
+            embed.add_field(name="Victim", value=f"{user.mention} (`{user.id}`)", inline=True)
+            embed.add_field(name="Action Taken", value=punishment.upper(), inline=True)
+            embed.add_field(name="Victim Unbanned", value="✅ Yes", inline=True)
+            asyncio.create_task(self._send_antinuke_log(guild, embed))
+        except Exception as err:
+            log.error("_handle_ban error: %s", err)
+
+    @commands.Cog.listener()
+    async def on_member_unban(self, guild: discord.Guild, user: discord.User):
+        asyncio.create_task(self._handle_unban(guild, user))
+
+    async def _handle_unban(self, guild: discord.Guild, user: discord.User):
+        try:
+            data = getConfig(guild.id)
+            if getanti(guild.id) == "off":
+                return
+            wled = data["whitelisted"]
+            wlrole_id = data.get("wlrole")
+            punishment = data["punishment"]
+
+            entry = await self._get_recent_entry(guild, discord.AuditLogAction.unban)
+            if not entry:
+                return
+
+            actor = entry.user
+            if actor.id == self.client.user.id or actor.id == guild.owner_id:
+                return
+            if str(actor.id) in wled:
+                return
+
+            member = guild.get_member(actor.id)
+            if member and wlrole_id:
+                wlrole = guild.get_role(wlrole_id)
+                if wlrole and wlrole in member.roles:
+                    return
+
+            reason = f"AntiNuke: unauthorized unban by {actor} ({actor.id})"
+            try:
+                await guild.ban(discord.Object(id=user.id), reason=reason)
+            except Exception:
+                pass
+
+            asyncio.create_task(self._punish_member(guild, actor.id, punishment, reason))
+
+            embed = discord.Embed(
+                title="🛡️ Anti-Nuke — Unban Detected",
+                color=0xFF8C00,
+                timestamp=discord.utils.utcnow()
+            )
+            embed.add_field(name="Attacker", value=f"{actor.mention} (`{actor.id}`)", inline=True)
+            embed.add_field(name="Victim", value=f"{user.mention} (`{user.id}`)", inline=True)
+            embed.add_field(name="Action Taken", value=punishment.upper(), inline=True)
+            asyncio.create_task(self._send_antinuke_log(guild, embed))
+        except Exception as err:
+            log.error("_handle_unban error: %s", err)
 
 
-
+async def setup(client: Dilbar):
+    await client.add_cog(antiban(client))

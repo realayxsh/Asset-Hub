@@ -9,50 +9,6 @@ import time
 from typing import Any
 
 
-class NotVoter(commands.CheckFailure):
-    pass
-
-
-async def check_voter(mem):
-    async with aiohttp.ClientSession(
-            headers=
-        {
-            "Authorization": os.getenv("TOPGG_TOKEN", "")
-        }) as session:
-        async with session.get(
-                f"https://top.gg/api/bots/1012627088232165376/check?userId={str(mem)}"
-        ) as response:
-            vote = await response.json()
-            if vote["voted"] == 1 or mem in []:
-                response.close()
-                return "okay"
-            else:
-                response.close()
-                return "not okay"
-
-
-def is_voter():
-
-    async def predicate(ctx: Context):
-        async with aiohttp.ClientSession(
-                headers=
-            {
-                "Authorization": os.getenv("TOPGG_TOKEN", "")
-            }) as session:
-            async with session.get(
-                    f"https://top.gg/api/bots/1012627088232165376/check?userId={str(ctx.author.id)}"
-            ) as response:
-                vote = await response.json()
-                if vote["voted"] == 1 or ctx.author.id in ctx.bot.owner_ids:
-                    response.close()
-                    return True
-                else:
-                    response.close()
-                    raise NotVoter()
-
-    return commands.check(predicate)
-
-
 def DotEnv(query: str):
     return os.getenv(query)
 
@@ -132,11 +88,18 @@ def getConfig(guildID):
             "gmod": None,
             "gadmin": None,
             "headmod": None,
-            "wlrole": None
+            "wlrole": None,
+            "botlog": None,
+            "antinukelog": None,
+            "automodlog": None,
         }
         updateConfig(guildID, defaultConfig)
         return defaultConfig
-    return data["guilds"][str(guildID)]
+    cfg = data["guilds"][str(guildID)]
+    for key in ("botlog", "antinukelog", "automodlog"):
+        if key not in cfg:
+            cfg[key] = None
+    return cfg
 
 
 def updateConfig(guildID, data):

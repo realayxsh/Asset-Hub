@@ -234,244 +234,110 @@ class Owner(commands.Cog):
 
             await ctx.reply(embed=embed2)
 
-    @commands.group(name="bdg", help="Allows owner to add badges for a user")
-    @commands.is_owner()
-    async def _badge(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.send_help(ctx.command)
+    # ── Founder Badge System (slash commands, server-owner only) ─────────
 
-    @_badge.command(name="add",
-                    aliases=["give"],
-                    help="Add some badges to a user.")
-    @commands.is_owner()
-    async def badge_add(self, ctx, member: discord.Member, *, badge: str):
-        ok = getbadges(member.id)
-        if badge.lower() in ["own", "owner", "king"]:
-            idk = f"**{e.king} OWNER**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed2 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `OWNER` Badge To {member}**",
-                color=0x2f3136)
-            await ctx.reply(embed=embed2)
-        elif badge.lower() in ["staff", "support staff"]:
-            idk = f"**{e.staff_badge} STAFF**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed3 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `STAFF` Badge To {member}**",
-                color=0x2f3136)
-            await ctx.reply(embed=embed3)
-        elif badge.lower() in ["partner"]:
-            idk = f"**{e.partners} PARTNER**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed4 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `PARTNER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed4)
-        elif badge.lower() in ["sponsor"]:
-            idk = f"**{e.owners} SPONSER**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed5 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `SPONSER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed5)
-        elif badge.lower() in [
-                "friend", "friends", "homies", "owner's friend"
-        ]:
-            idk = f"**{e.friends} FRIENDS**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed1 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `FRIENDS` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed1)
-        elif badge.lower() in ["early", "supporter", "support"]:
-            idk = f"**{e.early_support} SUPPORTER**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed6 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `SUPPORTER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed6)
+    badge_group = discord.app_commands.Group(
+        name="badge",
+        description="Manage Founder badges for server members (server owner only)",
+        guild_only=True,
+    )
 
-        elif badge.lower() in ["vip"]:
-            idk = f"**{e.vip_badge} VIP**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed7 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `VIP` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed7)
+    @badge_group.command(name="add", description="Give a member a Founder badge with a server emoji")
+    @discord.app_commands.describe(member="The member to give the badge to")
+    async def badge_slash_add(self, interaction: discord.Interaction, member: discord.Member):
+        if interaction.user.id != interaction.guild.owner_id:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ Only the **server owner** can add badges.", color=0x2f3136),
+                ephemeral=True
+            )
 
-        elif badge.lower() in ["bug", "hunter"]:
-            idk = f"**{e.bug_hunter2} BUG HUNTER**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embed8 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `BUG HUNTER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed8)
-        elif badge.lower() in ["all"]:
-            idk = f"**{e.king} OWNER\n{e.staff_badge} STAFF\n{e.partners} PARTNER\n{e.owners} SPONSER\n{e.friends} FRIENDS\n{e.early_support} SUPPORTER\n{e.vip_badge} VIP\n{e.bug_hunter2} BUG HUNTER**"
-            ok.append(idk)
-            makebadges(member.id, ok)
-            embedall = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Added `All` Badges To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embedall)
-        else:
-            hacker = discord.Embed(
-                                   description="**Invalid Badge**",
-                                   color=0x2f3136)
-            
-            await ctx.reply(embed=hacker)
+        guild_emojis = [em for em in interaction.guild.emojis if not em.managed][:25]
+        if not guild_emojis:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ This server has no custom emojis to pick from.", color=0x2f3136),
+                ephemeral=True
+            )
 
-    @_badge.command(name="remove",
-                    help="Remove badges from a user.",
-                    aliases=["re"])
-    @commands.is_owner()
-    async def badge_remove(self, ctx, member: discord.Member, *, badge: str):
-        ok = getbadges(member.id)
-        if badge.lower() in ["own", "owner", "king"]:
-            idk = f"**{e.crown} OWNER**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed2 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `OWNER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed2)
+        options = [
+            discord.SelectOption(label=em.name, value=str(em.id), emoji=em)
+            for em in guild_emojis
+        ]
 
-        elif badge.lower() in ["staff", "support staff"]:
-            idk = f"**{e.staff_anim} STAFF**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed3 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `STAFF` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed3)
+        class EmojiSelectView(discord.ui.View):
+            def __init__(self):
+                super().__init__(timeout=60)
 
-        elif badge.lower() in ["partner"]:
-            idk = f"**{e.partnered_owner} PARTNER**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed4 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `PARTNER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed4)
+            @discord.ui.select(placeholder="Pick an emoji for the Founder badge…", options=options)
+            async def pick_emoji(self, inner: discord.Interaction, select: discord.ui.Select):
+                emoji_id = int(select.values[0])
+                emoji = discord.utils.get(interaction.guild.emojis, id=emoji_id)
+                badge_str = f"Founder {emoji}"
+                existing = getbadges(member.id)
+                existing = [b for b in existing if not b.startswith("Founder")]
+                existing.append(badge_str)
+                makebadges(member.id, existing)
+                self.stop()
+                await inner.response.edit_message(
+                    embed=discord.Embed(
+                        description=f"{e.green_tick} | Added **{badge_str}** badge to {member.mention}",
+                        color=0x2f3136
+                    ),
+                    view=None
+                )
 
-        elif badge.lower() in ["sponsor"]:
-            idk = f"**{e.diamond} SPONSER**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed5 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `SPONSER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed5)
+        await interaction.response.send_message(
+            embed=discord.Embed(
+                description=f"Select the emoji for **{member.display_name}**'s Founder badge:",
+                color=0x2f3136
+            ),
+            view=EmojiSelectView(),
+            ephemeral=True
+        )
 
-        elif badge.lower() in [
-                "friend", "friends", "homies", "owner's friend"
-        ]:
-            idk = f"**{e.vip_friends} FRIENDS**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed1 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `FRIENDS` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed1)
+    @badge_group.command(name="remove", description="Remove the Founder badge from a member")
+    @discord.app_commands.describe(member="The member to remove the badge from")
+    async def badge_slash_remove(self, interaction: discord.Interaction, member: discord.Member):
+        if interaction.user.id != interaction.guild.owner_id:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description="❌ Only the **server owner** can remove badges.", color=0x2f3136),
+                ephemeral=True
+            )
+        existing = getbadges(member.id)
+        new_badges = [b for b in existing if not b.startswith("Founder")]
+        if len(new_badges) == len(existing):
+            return await interaction.response.send_message(
+                embed=discord.Embed(description=f"❌ {member.mention} has no Founder badge.", color=0x2f3136),
+                ephemeral=True
+            )
+        makebadges(member.id, new_badges)
+        await interaction.response.send_message(
+            embed=discord.Embed(
+                description=f"{e.green_tick} | Removed the **Founder** badge from {member.mention}",
+                color=0x2f3136
+            ),
+            ephemeral=True
+        )
 
-        elif badge.lower() in ["early", "supporter", "support"]:
-            idk = f"**{e.early_anim} SUPPORTER**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed6 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `SUPPORTER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed6)
+    @badge_group.command(name="view", description="View the Founder badge of a member")
+    @discord.app_commands.describe(member="The member to view the badge of")
+    async def badge_slash_view(self, interaction: discord.Interaction, member: discord.Member):
+        existing = getbadges(member.id)
+        founder = [b for b in existing if b.startswith("Founder")]
+        if not founder:
+            return await interaction.response.send_message(
+                embed=discord.Embed(description=f"❌ {member.mention} has no Founder badge.", color=0x2f3136),
+                ephemeral=True
+            )
+        await interaction.response.send_message(
+            embed=discord.Embed(
+                description=f"**{member.display_name}**'s badge: {founder[0]}",
+                color=0x2f3136
+            ).set_thumbnail(url=member.display_avatar.url),
+            ephemeral=True
+        )
 
-        elif badge.lower() in ["vip"]:
-            idk = f"**{e.vip} VIP**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed7 = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `VIP` Badge To {member}**",
-                color=0x2f3136)
-           
-            await ctx.reply(embed=embed7)
-
-        elif badge.lower() in ["bug", "hunter"]:
-            idk = f"**{e.bug_anim} BUG HUNTER**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embed8 = discord.Embed(
-                
-                description=
-                f"**Successfully Removed `BUG HUNTER` Badge To {member}**",
-                color=0x2f3136)
-            
-            await ctx.reply(embed=embed8)
-        elif badge.lower() in ["all"]:
-            idk = f"**{e.crown_anim} OWNER\n{e.staff_anim2} STAFF\n{e.partner_anim} PARTNER\n{e.sponsor} SPONSER\n{e.friends2} FRIENDS\n{e.supporter} SUPPORTER\n{e.vip2} VIP\n{e.bug_hunter} BUG HUNTER**"
-            ok.remove(idk)
-            makebadges(member.id, ok)
-            embedall = discord.Embed(
-                
-                description=
-                f"{e.green_tick} | **Successfully Removed `All` Badges From {member}**",
-                color=0x2f3136)
-            await ctx.reply(embed=embedall)
-        else:
-            hacker = discord.Embed(
-                                   description="**Invalid Badge**",
-                                   color=0x2f3136)
-            await ctx.reply(embed=hacker)
+    async def cog_load(self):
+        self.client.tree.add_command(self.badge_group)
 
 
 

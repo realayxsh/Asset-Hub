@@ -1,78 +1,42 @@
-import os
 import discord
-from discord.ext import commands
-import requests
-import sys
-import setuptools
-from itertools import cycle
-import threading
-from core import Cog, Dilbar
-import datetime
-import logging
-import time
 import asyncio
-import aiohttp
-import tasksio
-from discord.ext import tasks
-import random
-from utils.Tools import *
+import logging
+from discord.ext import commands
+from utils.Tools import getConfig, getanti
+from core import Dilbar
+from cogs.events._antinuke_base import AntiNukeBase
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="\x1b[38;5;197m[\x1b[0m%(asctime)s\x1b[38;5;197m]\x1b[0m -> \x1b[38;5;197m%(message)s\x1b[0m",
-    datefmt="%H:%M:%S",
-)
+log = logging.getLogger(__name__)
 
-_proxy_lines = [p for p in open('proxies.txt').read().split('\n') if p.strip()] if os.path.exists('proxies.txt') else []
-proxs = cycle(_proxy_lines) if _proxy_lines else None
-proxies = {"http": 'http://' + next(proxs)} if proxs else {}
 
-class antiemostick(Cog):
-    def __init__(self, client: Dilbar):
-        self.client = client      
-        self.headers = {"Authorization": f"Bot {os.getenv('TOKEN', '')}"}
+class antiemostick(AntiNukeBase):
 
     @commands.Cog.listener()
-    async def on_guild_emojis_update(self, guild, before, after) -> None:
-      try:
-        data = getConfig(guild.id)
-        anti = getanti(guild.id)
-        punishment = data["punishment"]
-        wled = data["whitelisted"]
-        wlrole = data['wlrole']  
-        wlroles = guild.get_role(wlrole)
-        reason = "Creating Emojis | Not Whitelisted"
-        async for entry in guild.audit_logs(
-                limit=1):
-            user = entry.user.id
-            hacker = guild.get_member(entry.user.id)
-            emoji = await guild.fetch_emoji(entry.target.id)
-        api = random.randint(8,9)
-        if user == 1103575978770436116:
-          pass
-        elif entry.user == guild.owner:
-          pass
-        elif str(entry.user.id) in wled or anti == "off" or wlroles in hacker.roles:
-            pass
-        else:
-         if entry.action == discord.AuditLogAction.emoji_create:
-          async with aiohttp.ClientSession(headers=self.headers) as session:
-            if punishment == "ban":
-                  async with session.put(f"https://discord.com/api/v{api}/guilds/%s/bans/%s" % (guild.id, user), json={"reason": reason}) as r:
-                    if r.status in (200, 201, 204):
-                      await emoji.delete()
-                      logging.info("Successfully banned %s" % (user))
-            elif punishment == "kick":
-                         async with session.delete(f"https://discord.com/api/v{api}/guilds/%s/members/%s" % (guild.id, user), json={"reason": reason}) as r2:
-                             if r2.status in (200, 201, 204):
-                               await emoji.delete()
-                               logging.info("Successfully kicked %s" % (user))
-            elif punishment == "none":
-              mem = guild.get_member(entry.user.id)
-              await mem.edit(roles=[role for role in mem.roles if not role.permissions.administrator], reason=reason)
-              await emoji.delete()
-            else:
-                       return
-      except Exception as error:
-            if isinstance(error, discord.Forbidden):
-              return
+    async def on_guild_stickers_update(self, guild: discord.Guild, before: list, after: list):
+        if len(after) >= len(before):
+            return
+        asyncio.create_task(self._handle(guild, before, after))
+
+    async def _handle(self, guild: discord.Guild, before: list, after: list):
+        try:
+            data = getConfig(guild.id)
+            if getanti(guild.id) == "off":
+                return
+            entry = await self._get_recent_entry(guild, discord.AuditLogAction.sticker_delete)
+            if not entry:
+                return
+            if self._is_safe(entry.user.id, guild, data["whitelisted"], data.get("wlrole")):
+                return
+            reason = f"AntiNuke: unauthorized sticker delete by {entry.user}"
+            asyncio.create_task(self._punish(guild, entry.user.id, data["punishment"], reason))
+            asyncio.create_task(self._send_log(
+                guild,
+                self._log_embed("Sticker Deleted", entry.user, data["punishment"],
+                                 {"Count": f"{len(before) - len(after)} deleted"})
+            ))
+        except Exception as err:
+            log.error("antiemostick: %s", err)
+
+
+async def setup(client: Dilbar):
+    await client.add_cog(antiemostick(client))

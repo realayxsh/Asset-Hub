@@ -1,113 +1,90 @@
-import os
 import discord
-from discord.ext import commands
-import requests
-import sys
-from utils.Tools import getConfig, add_user_to_blacklist, getanti
-from utils.emojis import e
-import setuptools
-from itertools import cycle
-from collections import Counter
-import threading
-import datetime
-import logging
-from core import Dilbar, Cog
-import time
 import asyncio
-import aiohttp
-import tasksio
-from discord.ui import View, Button
-import json
-from discord.ext import tasks
-import random
+import logging
+from discord.ext import commands
+from utils.Tools import getConfig, getanti
+from utils.emojis import e
+from core import Dilbar, Cog
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="\x1b[38;5;197m[\x1b[0m%(asctime)s\x1b[38;5;197m]\x1b[0m -> \x1b[38;5;197m%(message)s\x1b[0m",
-    datefmt="%H:%M:%S",
-)
+log = logging.getLogger(__name__)
 
-_proxy_lines = [p for p in open('proxies.txt').read().split('\n') if p.strip()] if os.path.exists('proxies.txt') else []
-proxs = cycle(_proxy_lines) if _proxy_lines else None
-proxies = {"http": 'http://' + next(proxs)} if proxs else {}
 
 class antipinginv(Cog):
+    """Anti @everyone / @here ping protection with automod logging."""
+
     def __init__(self, client: Dilbar):
         self.client = client
-        self.spam_control = commands.CooldownMapping.from_cooldown(10, 12.0, commands.BucketType.user)
-
-
-        
 
     @commands.Cog.listener()
-    async def on_message(self, message):
-      button = Button(emoji=f"{e.invite}",label="Invite", url =  "https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=8&scope=bot%20applications.commands")
-      button1 = Button(emoji=f"{e.support_team}",label="Support", url = "https://discord.gg/HyWQdHjNPz")
-      button2 = Button(emoji=f"{e.dev_icon}",label="Web", url = "https://linktr.ee/vestrol")
-      try:
-       
-        with open("blacklist.json", "r") as f:
-          data2 = json.load(f)
-        with open('ignore.json', 'r') as heck:
-          randi = json.load(heck)
-          ventura = '<@1097475016880304180>'
-          try:
+    async def on_message(self, message: discord.Message):
+        if not message.guild or message.author.bot:
+            return
+        if not message.mention_everyone:
+            return
+        asyncio.create_task(self._handle(message))
+
+    async def _handle(self, message: discord.Message):
+        try:
             data = getConfig(message.guild.id)
-            anti = getanti(message.guild.id)
-            prefix = data["prefix"]
-            wled = data["whitelisted"]
-            punishment = data["punishment"]
-            wlrole = data['wlrole']
-            guild = message.guild
-            hacker = guild.get_member(message.author.id)
-            wlroles = guild.get_role(wlrole)
-          except Exception:
-            pass
-          guild = message.guild
-          if message.mention_everyone:
-            if str(message.author.id) in wled or anti == "off" or wlroles in hacker.roles:
-              pass
-            else:
-              if punishment == "ban":
-                await message.guild.ban(message.author, reason="Mentioning Everyone | Not Whitelisted")
-              elif punishment == "kick":
-                await message.guild.kick(message.author, reason="Mentioning Everyone | Not Whitelisted")
-              elif punishment == "none":
+            if getanti(message.guild.id) == "off":
                 return
 
+            wled = data.get("whitelisted", [])
+            wlrole_id = data.get("wlrole")
+            author = message.author
 
-          elif message.content == ventura or message.content == "<@!1097475016880304180>":
-            if str(message.author.id) in data2["ids"]:
-              embed = discord.Embed(title=f"{e.red_cross} Blacklisted", description="You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)")
-              await message.reply(embed=embed, mention_author=False)
-            if str(message.channel.id) in randi["ids"]:
-                await message.reply(f"My all commands are disabled for {message.channel.mention}",mention_author=True, delete_after=10)
-                
-                
-            else:
+            if str(author.id) in wled:
+                return
+            if author.guild_permissions.administrator:
+                return
+            if wlrole_id:
+                wlrole = message.guild.get_role(wlrole_id)
+                if wlrole and wlrole in author.roles:
+                    return
 
-              embed = discord.Embed(description=f"""\Hey, I'm VesTrol
+            try:
+                await message.delete()
+            except Exception:
+                pass
 
-Please use the following command instead: -help
+            now = discord.utils.utcnow()
+            try:
+                await author.timeout(
+                    now + __import__("datetime").timedelta(minutes=15),
+                    reason="DILBAR < 3 | Anti Everyone/Here Ping"
+                )
+            except Exception:
+                pass
 
-[If you continue to have problems, consider asking for help](https://discord.gg/SXxXbjVt3).""",color=0x2f3136) 
-              embed.set_author(name="VesTrol", icon_url=self.client.user.display_avatar.url)
-              embed.set_thumbnail(url =self.client.user.display_avatar.url)
-              if guild.icon is not None:
-                  embed.set_footer(  text=guild.name, icon_url=guild.icon.url)
-              view = View()
-              view.add_item(button)
-              view.add_item(button1)
-              view.add_item(button2)
-              await message.reply(embed=embed, mention_author=False, view=view)
-          else:
-            return
-      except Exception as error:
-        if isinstance(error, discord.Forbidden):
-              return
+            embed = discord.Embed(
+                color=0x2f3136,
+                description=(
+                    f"{e.green_tick} | {author.mention} was timed out **15 minutes** "
+                    f"for pinging **@everyone / @here**"
+                )
+            )
+            try:
+                embed.set_author(name=str(author), icon_url=author.display_avatar.url)
+            except Exception:
+                pass
+            await message.channel.send(embed=embed, delete_after=10)
+
+            log_id = data.get("automodlog")
+            if log_id:
+                ch = message.guild.get_channel(int(log_id))
+                if ch:
+                    log_embed = discord.Embed(
+                        title="🔨 Automod — Mass Ping",
+                        color=0xFF8C00,
+                        timestamp=discord.utils.utcnow()
+                    )
+                    log_embed.add_field(name="User", value=f"{author.mention} (`{author.id}`)", inline=True)
+                    log_embed.add_field(name="Channel", value=message.channel.mention, inline=True)
+                    log_embed.add_field(name="Action", value="Timeout 15min", inline=True)
+                    asyncio.create_task(ch.send(embed=log_embed))
+        except Exception as err:
+            log.error("antiping: %s", err)
 
 
-
-
-
-
+async def setup(client: Dilbar):
+    await client.add_cog(antipinginv(client))
