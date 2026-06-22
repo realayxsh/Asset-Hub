@@ -17,8 +17,7 @@ async def check_voter(mem):
     async with aiohttp.ClientSession(
             headers=
         {
-            "Authorization":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTI2MjcwODgyMzIxNjUzNzYiLCJib3QiOnRydWUsImlhdCI6MTY3MDU4MzE3NH0.WULUKASz45RZduUMpTCqzHt0nPk3MqnpeJHF3YNgBo8"
+            "Authorization": os.getenv("TOPGG_TOKEN", "")
         }) as session:
         async with session.get(
                 f"https://top.gg/api/bots/1012627088232165376/check?userId={str(mem)}"
@@ -38,8 +37,7 @@ def is_voter():
         async with aiohttp.ClientSession(
                 headers=
             {
-                "Authorization":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTI2MjcwODgyMzIxNjUzNzYiLCJib3QiOnRydWUsImlhdCI6MTY3MDU4MzE3NH0.WULUKASz45RZduUMpTCqzHt0nPk3MqnpeJHF3YNgBo8"
+                "Authorization": os.getenv("TOPGG_TOKEN", "")
             }) as session:
             async with session.get(
                     f"https://top.gg/api/bots/1012627088232165376/check?userId={str(ctx.author.id)}"

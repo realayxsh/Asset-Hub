@@ -27,9 +27,9 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 
-proxies = open('proxies.txt').read().split('\n')
-proxs = cycle(proxies)
-proxies={"http": 'http://' + next(proxs)}
+_proxy_lines = [p for p in open('proxies.txt').read().split('\n') if p.strip()] if os.path.exists('proxies.txt') else []
+proxs = cycle(_proxy_lines) if _proxy_lines else None
+proxies = {"http": 'http://' + next(proxs)} if proxs else {}
 
 class antipinginv(Cog):
     def __init__(self, client: Dilbar):

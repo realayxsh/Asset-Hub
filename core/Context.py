@@ -3,6 +3,7 @@ from __future__ import annotations
 from discord.ext import commands
 import discord
 import functools
+from functools import cached_property
 from typing import Optional, Any
 import asyncio
 from utils.components import build_layout
@@ -23,7 +24,7 @@ class Context(commands.Context):
     async def session(self):
         return self.bot.session
 
-    @discord.utils.cached_property
+    @cached_property
     def replied_reference(self) -> Optional[discord.Message]:
         ref = self.message.reference
         if ref and isinstance(ref.resolved, discord.Message):

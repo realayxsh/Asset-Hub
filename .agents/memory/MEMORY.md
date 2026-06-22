@@ -1,0 +1,2 @@
+- [Discord bot library setup](discord-bot-library.md) — this bot uses discord.py 2.x (NOT py-cord); they conflict at the discord module level
+- [Dependency install order](dep-install-order.md) — jishaku/discord-ext-menus/reactionmenu pull in discord.py and must be installed before discord.py git version wins

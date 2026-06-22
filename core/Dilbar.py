@@ -3,8 +3,9 @@ from discord.ext import commands
 import discord
 import aiohttp
 import json
-import jishaku, time
+import time
 import asyncio
+import os
 import typing
 from utils.config import OWNER_IDS, EXTENSIONS, No_Prefix
 from utils import getConfig, updateConfig, DotEnv
@@ -16,23 +17,15 @@ from discord.ext import commands, tasks
 class Dilbar(commands.AutoShardedBot):
 
     def __init__(self, *arg, **kwargs):
-        self.topgg_headers = {
-            "Authorization":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTI2MjcwODgyMzIxNjUzNzYiLCJib3QiOnRydWUsImlhdCI6MTY3MDU4MzE3NH0.WULUKASz45RZduUMpTCqzHt0nPk3MqnpeJHF3YNgBo8"
-        }
         intents = discord.Intents.all()
-        intents.presences = False
-        intents.members = False
         super().__init__(command_prefix=self.get_prefix,
                          case_insensitive=True,
                          intents=intents,
                          status=discord.Status.dnd,
                          strip_after_prefix=True,
-                         owner_ids=OWNER_IDS,
+                         owner_ids=set(OWNER_IDS),
                          allowed_mentions=discord.AllowedMentions(
                              everyone=False, replied_user=False, roles=False),
-                         sync_commands_debug=True,
-                         sync_commands=True,
                          shard_count=1)
 
     async def setup_hook(self):
@@ -41,43 +34,34 @@ class Dilbar(commands.AutoShardedBot):
     async def on_ready(self):
         print("Connected as {}".format(self.user))
 
-
-
-        
-
     async def on_connect(self):
         await self.change_presence(status=discord.Status.idle,
                                    activity=discord.Activity(
                                        type=discord.ActivityType.listening,
                                        name='-help'))
 
-
-
-        
-        async with aiohttp.ClientSession(
-                headers=self.topgg_headers) as session:
-            async with session.post(
-                    "https://top.gg/api/bots/1012627088232165376/stats",
-                    json={
-                        "server_count": len(self.guilds),
-                        "shard_count": len(self.shards)
-                    }) as r:
-                print("Posted Data On Top GG", r.status)
-
-
-                        
+        topgg_token = os.getenv("TOPGG_TOKEN", "")
+        if topgg_token:
+            try:
+                async with aiohttp.ClientSession(
+                        headers={"Authorization": topgg_token}) as session:
+                    async with session.post(
+                            "https://top.gg/api/bots/1012627088232165376/stats",
+                            json={
+                                "server_count": len(self.guilds),
+                                "shard_count": len(self.shards)
+                            }) as r:
+                        print("Posted Data On Top GG", r.status)
+            except Exception as ex:
+                print(f"[top.gg] Failed to post stats: {ex}")
 
     async def send_raw(self, channel_id: int, content: str,
                        **kwargs) -> typing.Optional[discord.Message]:
         await self.http.send_message(channel_id, content, **kwargs)
 
-                           
-
     async def invoke_help_command(self, ctx: Context) -> None:
         """Invoke the help command or default help command if help extensions is not loaded."""
         return await ctx.send_help(ctx.command)
-
-        
 
     async def fetch_message_by_channel(
             self, channel: discord.TextChannel,
@@ -89,9 +73,6 @@ class Dilbar(commands.AutoShardedBot):
         ):
             return msg
 
-
-            
-
     async def get_prefix(self, message: discord.Message):
         with open('info.json', 'r') as f:
             p = json.load(f)
@@ -101,13 +82,9 @@ class Dilbar(commands.AutoShardedBot):
             if message.guild:
                 data = getConfig(message.guild.id)
                 prefix = data["prefix"]
-                return commands.when_mentioned_or('-')(self, message)
+                return commands.when_mentioned_or(prefix)(self, message)
             else:
                 return commands.when_mentioned_or('-')(self, message)
-
-
-
-                
 
     async def on_message_edit(self, before, after):
         ctx: Context = await self.get_context(after, cls=Context)
@@ -116,12 +93,6 @@ class Dilbar(commands.AutoShardedBot):
                 return
             if ctx.command is None:
                 return
-            if type(ctx.channel) == "public_thread":
-                return
             await self.invoke(ctx)
         else:
             return
-
-
-
-            

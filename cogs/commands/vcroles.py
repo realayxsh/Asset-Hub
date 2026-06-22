@@ -504,8 +504,8 @@ class Voice(commands.Cog):
             elif data["vcrole"]["humans"] == role.id:
                 embed = discord.Embed(
                     description=
-                    f"{e.red_cross} | {} is already in human vcroles ."
-                    .format(role.mention),
+                    "{} | {} is already in human vcroles ."
+                    .format(e.red_cross, role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed, mention_author=False)
             else:
@@ -513,8 +513,8 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"{e.green_tick} | {} has been added to human vcroles ."
-                    .format(role.mention),
+                    "{} | {} has been added to human vcroles ."
+                    .format(e.green_tick, role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker, mention_author=False)
         else:
@@ -547,8 +547,8 @@ class Voice(commands.Cog):
             elif data["vcrole"]["bots"] == role.id:
                 embed = discord.Embed(
                     description=
-                    f"{e.red_cross} | {} is already in bot vcroles ."
-                    .format(role.mention),
+                    "{} | {} is already in bot vcroles ."
+                    .format(e.red_cross, role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed, mention_author=False)
             else:
@@ -556,8 +556,8 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"{e.green_tick} | {} has been added to bot vcroles ."
-                    .format(role.mention),
+                    "{} | {} has been added to bot vcroles ."
+                    .format(e.green_tick, role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker, mention_author=False)
         else:
@@ -589,8 +589,8 @@ class Voice(commands.Cog):
             elif role.id != data["vcrole"]["humans"]:
                 embed = discord.Embed(
                     description=
-                    f"{e.red_cross} | {} is not in human vcroles ."
-                    .format(role.mention),
+                    "{} | {} is not in human vcroles ."
+                    .format(e.red_cross, role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed)
             elif role.id == data["vcrole"]["humans"]:
@@ -598,8 +598,8 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"{e.green_tick} | {} has been removed from human vcroles."
-                    .format(role.mention),
+                    "{} | {} has been removed from human vcroles."
+                    .format(e.green_tick, role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker)
         else:
@@ -632,8 +632,8 @@ class Voice(commands.Cog):
             elif role.id != data["vcrole"]["bots"]:
                 embed = discord.Embed(
                     description=
-                    f"{e.red_cross} | {} is not in bot vcroles.".
-                    format(role.mention),
+                    "{} | {} is not in bot vcroles."
+                    .format(e.red_cross, role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed)
             elif role.id == data["vcrole"]["bots"]:
@@ -641,8 +641,8 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"{e.green_tick} | {} has been removed from bot vcroles."
-                    .format(role.mention),
+                    "{} | {} has been removed from bot vcroles."
+                    .format(e.green_tick, role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker)
         else:

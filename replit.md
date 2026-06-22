@@ -1,36 +1,79 @@
-# [Project name]
+# DILBAR < 3 — Discord Bot
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A feature-rich Discord bot built with py-cord. Includes moderation, anti-nuke, welcome messages, music, games, tickets, encryption, and more.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Start the bot: `python main.py`
+- On AWS: `bash start.sh`
+- With Docker: `docker build -t dilbar . && docker run --env-file .env dilbar`
+
+## Required Environment Variables
+
+Create a `.env` file (copy from `.env.example`):
+
+- `TOKEN` — Discord bot token (required)
+- `TOPGG_TOKEN` — Top.gg API token (optional, for voter checks)
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Python 3.11
+- py-cord (Discord library — NOT discord.py, they conflict)
+- jishaku (debug extension)
+- wavelink (music)
+- Flask (keep-alive web server on port 8080)
+- aiohttp, httpx, psutil, requests
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `main.py` — bot entry point, Flask keep-alive, on_ready
+- `core/Dilbar.py` — AutoShardedBot subclass with custom prefix logic
+- `core/Context.py` — custom Context with Component V2 auto-conversion
+- `cogs/commands/` — all command cogs
+- `cogs/events/` — all event cogs (anti-nuke, logging, etc.)
+- `utils/` — shared helpers (config, permissions, emojis, tools)
+- `config.json` — per-guild settings (prefix, roles)
+- `database.json` — per-guild extended data (welcome, autorole, etc.)
+- `anti.json` — anti-nuke settings per guild
+- `badges.json` — custom badge data per user
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Uses py-cord exclusively — do NOT add discord.py to requirements (they clash)
+- Intents.all() is required for presences (Spotify) and member_count
+- Top.gg token goes in TOPGG_TOKEN env var, NOT hardcoded in source
+- Flask runs on PORT env var (defaults 8080) as a keep-alive server
+- `asyncio.create_task` used for background tasks — NOT deprecated `loop.create_task`
 
-## Product
+## AWS Deployment
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+1. SSH into your EC2 instance
+2. `git clone <repo>` or upload files
+3. Copy `.env.example` to `.env` and fill in your TOKEN
+4. Option A — direct: `bash start.sh`
+5. Option B — Docker: `docker build -t dilbar . && docker run -d --env-file .env --restart always dilbar`
+6. To run as a service, create `/etc/systemd/system/dilbar.service` (see below)
+
+### systemd service (recommended for AWS)
+
+```ini
+[Unit]
+Description=DILBAR Discord Bot
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user/dilbar
+ExecStart=/bin/bash start.sh
+Restart=always
+RestartSec=5
+EnvironmentFile=/home/ec2-user/dilbar/.env
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then: `sudo systemctl enable dilbar && sudo systemctl start dilbar`
 
 ## User preferences
 
@@ -38,8 +81,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- Never install both py-cord AND discord.py — they conflict at import level
+- `sync_commands` / `sync_commands_debug` kwargs are py-cord only (not discord.py)
+- `intents.all()` must be enabled in Discord Developer Portal too
+- Emoji IDs in `utils/emojis.py` are custom server emojis — update them to match your bot's server

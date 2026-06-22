@@ -1,5 +1,5 @@
 from __future__ import annotations
-from core import Dilbar
+from discord.ext import commands
 
 
 
@@ -76,91 +76,70 @@ from .commands.fun1 import devansh69
 from .commands.verification1 import ver1
 
 
+async def setup(bot: commands.Bot):
+    await bot.add_cog(Help(bot))
+    await bot.add_cog(General(bot))
+    await bot.add_cog(Music(bot))
+    await bot.add_cog(Moderation(bot))
+    await bot.add_cog(Security(bot))
+    await bot.add_cog(Automod(bot))
+    await bot.add_cog(Welcomer(bot))
+    await bot.add_cog(afk(bot))
+    await bot.add_cog(Fun(bot))
+    await bot.add_cog(Games(bot))
+    await bot.add_cog(Utility(bot))
+    await bot.add_cog(Voice(bot))
+    await bot.add_cog(Owner(bot))
+    await bot.add_cog(Server(bot))
+    await bot.add_cog(Vanityroles(bot))
+    await bot.add_cog(Ticket(bot))
+    await bot.add_cog(Ignore(bot))
+    await bot.add_cog(Jsk(bot))
+    await bot.add_cog(Encryption(bot))
+    await bot.add_cog(Verification(bot))
+    await bot.add_cog(Setup(bot))
+    await bot.add_cog(Stay(bot))
+    await bot.add_cog(EmbedBuilder(bot))
 
+    ####################
 
+    await bot.add_cog(devansh1(bot))
+    await bot.add_cog(devansh102(bot))
+    await bot.add_cog(shree3110(bot))
+    await bot.add_cog(shree1227(bot))
+    await bot.add_cog(devanshshree3110(bot))
+    await bot.add_cog(devansh7(bot))
+    await bot.add_cog(devansh16(bot))
+    await bot.add_cog(devansh1227(bot))
+    await bot.add_cog(devansh3110(bot))
+    await bot.add_cog(devansh96(bot))
+    await bot.add_cog(devansh2(bot))
+    await bot.add_cog(shree00(bot))
+    await bot.add_cog(devansh00(bot))
+    await bot.add_cog(devansh12(bot))
+    await bot.add_cog(devansh15(bot))
+    await bot.add_cog(devansh69(bot))
+    await bot.add_cog(ver1(bot))
 
+    ###########################events################
 
-
-
-
-
-
-async def setup(bot: Astroz):
-  await bot.add_cog(Help(bot))
-  await bot.add_cog(General(bot))
-  await bot.add_cog(Music(bot))
-  await bot.add_cog(Moderation(bot))
-  await bot.add_cog(Security(bot))
-  await bot.add_cog(Automod(bot))
-  await bot.add_cog(Welcomer(bot))
-  await bot.add_cog(afk(bot))
-  await bot.add_cog(Fun(bot))
-  await bot.add_cog(Games(bot))
-  await bot.add_cog(Utility(bot))
-  await bot.add_cog(Voice(bot))
-  await bot.add_cog(Owner(bot))
-  await bot.add_cog(Server(bot))
-  await bot.add_cog(Vanityroles(bot))
-  await bot.add_cog(Ticket(bot))
-  await bot.add_cog(Ignore(bot))
-  await bot.add_cog(Jsk(bot))
-  await bot.add_cog(Encryption(bot))
-  await bot.add_cog(Verification(bot))
-  await bot.add_cog(Setup(bot))
-  await bot.add_cog(Stay(bot))
-  await bot.add_cog(EmbedBuilder(bot))
-  
- 
-  
-  
-
-####################
-
-
-
-  await bot.add_cog(devansh1(bot))
-  await bot.add_cog(devansh102(bot))  
-  await bot.add_cog(shree3110(bot))
-  await bot.add_cog(shree1227(bot))
-  await bot.add_cog(devanshshree3110(bot))
-  await bot.add_cog(devansh7(bot))
-  await bot.add_cog(devansh16(bot))
-  await bot.add_cog(devansh1227(bot))
-  await bot.add_cog(devansh3110(bot))
-  await bot.add_cog(devansh96(bot))
-  await bot.add_cog(devansh2(bot))  
-  await bot.add_cog(shree00(bot))  
-  await bot.add_cog(devansh00(bot))
-  await bot.add_cog(devansh12(bot))
-  await bot.add_cog(devansh15(bot))
-  await bot.add_cog(devansh69(bot))
-  await bot.add_cog(ver1(bot))
-  
-  
-
- 
-  
-
-    
-###########################events################3
-  
-  await bot.add_cog(antiban(bot))
-  await bot.add_cog(antichannel(bot))
-  await bot.add_cog(antiguild(bot))
-  await bot.add_cog(antirole(bot))
-  await bot.add_cog(antibot(bot))
-  await bot.add_cog(antikick(bot))
-  await bot.add_cog(antiprune(bot))
-  await bot.add_cog(antiwebhook(bot))
-  await bot.add_cog(antipinginv(bot))
-  await bot.add_cog(antiemostick(bot))
-  await bot.add_cog(antintegration(bot))  
-  await bot.add_cog(AntiSpam(bot))
-  await bot.add_cog(AutoBlacklist(bot))
-  await bot.add_cog(antiemojid(bot))
-  await bot.add_cog(antiemojiu(bot))
-  await bot.add_cog(Guild(bot))
-  await bot.add_cog(Errors(bot))
-  await bot.add_cog(Autorole2(bot))
-  await bot.add_cog(greet(bot))
-  await bot.add_cog(Vcroles2(bot))
+    await bot.add_cog(antiban(bot))
+    await bot.add_cog(antichannel(bot))
+    await bot.add_cog(antiguild(bot))
+    await bot.add_cog(antirole(bot))
+    await bot.add_cog(antibot(bot))
+    await bot.add_cog(antikick(bot))
+    await bot.add_cog(antiprune(bot))
+    await bot.add_cog(antiwebhook(bot))
+    await bot.add_cog(antipinginv(bot))
+    await bot.add_cog(antiemostick(bot))
+    await bot.add_cog(antintegration(bot))
+    await bot.add_cog(AntiSpam(bot))
+    await bot.add_cog(AutoBlacklist(bot))
+    await bot.add_cog(antiemojid(bot))
+    await bot.add_cog(antiemojiu(bot))
+    await bot.add_cog(Guild(bot))
+    await bot.add_cog(Errors(bot))
+    await bot.add_cog(Autorole2(bot))
+    await bot.add_cog(greet(bot))
+    await bot.add_cog(Vcroles2(bot))

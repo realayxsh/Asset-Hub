@@ -8,7 +8,7 @@ from discord.ext import commands
 
 
 
-headers = {'Authorization': f'Bot MTAxMjYyNzA4ODIzMjE2NTM3Ng.G6fWNZ.oyQgaKEVU8T_zZ0Vk_Zj95QHQ4hVwqCgbBOFK4'}
+headers = {'Authorization': f"Bot {os.getenv('TOKEN', '')}"}
 
 class Autorole2(Cog):
     def __init__(self, bot: Dilbar):

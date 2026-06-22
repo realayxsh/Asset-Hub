@@ -4,6 +4,20 @@
 
 cd "$(dirname "$0")"
 
+# Load .env if it exists
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# Check TOKEN is set
+if [ -z "$TOKEN" ]; then
+    echo "[ERROR] TOKEN environment variable is not set. Create a .env file or export TOKEN=..."
+    exit 1
+fi
+
+echo "[$(date)] Installing/updating dependencies..."
+pip install -r requirements.txt -q
+
 while true; do
     echo "[$(date)] Starting DILBAR < 3 bot..."
     python3 main.py
