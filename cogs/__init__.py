@@ -29,6 +29,7 @@ from .commands.fun import Fun
 from .commands.Verification import Verification
 from .commands.setup import Setup
 from .commands.stay import Stay
+from .commands.embed import EmbedBuilder
 
 
 
@@ -107,6 +108,7 @@ async def setup(bot: Astroz):
   await bot.add_cog(Verification(bot))
   await bot.add_cog(Setup(bot))
   await bot.add_cog(Stay(bot))
+  await bot.add_cog(EmbedBuilder(bot))
   
  
   
