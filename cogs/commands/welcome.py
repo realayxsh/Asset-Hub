@@ -243,8 +243,7 @@ class Welcomer(commands.Cog):
                 if str(role.id) in rl:
                     embed1 = discord.Embed(
                         description=
-                        f"{e.red_cross} | {} is already in human autoroles ."
-                        .format(role.mention),
+                        f"{e.red_cross} | {role.mention} is already in human autoroles .",
                         color=0x2f3136)
                     await ctx.send(embed=embed1)
                 else:
@@ -341,8 +340,7 @@ class Welcomer(commands.Cog):
                 if str(role.id) in rl:
                     embed1 = discord.Embed(
                         description=
-                        f"{e.red_cross} | {} is already in bot autoroles."
-                        .format(role.mention),
+                        f"{e.red_cross} | {role.mention} is already in bot autoroles.",
                         color=0x2f3136)
                     await ctx.send(embed=embed1)
                 else:
@@ -385,8 +383,7 @@ class Welcomer(commands.Cog):
                 if str(role.id) not in rl:
                     embed1 = discord.Embed(
                         description=
-                        f"{e.red_cross} | {} is not in bot autoroles."
-                        .format(role.mention),
+                        f"{e.red_cross} | {role.mention} is not in bot autoroles.",
                         color=0x2f3136)
                     await ctx.send(embed=embed1)
                 else:
@@ -581,6 +578,64 @@ class Welcomer(commands.Cog):
             hacker5.set_author(name=f"{ctx.author.name}",
                                icon_url=f"{ctx.author.avatar}")
 
+            await ctx.send(embed=hacker5)
+
+    @_greet.command(name="text",
+                    help="Set the plain text message sent above the welcome embed (MIMU-style).")
+    @blacklist_check()
+    @ignore_check()
+    @commands.cooldown(1, 2, commands.BucketType.user)
+    @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def _greet_text(self, ctx: commands.Context):
+        data = getDB(ctx.guild.id)
+
+        def check(message):
+            return message.author == ctx.author and message.channel == ctx.channel
+
+        if ctx.author == ctx.guild.owner or ctx.author.top_role.position > ctx.guild.me.top_role.position:
+            msg = discord.Embed(
+                color=0x2f3136,
+                description=(
+                    "Send the **plain text** message that appears **above the embed** "
+                    "when a member joins.\n\n"
+                    "You can use these keywords:\n"
+                    "```xml\n"
+                    "<<user.mention>>        = mention the new member\n"
+                    "<<user.name>>           = username of new member\n"
+                    "<<server.name>>         = server name\n"
+                    "<<server.member_count>> = total members\n"
+                    "```\n"
+                    "Send `none` to remove the plain text (embed only)."
+                ),
+            )
+            await ctx.send(embed=msg)
+            try:
+                reply = await self.bot.wait_for("message", check=check, timeout=30.0)
+            except asyncio.TimeoutError:
+                await ctx.send("Oops, too late. Bye!")
+                return
+            else:
+                new_text = "" if reply.content.lower() == "none" else reply.content
+                data["welcome"]["text"] = new_text
+                updateDB(ctx.guild.id, data)
+                desc = (
+                    f"{e.green_tick} | Plain text message removed. Only the embed will be sent."
+                    if new_text == ""
+                    else f"{e.green_tick} | Plain text message updated successfully."
+                )
+                hacker = discord.Embed(color=0x2f3136, description=desc,
+                                       timestamp=ctx.message.created_at)
+                hacker.set_author(name=f"{ctx.author.name}",
+                                  icon_url=f"{ctx.author.avatar}")
+                await ctx.send(embed=hacker)
+        else:
+            hacker5 = discord.Embed(description="""```diff
+ - You must have Administrator permission. - Your top role should be above my top role. 
+```""", color=0x2f3136)
+            hacker5.set_author(name=f"{ctx.author.name}",
+                               icon_url=f"{ctx.author.avatar}")
             await ctx.send(embed=hacker5)
 
     @_greet.command(name="embed", help="Toggle embed for greet message .")
@@ -790,123 +845,117 @@ class Welcomer(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def welctestt(self, ctx):
-        data = getDB(ctx.guild.id)
-        msg = data["welcome"]["message"]
-        chan = list(data["welcome"]["channel"])
-        emtog = data["welcome"]["embed"]
-        emping = data["welcome"]["ping"]
-        emimage = data["welcome"]["image"]
-        emthumbnail = data["welcome"]["thumbnail"]
-        emautodel = data["welcome"]["autodel"]
-        user = ctx.author
-        if chan == []:
+        data     = getDB(ctx.guild.id)
+        wdata    = data["welcome"]
+        chan     = list(wdata.get("channel", []))
+        emtog    = wdata.get("embed", False)
+        emimage  = wdata.get("image", "")
+        emthumb  = wdata.get("thumbnail", "")
+        emautodel = wdata.get("autodel", 0) or None
+        user     = ctx.author
+
+        if not chan:
             hacker = discord.Embed(
                 color=0x2f3136,
-                description=
-                f"{e.red_cross} | Oops, Kindly setup your welcome channel first .",
+                description=f"{e.red_cross} | Oops, Kindly setup your welcome channel first.",
                 timestamp=ctx.message.created_at)
             hacker.set_author(name=f"{ctx.author.name}",
                               icon_url=f"{ctx.author.avatar}")
-            await ctx.send(embed=hacker)
+            return await ctx.send(embed=hacker)
+
+        def apply_vars(text):
+            replacements = {
+                "<<server.name>>":         user.guild.name,
+                "<<server.member_count>>": str(user.guild.member_count),
+                "<<user.name>>":           str(user),
+                "<<user.mention>>":        user.mention,
+                "<<user.created_at>>":     f"<t:{int(user.created_at.timestamp())}:F>",
+                "<<user.joined_at>>":      f"<t:{int(user.joined_at.timestamp())}:F>",
+            }
+            for token, value in replacements.items():
+                text = text.replace(token, value)
+            return text
+
+        embed_desc = apply_vars(
+            wdata.get("message", "<<user.mention>> Welcome To <<server.name>>"))
+        raw_text   = wdata.get("text", "")
+        plain_text = apply_vars(raw_text) if raw_text else ""
+        emping     = wdata.get("ping", False)
+        if emping and not plain_text:
+            plain_text = user.mention
+
+        em = discord.Embed(description=embed_desc, color=0x2f3136)
+        em.set_author(name=str(user),
+                      icon_url=user.avatar.url if user.avatar else user.default_avatar.url)
+        em.timestamp = discord.utils.utcnow()
+        if emimage:
+            em.set_image(url=emimage)
+        if emthumb:
+            em.set_thumbnail(url=emthumb)
+        if user.guild.icon:
+            em.set_footer(text=user.guild.name, icon_url=user.guild.icon.url)
+
+        for ch_id in chan:
+            channn = self.bot.get_channel(int(ch_id))
+        if channn is None:
+            return await ctx.send(f"{e.red_cross} | Could not find the welcome channel.")
+
+        if emtog:
+            await channn.send(content=plain_text or None, embed=em, delete_after=emautodel)
         else:
-            if "<<server.name>>" in msg:
-                msg = msg.replace("<<server.name>>", "%s" % (user.guild.name))
-            if "<<server.member_count>>" in msg:
-                msg = msg.replace("<<server.member_count>>",
-                                  "%s" % (user.guild.member_count))
-            if "<<user.name>>" in msg:
-                msg = msg.replace("<<user.name>>", "%s" % (user))
-            if "<<user.mention>>" in msg:
-                msg = msg.replace("<<user.mention>>", "%s" % (user.mention))
-            if "<<user.created_at>>" in msg:
-                msg = msg.replace("<<user.created_at>>",
-                                  f"<t:{int(user.created_at.timestamp())}:F>")
-            if "<<user.joined_at>>" in msg:
-                msg = msg.replace("<<user.joined_at>>",
-                                  f"<t:{int(user.joined_at.timestamp())}:F>")
-
-            if emping == True:
-                emping = f"{ctx.author.mention}"
-            else:
-                emping = ""
-            if emautodel == 0 or emautodel == "":
-                emautodel = None
-            else:
-                emautodel = emautodel
-            em = discord.Embed(description=msg, color=0x2f3136)
-            em.set_author(name=ctx.author.name,
-                          icon_url=ctx.author.avatar.url if ctx.author.avatar
-                          else ctx.author.default_avatar.url)
-            em.timestamp = discord.utils.utcnow()
-            hacker1 = {emautodel}
-            if emimage == "":
-                em.set_image(url=None)
-            else:
-                em.set_image(url=emimage)
-
-            if emthumbnail == "":
-                em.set_thumbnail(url=None)
-            else:
-                em.set_thumbnail(url=emthumbnail)
-            if user.guild.icon is not None:
-                em.set_footer(text=user.guild.name,
-                              icon_url=user.guild.icon.url)
-
-            for chann in chan:
-                channn = self.bot.get_channel(int(chann))
-            if emtog == True:
-                await channn.send(emping, embed=em, delete_after=hacker1)
-            else:
-                if emtog == False:
-                    await channn.send(msg, delete_after=hacker1)
+            content = plain_text or embed_desc
+            await channn.send(content=content, delete_after=emautodel)
 
     @_greet.command(name="config", help="Get greet config for the server.")
     @blacklist_check()
     @ignore_check()
     @commands.has_permissions(administrator=True)
     async def _config(self, ctx):
-        data = getDB(ctx.guild.id)
-        msg = data["welcome"]["message"]
-        chan = list(data["welcome"]["channel"])
-        emtog = data["welcome"]["embed"]
-        emping = data["welcome"]["ping"]
-        emtog = data["welcome"]["embed"]
-        emimage = data["welcome"]["image"]
-        emthumbnail = data["welcome"]["thumbnail"]
-        emautodel = data["welcome"]["autodel"]
+        data      = getDB(ctx.guild.id)
+        wdata     = data["welcome"]
+        msg       = wdata.get("message", "")
+        txt       = wdata.get("text", "")
+        chan      = list(wdata.get("channel", []))
+        emtog     = wdata.get("embed", False)
+        emping    = wdata.get("ping", False)
+        emimage   = wdata.get("image", "")
+        emthumb   = wdata.get("thumbnail", "")
+        emautodel = wdata.get("autodel", 0)
 
-
-        if chan == []:
-            await ctx.reply(
-                "First setup Your greet channel by Running `greet channel add #channel/id`"
+        if not chan:
+            return await ctx.reply(
+                "First setup your greet channel by running `greet channel add #channel`"
             )
-        else:
-            
-            embed = discord.Embed(color=0x2f3136,
-                                  title=f"Welcome Config For {ctx.guild.name}")
-            if emtog == True:                
-                em = "Enabled"
-            else:
-                em = "Disabled"
 
-            if emping == True:
-               ping = "Enabled"
-            else:
-               ping = "Disabled"
-            for chh in chan:
-                    ch = self.bot.get_channel(int(chh))
-            embed.add_field(name="**Welcome Channel:**", value=ch)
-            
-                                 
-            embed.add_field(name="**Welcome Message:**", value=f"{msg}")
+        ch_mentions = []
+        for chh in chan:
+            ch = self.bot.get_channel(int(chh))
+            ch_mentions.append(ch.mention if ch else f"`{chh}`")
 
-            embed.add_field(name="**Welcome Embed:**", value=em)
-
-            embed.add_field(name="**Welcome Ping:**", value=f"{ping}")
-            if ctx.guild.icon is not None:
-                embed.set_footer(text=ctx.guild.name,
-                                 icon_url=ctx.guild.icon.url)
-                embed.set_thumbnail(url=ctx.guild.icon.url)
+        embed = discord.Embed(
+            color=0x2f3136,
+            title=f"Welcome Config — {ctx.guild.name}",
+        )
+        embed.add_field(name="📌 Channel(s)",
+                        value="\n".join(ch_mentions) or "None", inline=False)
+        embed.add_field(name="📝 Embed Description (`greet message`)",
+                        value=f"```{msg[:200]}```" if msg else "*(default)*", inline=False)
+        embed.add_field(name="💬 Plain Text Above Embed (`greet text`)",
+                        value=f"```{txt[:200]}```" if txt else "*(not set — mention used if ping is on)*",
+                        inline=False)
+        embed.add_field(name="🖼️ Embed",
+                        value="Enabled ✅" if emtog else "Disabled ❌", inline=True)
+        embed.add_field(name="🔔 Ping",
+                        value="Enabled ✅" if emping else "Disabled ❌", inline=True)
+        embed.add_field(name="⏱️ Auto Delete",
+                        value=f"{emautodel}s" if emautodel else "Off", inline=True)
+        if emimage:
+            embed.add_field(name="🖼️ Image URL", value=emimage[:80], inline=False)
+        if emthumb:
+            embed.add_field(name="🖼️ Thumbnail URL", value=emthumb[:80], inline=False)
+        if ctx.guild.icon:
+            embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon.url)
+            embed.set_thumbnail(url=ctx.guild.icon.url)
 
         await ctx.send(embed=embed)
 
@@ -930,6 +979,7 @@ class Welcomer(commands.Cog):
                 data["welcome"]["channel"] = []
                 data["welcome"]["image"] = ""
                 data["welcome"]["message"] = "<<user.mention>> Welcome To <<server.name>>"
+                data["welcome"]["text"] = ""
                 data["welcome"]["thumbnail"] = ""
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(

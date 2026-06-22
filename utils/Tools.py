@@ -81,6 +81,7 @@ def getDB(guildID):
                 "footer": "",
                 "image": "",
                 "message": "<<user.mention>> Welcome To <<server.name>>",
+                "text": "",
                 "ping": False,
                 "title": "",
                 "thumbnail": ""
