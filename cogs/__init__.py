@@ -28,6 +28,7 @@ from .commands.encryption import Encryption
 from .commands.fun import Fun
 from .commands.Verification import Verification
 from .commands.setup import Setup
+from .commands.stay import Stay
 
 
 
@@ -105,6 +106,7 @@ async def setup(bot: Astroz):
   await bot.add_cog(Encryption(bot))
   await bot.add_cog(Verification(bot))
   await bot.add_cog(Setup(bot))
+  await bot.add_cog(Stay(bot))
   
  
   
