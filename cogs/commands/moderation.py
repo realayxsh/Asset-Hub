@@ -16,7 +16,8 @@ from datetime import datetime
 from discord.ext.commands.cooldowns import BucketType
 from discord.ext import commands
 from utils.Tools import *
-from core import Cog, Ventura, Context
+from utils.emojis import e
+from core import Cog, Dilbar, Context
 
 from discord.ext.commands import Converter
 from discord.ext.commands import Context
@@ -125,7 +126,7 @@ class Moderation(commands.Cog):
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            "<a:green_tick:1103363669263405157> | Unlocking all channels in few seconds .",
+            f"{e.green_tick} | Unlocking all channels in few seconds .",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -158,7 +159,7 @@ class Moderation(commands.Cog):
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            "<a:green_tick:1103363669263405157> | Locking all channels in few seconds .",
+            f"{e.green_tick} | Locking all channels in few seconds .",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -202,7 +203,7 @@ class Moderation(commands.Cog):
             await ctx.guild.ban(discord.Object(userid), reason=reason)
             await ctx.reply(embed=discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully hackbanned {userid} for {reason}",
+                f"{e.green_tick} | Successfully hackbanned {userid} for {reason}",
                 color=0x2f3136))
         except:
             await ctx.reply(embed=discord.Embed(
@@ -226,12 +227,12 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 color=0x2f3136,
                 description=
-                "<a:red_cross:1103371611983327322> | Your role is below the bot.")
+                f"{e.red_cross} | Your role is below the bot.")
             await ctx.send(embed=embed)
             return
         if member.top_role >= ctx.author.top_role:
             await ctx.send(
-                "**<a:red_cross:1103371611983327322> | The provided user has roles that are above or have the same role as you.**"
+                f"**{e.red_cross} | The provided user has roles that are above or have the same role as you.**"
             )
             return
         else:
@@ -252,7 +253,7 @@ class Moderation(commands.Cog):
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            "<a:green_tick:1103363669263405157> | Hiding all channels in few seconds .",
+            f"{e.green_tick} | Hiding all channels in few seconds .",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -269,7 +270,7 @@ class Moderation(commands.Cog):
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | Unhiding all channels in few seconds .",
+            f"{e.green_tick} | Unhiding all channels in few seconds .",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -295,7 +296,7 @@ class Moderation(commands.Cog):
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | Succefully Hidden {channel.mention} .",
+            f"{e.green_tick} | Succefully Hidden {channel.mention} .",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -320,7 +321,7 @@ class Moderation(commands.Cog):
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | Succefully Unhidden {channel.mention} .",
+            f"{e.green_tick} | Succefully Unhidden {channel.mention} .",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -375,7 +376,7 @@ Reason: `{entry.reason}`\n\n''')
           updateConfig(ctx.guild.id, data)
           await ctx.reply(embed=discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully Changed Prefix For **{ctx.guild.name}**\nNew Prefix for **{ctx.guild.name}** is : `{prefix}`\nUse `{prefix}help` For More info .",
+            f"{e.green_tick} | Successfully Changed Prefix For **{ctx.guild.name}**\nNew Prefix for **{ctx.guild.name}** is : `{prefix}`\nUse `{prefix}help` For More info .",
             color=0x2f3136))
       else:
           await ctx.send("lund le le") 
@@ -412,7 +413,7 @@ Reason: `{entry.reason}`\n\n''')
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | Sucessfully soft-banned {member}.",
+            f"{e.green_tick} | Sucessfully soft-banned {member}.",
             timestamp=ctx.message.created_at)
         
         hacker.set_author(name=f"{ctx.author.name}",
@@ -433,7 +434,7 @@ Reason: `{entry.reason}`\n\n''')
             )
         deleted = await ctx.channel.purge(limit=amount + 1)
         return await ctx.send(
-            f"**<a:green_tick:1103363669263405157> Deleted {len(deleted)-1} message(s)**"
+            f"**{e.green_tick} Deleted {len(deleted)-1} message(s)**"
         )
 
     @purge.command(help="Clears the messages starts with the given letters",
@@ -462,7 +463,7 @@ Reason: `{entry.reason}`\n\n''')
 
         deleted = await ctx.channel.purge(limit=100, check=check)
         return await ctx.send(
-            f"**<a:green_tick:1103363669263405157> Deleted {len(deleted)}/{amount} message(s) which started with the given keyword**"
+            f"**{e.green_tick} Deleted {len(deleted)}/{amount} message(s) which started with the given keyword**"
         )
 
     @purge.command(help="Clears the messages ends with the given letter",
@@ -491,7 +492,7 @@ Reason: `{entry.reason}`\n\n''')
 
         deleted = await ctx.channel.purge(limit=100, check=check)
         return await ctx.send(
-            f"**<a:green_tick:1103363669263405157> Deleted {len(deleted)}/{amount} message(s) which ended with the given keyword**"
+            f"**{e.green_tick} Deleted {len(deleted)}/{amount} message(s) which ended with the given keyword**"
         )
 
     @purge.command(help="Clears the messages contains with the given argument",
@@ -520,7 +521,7 @@ Reason: `{entry.reason}`\n\n''')
 
         deleted = await ctx.channel.purge(limit=100, check=check)
         return await ctx.send(
-            f"**<a:green_tick:1103363669263405157> Deleted {len(deleted)}/{amount} message(s) which contained the given keyword**"
+            f"**{e.green_tick} Deleted {len(deleted)}/{amount} message(s) which contained the given keyword**"
         )
 
     @purge.command(help="Clears the messages of the given user",
@@ -549,7 +550,7 @@ Reason: `{entry.reason}`\n\n''')
 
         deleted = await ctx.channel.purge(limit=100, check=check)
         return await ctx.send(
-            f"**<a:green_tick:1103363669263405157> Deleted {len(deleted)}/{amount} message(s) which were sent by the mentioned user**"
+            f"**{e.green_tick} Deleted {len(deleted)}/{amount} message(s) which were sent by the mentioned user**"
         )
 
     @purge.command(help="Clears the messages containing invite links",
@@ -578,7 +579,7 @@ Reason: `{entry.reason}`\n\n''')
 
         deleted = await ctx.channel.purge(limit=100, check=check)
         return await ctx.send(
-            f"**<a:green_tick:1103363669263405157> Deleted {len(deleted)}/{amount} message(s) which contained invites**"
+            f"**{e.green_tick} Deleted {len(deleted)}/{amount} message(s) which contained invites**"
         )
 
     @commands.hybrid_command(name="mute",
@@ -599,14 +600,14 @@ Reason: `{entry.reason}`\n\n''')
             hacker3 = discord.Embed(
                 color=0x2f3136,
                 description=
-                f"<a:red_cross:1103371611983327322> | You didnt didnt gave time with correct unit\nExamples:\n{ctx.prefix}mute{ctx.author} 10m\n{ctx.prefix}mute {ctx.author} 5hr",
+                f"{e.red_cross} | You didnt didnt gave time with correct unit\nExamples:\n{ctx.prefix}mute{ctx.author} 10m\n{ctx.prefix}mute {ctx.author} 5hr",
                 timestamp=ctx.message.created_at)
             await ctx.reply(embed=hacker3, mention_author=False)
         elif tame == -2:
             hacker4 = discord.Embed(
                 color=0x2f3136,
                 description=
-                f"<a:red_cross:1103371611983327322> | Time must be an integer!",
+                f"{e.red_cross} | Time must be an integer!",
                 timestamp=ctx.message.created_at)
             await ctx.reply(embed=hacker4, mention_author=False)
         else:
@@ -615,7 +616,7 @@ Reason: `{entry.reason}`\n\n''')
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:green_tick:1103363669263405157> | Successfully Muted {0.mention} For {1} Day(s)"
+                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Day(s)"
                     .format(member, ok),
                     timestamp=ctx.message.created_at)
             elif till.lower() == "m":
@@ -623,7 +624,7 @@ Reason: `{entry.reason}`\n\n''')
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:green_tick:1103363669263405157> | Successfully Muted {0.mention} For {1} Minute(s)"
+                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Minute(s)"
                     .format(member, ok),
                     timestamp=ctx.message.created_at)
             elif till.lower() == "s":
@@ -631,7 +632,7 @@ Reason: `{entry.reason}`\n\n''')
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:green_tick:1103363669263405157> | Successfully Muted {0.mention} For {1} Second(s)"
+                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Second(s)"
                     .format(member, ok),
                     timestamp=ctx.message.created_at)
             elif till.lower() == "h":
@@ -639,7 +640,7 @@ Reason: `{entry.reason}`\n\n''')
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:green_tick:1103363669263405157> | Successfully Muted {0.mention} For {1} Hour(s)"
+                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Hour(s)"
                     .format(member, ok),
                     timestamp=ctx.message.created_at)
         try:
@@ -647,7 +648,7 @@ Reason: `{entry.reason}`\n\n''')
                 hacker1 = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:red_cross:1103371611983327322> | I can\'t mute administrators",
+                    f"{e.red_cross} | I can\'t mute administrators",
                     timestamp=ctx.message.created_at)
                 await ctx.reply(embed=hacker1)
             else:
@@ -674,21 +675,21 @@ Reason: `{entry.reason}`\n\n''')
                 hacker5 = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Unmuted {member.name}",
+                    f"{e.green_tick} | Successfully Unmuted {member.name}",
                     timestamp=ctx.message.created_at)
                 await ctx.reply(embed=hacker5)
             except Exception as e:
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:red_cross:1103371611983327322> | Unable to Remove Timeout:\n```py\n{}```"
+                    f"{e.red_cross} | Unable to Remove Timeout:\n```py\n{}```"
                     .format(e),
                     timestamp=ctx.message.created_at)
                 await ctx.send(embed=hacker)
         else:
             hacker1 = discord.Embed(
                 color=0x2f3136,
-                description="<a:red_cross:1103371611983327322> | {} Is Not Muted".
+                description=f"{e.red_cross} | {} Is Not Muted".
                 format(member.mention),
                 timestamp=ctx.message.created_at)
             await ctx.send(embed=hacker1)
@@ -714,7 +715,7 @@ Reason: `{entry.reason}`\n\n''')
             hacker = discord.Embed(
                 color=0x2f3136,
                 description=
-                f"<a:green_tick:1103363669263405157> | {member.display_name} has been kicked from this guild, for: {reason}",
+                f"{e.green_tick} | {member.display_name} has been kicked from this guild, for: {reason}",
                 timestamp=ctx.message.created_at)
             
             hacker.set_author(name=f"{ctx.author.name}",
@@ -731,7 +732,7 @@ Reason: `{entry.reason}`\n\n''')
             await member.send(embed=hacker1)
         if not ctx.author.top_role.position > member.top_role.position and ctx.author != ctx.guild.owner:
             await ctx.send(
-                "*<a:red_cross:1103371611983327322> | You cannot kick someone with a higher role than you!*"
+                f"*{e.red_cross} | You cannot kick someone with a higher role than you!*"
             )
 
     @commands.hybrid_command(name="warn",
@@ -748,7 +749,7 @@ Reason: `{entry.reason}`\n\n''')
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | {member.display_name} has been warned for: {reason}",
+            f"{e.green_tick} | {member.display_name} has been warned for: {reason}",
             timestamp=ctx.message.created_at)
         
         hacker.set_author(name=f"{ctx.author.name}",
@@ -784,7 +785,7 @@ Reason: `{entry.reason}`\n\n''')
             hacker = discord.Embed(
                 color=0x00FFE4,
                 description=
-                f"<a:green_tick:1103363669263405157> | {member.display_name} has been successfully banned for the reason: `{reason}`",
+                f"{e.green_tick} | {member.display_name} has been successfully banned for the reason: `{reason}`",
                 timestamp=ctx.message.created_at)
             hacker.set_author(name=f"{ctx.author.name}",
                               icon_url=f"{ctx.author.avatar}")
@@ -800,7 +801,7 @@ Reason: `{entry.reason}`\n\n''')
             embed = discord.Embed(
                 color=0x00FFE4,
                 description=
-                f"*<a:red_cross:1103371611983327322> | You cannot ban someone with a higher role than you.*",
+                f"*{e.red_cross} | You cannot ban someone with a higher role than you.*",
                 timestamp=ctx.message.created_at)
             await ctx.send(embed=embed)
 
@@ -816,7 +817,7 @@ Reason: `{entry.reason}`\n\n''')
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | {user.name} has been successfully unbanned",
+            f"{e.green_tick} | {user.name} has been successfully unbanned",
             timestamp=ctx.message.created_at)
         
         hacker.set_author(name=f"{ctx.author.name}",
@@ -833,7 +834,7 @@ Reason: `{entry.reason}`\n\n''')
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | {channel.name} has been successfully cloned",
+            f"{e.green_tick} | {channel.name} has been successfully cloned",
             timestamp=ctx.message.created_at)
         
         hacker.set_author(name=f"{ctx.author.name}",
@@ -854,7 +855,7 @@ Reason: `{entry.reason}`\n\n''')
         hacker = discord.Embed(
             color=0x2f3136,
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully changed nickname of {member.name}",
+            f"{e.green_tick} | Successfully changed nickname of {member.name}",
             timestamp=ctx.message.created_at)
         hacker.set_author(name=f"{ctx.author.name}",
                           icon_url=f"{ctx.author.avatar}")
@@ -1014,7 +1015,7 @@ Reason: `{entry.reason}`\n\n''')
         await ctx.message.delete()
         await ctx.send(embed=discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully Removed {total_reactions}.",
+            f"{e.green_tick} | Successfully Removed {total_reactions}.",
             color=0x2f3136))
 
     @commands.hybrid_command(name="nuke", help="Nukes a channel", usage="nuke")
@@ -1026,10 +1027,10 @@ Reason: `{entry.reason}`\n\n''')
                     ctx: commands.Context):
         button = Button(label="Yes",
                         style=discord.ButtonStyle.green,
-                        emoji="<a:green_tick:1103363669263405157>")
+                        emoji=f"{e.green_tick}")
         button1 = Button(label="No",
                          style=discord.ButtonStyle.red,
-                         emoji="<a:red_cross:1103371611983327322>")
+                         emoji=f"{e.red_cross}")
 
         async def button_callback(interaction: discord.Interaction):
             if interaction.user == ctx.author:
@@ -1103,14 +1104,14 @@ Reason: `{entry.reason}`\n\n''')
                 overwrite=discord.PermissionOverwrite(send_messages=False),
                 reason=reason)
             await ctx.send(embed=discord.Embed(
-                title="VesTrol | Lockdown",
+                title="DILBAR < 3 | Lockdown",
                 description=
-                "<a:green_tick:1103363669263405157> | Successfully locked **%s**"
+                f"{e.green_tick} | Successfully locked **%s**"
                 % (channel.mention),
                 color=0x2f3136))
         except:
             await ctx.send(
-                embed=discord.Embed(title="VesTrol | Lockdown",
+                embed=discord.Embed(title="DILBAR < 3 | Lockdown",
                                     description="Failed to lockdown **%s**" %
                                     (channel.mention),
                                     color=0x2f3136))
@@ -1137,14 +1138,14 @@ Reason: `{entry.reason}`\n\n''')
                 overwrite=discord.PermissionOverwrite(send_messages=True),
                 reason=reason)
             await ctx.send(embed=discord.Embed(
-                title="VesTrol | Unlockdown",
+                title="DILBAR < 3 | Unlockdown",
                 description=
-                "<a:green_tick:1103363669263405157> | Successfully unlocked **%s**"
+                f"{e.green_tick} | Successfully unlocked **%s**"
                 % (channel.mention),
                 color=0x2f3136))
         except:
             await ctx.send(
-                embed=discord.Embed(title="VesTrol | Unlockdown",
+                embed=discord.Embed(title="DILBAR < 3 | Unlockdown",
                                     description="Failed to lock **`%s`**" %
                                     (channel.mention),
                                     color=0x2f3136))
@@ -1350,21 +1351,21 @@ Reason: `{entry.reason}`\n\n''')
         if role == ctx.author.top_role:
             embed = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | {role} has the same position as your top role!",
+                f"{e.red_cross} | {role} has the same position as your top role!",
                 color=0x2f3136)
             return await ctx.send(embed=embed)
         else:
             if role.position >= ctx.guild.me.top_role.position:
                 embed1 = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | {role} is higher than my role, move my role above {role}.",
+                    f"{e.red_cross} | {role} is higher than my role, move my role above {role}.",
                     color=0x2f3136)
                 return await ctx.send(embed=embed1)
         seconds = convert(time)
         await user.add_roles(role, reason=None)
         hacker = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully added {role.mention} to {user.mention} .",
+            f"{e.green_tick} | Successfully added {role.mention} to {user.mention} .",
             color=0x2f3136)
         await ctx.send(embed=hacker)
         await asyncio.sleep(seconds)
@@ -1380,20 +1381,20 @@ Reason: `{entry.reason}`\n\n''')
         if role == ctx.author.top_role:
             embed = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | {role} has the same position as your top role!",
+                f"{e.red_cross} | {role} has the same position as your top role!",
                 color=0x2f3136)
             return await ctx.send(embed=embed)
         else:
             if role.position >= ctx.guild.me.top_role.position:
                 embed1 = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | {role} is higher than my role, move my role above {role}.",
+                    f"{e.red_cross} | {role} is higher than my role, move my role above {role}.",
                     color=0x2f3136)
                 return await ctx.send(embed=embed1)
         await user.remove_roles(role)
         hacker = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully removed {role.mention} from {user.mention} .",
+            f"{e.green_tick} | Successfully removed {role.mention} from {user.mention} .",
             color=0x2f3136)
         await ctx.send(embed=hacker)
 
@@ -1407,26 +1408,26 @@ Reason: `{entry.reason}`\n\n''')
         if role == ctx.author.top_role:
             embed = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | {role} has the same position as your top role!",
+                f"{e.red_cross} | {role} has the same position as your top role!",
                 color=0x2f3136)
             return await ctx.send(embed=embed)
         else:
             if role.position >= ctx.guild.me.top_role.position:
                 embed1 = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | {role} is higher than my role, move my role above {role}.",
+                    f"{e.red_cross} | {role} is higher than my role, move my role above {role}.",
                     color=0x2f3136)
                 return await ctx.send(embed=embed1)
         if role is None:
             embed2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | No role named {role} found in this server .",
+                f"{e.red_cross} | No role named {role} found in this server .",
                 color=0x2f3136)
             return await ctx.send(embed=embed2)
         await role.delete()
         hacker = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully deleted {role}",
+            f"{e.green_tick} | Successfully deleted {role}",
             color=0x2f3136)
         await ctx.send(embed=hacker)
 
@@ -1440,7 +1441,7 @@ Reason: `{entry.reason}`\n\n''')
         if ctx.author == ctx.guild.owner or ctx.guild.me.top_role <= ctx.author.top_role:
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully created role with the name {name}",
+                f"{e.green_tick} | Successfully created role with the name {name}",
                 color=0x2f3136)
             await ctx.guild.create_role(name=name,
                                         color=discord.Color.default())
@@ -1465,12 +1466,12 @@ Reason: `{entry.reason}`\n\n''')
         if ctx.author == ctx.guild.owner or ctx.guild.me.top_role <= ctx.author.top_role:
             await role.edit(name=newname)
             await ctx.send(
-                f"<a:green_tick:1103363669263405157> | Role {role.name} has been renamed to {newname}"
+                f"{e.green_tick} | Role {role.name} has been renamed to {newname}"
             )
         elif role is None:
             embed2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | No role named {role} found in this server .",
+                f"{e.red_cross} | No role named {role} found in this server .",
                 color=0x2f3136)
             return await ctx.send(embed=embed2)
         else:
@@ -1488,38 +1489,38 @@ Reason: `{entry.reason}`\n\n''')
     async def roleallhumans(self,ctx,role:discord.Role):
         ''' Gives all the humans any role '''
         humans = [mem for mem in ctx.guild.members if not mem.bot]
-        await ctx.send("<a:green_tick:1103363669263405157> | Adding roles to all humans")
+        await ctx.send(f"{e.green_tick} | Adding roles to all humans")
         for h in humans:
             await h.add_roles(role)
-        await ctx.reply('<a:green_tick:1103363669263405157> | Added mentioned role to all members')
+        await ctx.reply(f'{e.green_tick} | Added mentioned role to all members')
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def roleallbots(self,ctx,role:discord.Role):
         ''' Give all bots any role '''
         humans = [mem for mem in ctx.guild.members if mem.bot]
-        await ctx.send("<a:green_tick:1103363669263405157> | Adding roles to all humans & bots")
+        await ctx.send(f"{e.green_tick} | Adding roles to all humans & bots")
         for h in humans:
             await h.add_roles(role)
-        await ctx.reply('<a:green_tick:1103363669263405157> | Added mentioned role to all bots')
+        await ctx.reply(f'{e.green_tick} | Added mentioned role to all bots')
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def removeallhumans(self,ctx,role:discord.Role):
         ''' Removes a role from all human members '''
         humans = [mem for mem in ctx.guild.members if not mem.bot]
-        await ctx.send("<a:green_tick:1103363669263405157> | Removing roles from all humans")
+        await ctx.send(f"{e.green_tick} | Removing roles from all humans")
         for h in humans:
             await h.remove_roles(role)
-        await ctx.reply('<a:green_tick:1103363669263405157> | Removed mentioned role from all members')
+        await ctx.reply(f'{e.green_tick} | Removed mentioned role from all members')
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def removeallbots(self,ctx,role:discord.Role):
         ''' Removes a role from all the bots '''
         humans = [mem for mem in ctx.guild.members if mem.bot]
-        await ctx.send("<a:green_tick:1103363669263405157> | Removing roles to all humans & bots")
+        await ctx.send(f"{e.green_tick} | Removing roles to all humans & bots")
         for h in humans:
             await h.remove_roles(role)
-        await ctx.reply('<a:green_tick:1103363669263405157> | Removed mentioned role from all bots')
+        await ctx.reply(f'{e.green_tick} | Removed mentioned role from all bots')
 

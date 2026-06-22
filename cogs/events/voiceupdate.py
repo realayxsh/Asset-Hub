@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from core import Ventura, Cog
+from core import Dilbar, Cog
 from discord.utils import *
 from discord import *
 from utils.Tools import *
@@ -12,7 +12,7 @@ from utils.Tools import getDB
 
 
 class Vcroles2(Cog):
-    def __init__(self, bot: Ventura):
+    def __init__(self, bot: Dilbar):
         self.bot = bot
 
 
@@ -27,11 +27,11 @@ class Vcroles2(Cog):
                 if not before.channel and after.channel:
                     r = data["vcrole"]["bots"]
                     br = get(member.guild.roles, id=r)
-                    await member.add_roles(br, reason="VesTrol | VC Roles (Joined VC)")
+                    await member.add_roles(br, reason="DILBAR < 3 | VC Roles (Joined VC)")
                 elif before.channel and not after.channel:
                     r1 = data["vcrole"]["bots"]
                     br1 = get(member.guild.roles, id=r1)
-                    await member.remove_roles(br1, reason="VesTrol | VC Roles (Left VC)")
+                    await member.remove_roles(br1, reason="DILBAR < 3 | VC Roles (Left VC)")
         elif member.bot != True:
             if data["vcrole"]["humans"] == "":
                 return
@@ -39,8 +39,8 @@ class Vcroles2(Cog):
                 if not before.channel and after.channel:
                     r2 = data["vcrole"]["humans"]
                     br2 = get(member.guild.roles, id=r2)
-                    await member.add_roles(br2, reason="VesTrol | VC Roles (Joined VC)")
+                    await member.add_roles(br2, reason="DILBAR < 3 | VC Roles (Joined VC)")
                 elif before.channel and not after.channel:
                     r3 = data["vcrole"]["humans"]
                     br3 = get(member.guild.roles, id=r3)
-                    await member.remove_roles(br3, reason="VesTrol | VC Roles (Left VC)")
+                    await member.remove_roles(br3, reason="DILBAR < 3 | VC Roles (Left VC)")

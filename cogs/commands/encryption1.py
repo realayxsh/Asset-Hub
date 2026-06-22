@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 
+from utils.emojis import e
 class devansh15(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh15(commands.Cog):
     """Encryption commands"""  
 
     def help_custom(self):
-		      emoji = '<:encryption:1103360958748954654>'
+		      emoji = f'{e.encryption}'
 		      label = "Encryption"
 		      description = ""
 		      return emoji, label, description

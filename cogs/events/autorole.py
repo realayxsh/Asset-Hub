@@ -1,7 +1,7 @@
 import discord
 from discord.utils import *
 import aiohttp
-from core import Ventura, Cog
+from core import Dilbar, Cog
 import json
 from utils.Tools import *
 from discord.ext import commands
@@ -11,7 +11,7 @@ from discord.ext import commands
 headers = {'Authorization': f'Bot MTAxMjYyNzA4ODIzMjE2NTM3Ng.G6fWNZ.oyQgaKEVU8T_zZ0Vk_Zj95QHQ4hVwqCgbBOFK4'}
 
 class Autorole2(Cog):
-    def __init__(self, bot: Ventura):
+    def __init__(self, bot: Dilbar):
         self.bot = bot
 
 
@@ -30,7 +30,7 @@ class Autorole2(Cog):
                 async with aiohttp.ClientSession(headers=headers, connector=None) as session:
                     for role in arb:
                         try:
-                            async with session.put(f"https://discord.com/api/v10/guilds/{member.guild.id}/members/{member.id}/roles/{int(role)}", json={'reason': "VesTrol | Auto Role"}) as req:
+                            async with session.put(f"https://discord.com/api/v10/guilds/{member.guild.id}/members/{member.id}/roles/{int(role)}", json={'reason': "DILBAR < 3 | Auto Role"}) as req:
                                 print(req.status)
                         except:
                             pass
@@ -51,7 +51,7 @@ class Autorole2(Cog):
                 async with aiohttp.ClientSession(headers=headers, connector=None) as session:
                     for role in arh:
                         try:
-                            async with session.put(f"https://discord.com/api/v10/guilds/{member.guild.id}/members/{member.id}/roles/{int(role)}", json={'reason': "VesTrol | Auto Role"}) as req:
+                            async with session.put(f"https://discord.com/api/v10/guilds/{member.guild.id}/members/{member.id}/roles/{int(role)}", json={'reason': "DILBAR < 3 | Auto Role"}) as req:
                                 print(req.status)
                         except:
                             pass

@@ -1,12 +1,12 @@
 import discord
 from discord.ext import commands
-from core import Cog, Ventura, Context
+from core import Cog, Dilbar, Context
 from utils.Tools import *
 from typing import *
 
 
 class greet(Cog):
-    def __init__(self, bot: Ventura):
+    def __init__(self, bot: Dilbar):
         self.bot = bot
         
     @Cog.listener()

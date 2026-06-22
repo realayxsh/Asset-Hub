@@ -11,7 +11,7 @@ import logging
 import time
 import asyncio
 import aiohttp
-from core import Ventura, Cog
+from core import Dilbar, Cog
 import tasksio
 from discord.ext import tasks
 import random
@@ -28,7 +28,7 @@ proxs = cycle(proxies)
 proxies={"http": 'http://' + next(proxs)}
 
 class antikick(Cog):
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client      
         self.headers = {"Authorization": f"Bot MTAxMjYyNzA4ODIzMjE2NTM3Ng.G6fWNZ.oyQgaKEVU8T_zZ0Vk_Zj95QHQ4hVwqCgbBOFK4"}
 

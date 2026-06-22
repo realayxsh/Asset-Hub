@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class ver1(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class ver1(commands.Cog):
     """Verification Commands"""
   
     def help_custom(self):
-		      emoji = '<:icon_verified:1104655495618379786>'
+		      emoji = f'{e.verified}'
 		      label = "Verification"
 		      description = "Show You Commands Of Verification"
 		      return emoji, label, description

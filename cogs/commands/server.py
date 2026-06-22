@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+from utils.emojis import e
 class devansh1227(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -8,7 +9,7 @@ class devansh1227(commands.Cog):
     """Welcome commands"""
   
     def help_custom(self):
-		      emoji = '<:icons_serverpartner:1103359488150483054>'
+		      emoji = f'{e.server}'
 		      label = "Server"
 		      description = ""
 		      return emoji, label, description

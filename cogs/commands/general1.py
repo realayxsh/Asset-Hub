@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class devansh102(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh102(commands.Cog):
     """General commands"""
   
     def help_custom(self):
-		      emoji = '<:general:1103357467762626671>'
+		      emoji = f'{e.general}'
 		      label = "General"
 		      description = ""
 		      return emoji, label, description

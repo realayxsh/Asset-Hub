@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import os
 
-from core import Cog, Ventura, Context
+from core import Cog, Dilbar, Context
 import discord_games as games
 from utils.Tools import *
 from discord_games import button_games as btn
@@ -14,7 +14,7 @@ from utils.Tools import Timer
 class Games(Cog):
     """Getting Bored? Dont worry, Games are here"""
 
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client
 
     @commands.hybrid_command(name="akinator",

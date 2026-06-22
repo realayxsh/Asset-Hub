@@ -11,6 +11,7 @@ import asyncio
 import random
 import pathlib
 from utils.Tools import *
+from utils.emojis import e
 
 
 afk_path = "database/afk.json"
@@ -35,12 +36,12 @@ class OnOrOff(BasicView):
         super().__init__(ctx, timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Yes", emoji="<:tick:1076042204310679562>", custom_id='Yes', style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Yes", emoji=f"{e.tick}", custom_id='Yes', style=discord.ButtonStyle.green)
     async def dare(self, interaction, button):
         self.value = 'Yes'
         self.stop()
 
-    @discord.ui.button(label="No", emoji="<:cross:1077478135794245743>", custom_id='No', style=discord.ButtonStyle.danger)
+    @discord.ui.button(label="No", emoji=f"{e.cross}", custom_id='No', style=discord.ButtonStyle.danger)
     async def truth(self, interaction, button):
         self.value = 'No'
         self.stop()

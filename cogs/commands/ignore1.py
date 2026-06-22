@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 
+from utils.emojis import e
 class devansh12(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh12(commands.Cog):
     """Ignore commands"""  
 
     def help_custom(self):
-		      emoji = '<:nsfw32:1103360693119496262>'
+		      emoji = f'{e.nsfw}'
 		      label = "Ignore"
 		      description = ""
 		      return emoji, label, description

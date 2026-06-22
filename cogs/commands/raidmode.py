@@ -1,13 +1,14 @@
 from discord.ext import commands
 from utils.Tools import *
+from utils.emojis import e
 import discord
-from core import Cog,Ventura, Context
+from core import Cog, Dilbar, Context
 
 
 class Automod(Cog):
     """Enable/Disable Anti-raid in your server to be protected from unknown raids!"""
 
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client
 
     @commands.hybrid_command(
@@ -23,14 +24,14 @@ class Automod(Cog):
         data = getConfig(ctx.guild.id)
         spam = data["antiSpam"]
         link = data["antiLink"]
-        embed = discord.Embed(title="VesTrol | Automod Commands",
+        embed = discord.Embed(title="DILBAR < 3 | Automod Commands",
                               color=0x2f3136)
         embed.add_field(
-            name="<:dot_white:1103476115709890682> antispam on/off",
+            name=f"{e.dot_white} antispam on/off",
             value=f"Enables/Disables antispam feature\nCurrently Its {spam}",
             inline=False)
         embed.add_field(
-            name="<:dot_white:1103476115709890682> antilink on/off",
+            name=f"{e.dot_white} antilink on/off",
             value=f"Enables/Disables antilink feature\nCurrently Its {link}",
             inline=False)
         await ctx.reply(embed=embed, mention_author=False)
@@ -54,7 +55,7 @@ class Automod(Cog):
                 if data["antiSpam"] is True:
                     hacker = discord.Embed(
                         description=
-                        f"<a:red_cross:1103371611983327322> | Anti-Spam is already enabled for **`{ctx.guild.name}`**",
+                        f"{e.red_cross} | Anti-Spam is already enabled for **`{ctx.guild.name}`**",
                         color=0x2f3136)
                     await ctx.reply(embed=hacker, mention_author=False)
                 else:
@@ -63,7 +64,7 @@ class Automod(Cog):
                     hacker1 = discord.Embed(
         
                         description=
-                        f"<a:green_tick:1103363669263405157> | Successfully enabled anti-spam for **`{ctx.guild.name}`**",
+                        f"{e.green_tick} | Successfully enabled anti-spam for **`{ctx.guild.name}`**",
                         color=0x2f3136)
                     await ctx.reply(embed=hacker1, mention_author=False)
 
@@ -73,13 +74,13 @@ class Automod(Cog):
                 updateConfig(ctx.guild.id, data)
                 hacker2 = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully disabled anti-spam for **`{ctx.guild.name}`**",
+                    f"{e.green_tick} | Successfully disabled anti-spam for **`{ctx.guild.name}`**",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker2, mention_author=False)
             else:
                 hacker3 = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | Invalid Type.\nIt Should Be On/Off",
+                    f"{e.red_cross} | Invalid Type.\nIt Should Be On/Off",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker3, mention_author=False)
 
@@ -88,7 +89,7 @@ class Automod(Cog):
                 color=0x2f3136,
                 title="VesTrol",
                 description=
-                f"<a:red_cross:1103371611983327322> | Only owner of the server can run this command"
+                f"{e.red_cross} | Only owner of the server can run this command"
             )
             await ctx.reply(embed=hacker5, mention_author=False)
 
@@ -111,7 +112,7 @@ class Automod(Cog):
                 if data["antiLink"] is True:
                     hacker = discord.Embed(
                         description=
-                        f"<a:red_cross:1103371611983327322> | Anti-link is already enabled for **`{ctx.guild.name}`**",
+                        f"{e.red_cross} | Anti-link is already enabled for **`{ctx.guild.name}`**",
                         color=0x2f3136)
                     await ctx.reply(embed=hacker, mention_author=False)
                 else:
@@ -119,7 +120,7 @@ class Automod(Cog):
                     updateConfig(ctx.guild.id, data)
                     hacker1 = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | Successfully enabled anti-link for **`{ctx.guild.name}`**",
+                        f"{e.green_tick} | Successfully enabled anti-link for **`{ctx.guild.name}`**",
                         color=0x2f3136)
                     await ctx.reply(embed=hacker1, mention_author=False)
 
@@ -129,14 +130,14 @@ class Automod(Cog):
                 updateConfig(ctx.guild.id, data)
                 hacker2 = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully disabled anti-link for **`{ctx.guild.name}`**",
+                    f"{e.green_tick} | Successfully disabled anti-link for **`{ctx.guild.name}`**",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker2, mention_author=False)
             else:
                 hacker3 = discord.Embed(
             
                     description=
-                    f"<a:red_cross:1103371611983327322> | Invalid Type.\nIt Should Be On/Off",
+                    f"{e.red_cross} | Invalid Type.\nIt Should Be On/Off",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker3, mention_author=False)
 
@@ -144,6 +145,6 @@ class Automod(Cog):
             hacker5 = discord.Embed(
                 color=0x2f3136,
                 description=
-                f"<a:red_cross:1103371611983327322> | Only owner of the server can run this command"
+                f"{e.red_cross} | Only owner of the server can run this command"
             )
             await ctx.reply(embed=hacker5, mention_author=False)

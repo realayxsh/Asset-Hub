@@ -4,13 +4,14 @@ from discord.ext import commands
 import requests
 import sys
 from utils.Tools import getConfig, add_user_to_blacklist, getanti
+from utils.emojis import e
 import setuptools
 from itertools import cycle
 from collections import Counter
 import threading
 import datetime
 import logging
-from core import Ventura, Cog
+from core import Dilbar, Cog
 import time
 import asyncio
 import aiohttp
@@ -31,7 +32,7 @@ proxs = cycle(proxies)
 proxies={"http": 'http://' + next(proxs)}
 
 class antipinginv(Cog):
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client
         self.spam_control = commands.CooldownMapping.from_cooldown(10, 12.0, commands.BucketType.user)
 
@@ -40,9 +41,9 @@ class antipinginv(Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-      button = Button(emoji="<:invite:1073159512049057832>",label="Invite", url =  "https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=8&scope=bot%20applications.commands")
-      button1 = Button(emoji="<:SupportTeam:1073159959866511370>",label="Support", url = "https://discord.gg/HyWQdHjNPz")
-      button2 = Button(emoji="<:Developer:1088572351819554918>",label="Web", url = "https://linktr.ee/vestrol")
+      button = Button(emoji=f"{e.invite}",label="Invite", url =  "https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=8&scope=bot%20applications.commands")
+      button1 = Button(emoji=f"{e.support_team}",label="Support", url = "https://discord.gg/HyWQdHjNPz")
+      button2 = Button(emoji=f"{e.dev_icon}",label="Web", url = "https://linktr.ee/vestrol")
       try:
        
         with open("blacklist.json", "r") as f:
@@ -77,7 +78,7 @@ class antipinginv(Cog):
 
           elif message.content == ventura or message.content == "<@!1097475016880304180>":
             if str(message.author.id) in data2["ids"]:
-              embed = discord.Embed(title="<a:red_cross:1103371611983327322> Blacklisted", description="You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)")
+              embed = discord.Embed(title=f"{e.red_cross} Blacklisted", description="You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)")
               await message.reply(embed=embed, mention_author=False)
             if str(message.channel.id) in randi["ids"]:
                 await message.reply(f"My all commands are disabled for {message.channel.mention}",mention_author=True, delete_after=10)

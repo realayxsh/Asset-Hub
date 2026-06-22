@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class devansh69(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh69(commands.Cog):
     """Fun commands"""
   
     def help_custom(self):
-		      emoji = '<:paint_icons:1103361121727037601>'
+		      emoji = f'{e.paint}'
 		      label = "Fun"
 		      description = ""
 		      return emoji, label, description

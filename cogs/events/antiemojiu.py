@@ -5,7 +5,7 @@ import requests
 import sys
 import setuptools
 from itertools import cycle
-from core import Cog, Ventura
+from core import Cog, Dilbar
 import threading
 import datetime
 import logging

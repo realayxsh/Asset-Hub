@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class devansh7(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh7(commands.Cog):
     """Vanityroles commands"""
   
     def help_custom(self):
-		      emoji = '<:icons_premiumchannel:1103358451490496644>'
+		      emoji = f'{e.premium}'
 		      label = "Vanityroles"
 		      description = ""
 		      return emoji, label, description

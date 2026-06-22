@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands, tasks
 from core import *
 from utils.Tools import *
+from utils.emojis import e
 
 
 class Ignore(commands.Cog):
@@ -70,7 +71,7 @@ class Ignore(commands.Cog):
             remove_channel_from_ignore(channel.id)
             embed = discord.Embed(
                 description=
-                "<a:green_tick:1103363669263405157> | {channel.mention} has been successfully removed from ignore channel list",
+                f"{e.green_tick} | {channel.mention} has been successfully removed from ignore channel list",
                 color=0x2f3136)
 
             await ctx.reply(embed=embed, mention_author=False)

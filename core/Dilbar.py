@@ -12,7 +12,7 @@ from .Context import Context
 from discord.ext import commands, tasks
 
 
-class Ventura(commands.AutoShardedBot):
+class Dilbar(commands.AutoShardedBot):
 
     def __init__(self, *arg, **kwargs):
         self.topgg_headers = {

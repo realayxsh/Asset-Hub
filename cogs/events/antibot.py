@@ -1,12 +1,12 @@
 import discord
 import os
 import datetime
-from core import Ventura, Cog
+from core import Dilbar, Cog
 from discord.ext import commands
 from utils.Tools import *
 
 class antibot(Cog):
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
       self.client = client
 
 

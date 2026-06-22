@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.utils import get
 import os
 from utils.Tools import *
+from utils.emojis import e
 from typing import Optional, Union
 from discord.ext.commands import Context
 from utils import Paginator, DescriptionEmbedPaginator, FieldPagePaginator, TextPaginator
@@ -503,7 +504,7 @@ class Voice(commands.Cog):
             elif data["vcrole"]["humans"] == role.id:
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | {} is already in human vcroles ."
+                    f"{e.red_cross} | {} is already in human vcroles ."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed, mention_author=False)
@@ -512,7 +513,7 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    "<a:green_tick:1103363669263405157> | {} has been added to human vcroles ."
+                    f"{e.green_tick} | {} has been added to human vcroles ."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker, mention_author=False)
@@ -546,7 +547,7 @@ class Voice(commands.Cog):
             elif data["vcrole"]["bots"] == role.id:
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | {} is already in bot vcroles ."
+                    f"{e.red_cross} | {} is already in bot vcroles ."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed, mention_author=False)
@@ -555,7 +556,7 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    "<a:green_tick:1103363669263405157> | {} has been added to bot vcroles ."
+                    f"{e.green_tick} | {} has been added to bot vcroles ."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker, mention_author=False)
@@ -588,7 +589,7 @@ class Voice(commands.Cog):
             elif role.id != data["vcrole"]["humans"]:
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | {} is not in human vcroles ."
+                    f"{e.red_cross} | {} is not in human vcroles ."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed)
@@ -597,7 +598,7 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    "<a:green_tick:1103363669263405157> | {} has been removed from human vcroles."
+                    f"{e.green_tick} | {} has been removed from human vcroles."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker)
@@ -631,7 +632,7 @@ class Voice(commands.Cog):
             elif role.id != data["vcrole"]["bots"]:
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | {} is not in bot vcroles.".
+                    f"{e.red_cross} | {} is not in bot vcroles.".
                     format(role.mention),
                     color=0x2f3136)
                 await ctx.reply(embed=embed)
@@ -640,7 +641,7 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    "<a:green_tick:1103363669263405157> | {} has been removed from bot vcroles."
+                    f"{e.green_tick} | {} has been removed from bot vcroles."
                     .format(role.mention),
                     color=0x2f3136)
                 await ctx.send(embed=hacker)
@@ -689,7 +690,7 @@ class Voice(commands.Cog):
             if data["vcrole"]["humans"] == "" and data["vcrole"]["bots"] == "":
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | This server don't have any vcroles setupped .",
+                    f"{e.red_cross} | This server don't have any vcroles setupped .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
@@ -698,7 +699,7 @@ class Voice(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    "<a:green_tick:1103363669263405157> | Succesfully cleared all vcroles for this server .",
+                    f"{e.green_tick} | Succesfully cleared all vcroles for this server .",
                     color=0x2f3136)
                 await ctx.send(embed=hacker)
         else:

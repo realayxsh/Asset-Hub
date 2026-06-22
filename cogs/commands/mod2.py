@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class devansh3110(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh3110(commands.Cog):
     """Moderation commands"""
   
     def help_custom(self):
-		      emoji = '<:Moderation:1103359662293798955>'
+		      emoji = f'{e.moderation}'
 		      label = "Moderation"
 		      description = ""
 		      return emoji, label, description

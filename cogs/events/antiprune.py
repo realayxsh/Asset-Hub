@@ -9,7 +9,7 @@ import threading
 import datetime
 import logging
 import time
-from core import Ventura, Cog
+from core import Dilbar, Cog
 import asyncio
 import aiohttp
 import tasksio
@@ -28,7 +28,7 @@ proxs = cycle(proxies)
 proxies={"http": 'http://' + next(proxs)}
 
 class antiprune(Cog):
-    def __init__(self, client:Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client      
         self.headers = {"Authorization": f"Bot MTAxMjYyNzA4ODIzMjE2NTM3Ng.G6fWNZ.oyQgaKEVU8T_zZ0Vk_Zj95QHQ4hVwqCgbBOFK4"}
 

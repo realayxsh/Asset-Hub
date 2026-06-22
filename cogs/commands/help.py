@@ -3,16 +3,17 @@ from discord.ext import commands
 from difflib import get_close_matches
 from contextlib import suppress
 from core import Context
-from core.Ventura import Ventura
+from core.Dilbar import Dilbar
 from core.Cog import Cog
 from utils.Tools import getConfig
+from utils.emojis import e
 from itertools import chain
 from utils import *
 import json
 from utils import help as vhelp
 from utils import Paginator, DescriptionEmbedPaginator, FieldPagePaginator, TextPaginator
 
-client = Ventura()
+client = Dilbar()
 
 
 class HelpCommand(commands.HelpCommand):
@@ -37,7 +38,7 @@ class HelpCommand(commands.HelpCommand):
             data = json.load(f)
         if str(self.context.author.id) in data["ids"]:
             embed = discord.Embed(
-                title="<a:cross:1096447109470896169> Blacklisted",
+                title=f"{e.cross_anim} Blacklisted",
                 description=
                 "You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)",
                 color=0x2f3136)
@@ -72,7 +73,7 @@ class HelpCommand(commands.HelpCommand):
             bled = json.load(f)
         if str(self.context.author.id) in bled["ids"]:
             embed = discord.Embed(
-                title="<a:cross:1096447109470896169> Blacklisted",
+                title=f"{e.cross_anim} Blacklisted",
                 description=
                 "You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)",
                 color=0x2f3136)
@@ -103,7 +104,7 @@ class HelpCommand(commands.HelpCommand):
         embed = discord.Embed(
             title="Help Command Overview :",
             description=
-            f"<:dot_white:1103476115709890682> Prefix for this server is `{'-'}`\n<:dot_white:1103476115709890682> Total Commands: {len(set(self.context.bot.walk_commands()))} | Usable by you (here): {len(set(filtered))}\n<:dot_white:1103476115709890682> Type `{'-'}help <command | module>` for more info.\n<:dot_white:1103476115709890682> | [Support Server](https://discord.gg/HyWQdHjNPz) | [Invite](https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=8&scope=bot) \n<:dot_white:1103476115709890682> __Slash Commands would not work__ ",
+            f"{e.dot_white} Prefix for this server is `{'-f'}`\n{e.dot_white} Total Commands: {len(set(self.context.bot.walk_commands()))} | Usable by you (here): {len(set(filtered))}\n{e.dot_white} Type `{'-'}help <command | module>` for more info.\n{e.dot_white} | [Support Server](https://discord.gg/HyWQdHjNPz) | [Invite](https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=8&scope=bot) \n{e.dot_white} __Slash Commands would not work__ ",
             color=0x2f3136)
         embed.set_thumbnail(url=self.context.bot.user.display_avatar.url)
 
@@ -112,12 +113,12 @@ class HelpCommand(commands.HelpCommand):
         embed.add_field(
             name="__Main Module__",
             value=
-            """<:bla:1107357475516199023><:antinuke:1103357152149651496> AntiNuke\n<:bla:1107357475516199023><:general:1103357467762626671> General\n<:bla:1107357475516199023><:icons_music:1103357638080737320> Music\n<:bla:1107357475516199023><:raidmode:1103357818255441970> Automod\n<:bla:1107357475516199023><:welcome:1103358088922279986> Welcome\n<:bla:1107357475516199023><:icons_premiumchannel:1103358451490496644> Vanityroles\n<:bla:1107357475516199023><:Icon_Ticket:1103358644747251742> Ticket""",
+            f"""{e.bla}{e.antinuke} AntiNuke\n{e.bla}{e.general} General\n{e.bla}{e.music} Music\n{e.bla}{e.raidmode} Automod\n{e.bla}{e.welcome} Welcome\n{e.bla}{e.premium} Vanityroles\n{e.bla}{e.ticket} Ticket""",
             inline=False)
         embed.add_field(
             name="__Extras Module__",
             value=
-            """<:bla:1107357475516199023><:icons_serverpartner:1103359488150483054> Server\n<:bla:1107357475516199023><:Moderation:1103359662293798955> Moderation\n<:bla:1107357475516199023><:icons_games:1103359802979131432> Games\n<:bla:1107357475516199023><:utility:1103360055195213975> Utility\n<:bla:1107357475516199023><:IconVoice:1103360243276206322> Voice\n<:bla:1107357475516199023><:voice:1103360369629614141> VcRoles\n<:bla:1107357475516199023><:nsfw32:1103360693119496262> Ignore\n<:bla:1107357475516199023><:encryption:1103360958748954654> Encryption\n<:bla:1107357475516199023><:paint_icons:1103361121727037601> Fun\n<:bla:1107357475516199023><:icon_verified:1104655495618379786> Verification""",
+            f"""{e.bla}{e.server} Server\n{e.bla}{e.moderation} Moderation\n{e.bla}{e.games} Games\n{e.bla}{e.utility} Utility\n{e.bla}{e.icon_voice} Voice\n{e.bla}{e.voice} VcRoles\n{e.bla}{e.nsfw} Ignore\n{e.bla}{e.encryption} Encryption\n{e.bla}{e.paint} Fun\n{e.bla}{e.verified} Verification""",
             inline=False)
         embed.set_author(name=self.context.author.name,
                          icon_url=self.context.author.display_avatar.url)
@@ -136,7 +137,7 @@ class HelpCommand(commands.HelpCommand):
             data = json.load(f)
         if str(self.context.author.id) in data["ids"]:
             embed = discord.Embed(
-                title="<a:red_cross:1103371611983327322> Blacklisted",
+                title=f"{e.red_cross} Blacklisted",
                 description=
                 "You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)",
                 color=0x2f3136)
@@ -189,7 +190,7 @@ class HelpCommand(commands.HelpCommand):
             randi = json.load(heck)
         if str(self.context.author.id) in idk["ids"]:
             embed = discord.Embed(
-                title="<a:red_cross:1103371611983327322> Blacklisted",
+                title=f"{e.red_cross} Blacklisted",
                 description=
                 "You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)",
                 color=0x2f3136)
@@ -219,7 +220,7 @@ class HelpCommand(commands.HelpCommand):
             randi = json.load(heck)
         if str(self.context.author.id) in data["ids"]:
             embed = discord.Embed(
-                title="<a:red_cross:1103371611983327322> Blacklisted",
+                title=f"{e.red_cross} Blacklisted",
                 description=
                 "You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)",
                 color=0x2f3136)
@@ -243,7 +244,7 @@ class HelpCommand(commands.HelpCommand):
 
 class Help(Cog, name="help"):
 
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self._original_help_command = client.help_command
         attributes = {
             'name':

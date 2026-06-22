@@ -9,7 +9,7 @@ from itertools import cycle
 import threading
 import datetime
 import logging
-from core import Cog,Ventura
+from core import Cog, Dilbar
 import time
 import asyncio
 import aiohttp
@@ -29,7 +29,7 @@ proxs = cycle(proxies)
 proxies={"http": 'http://' + next(proxs)}
 
 class antiguild(Cog):
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client      
         self.headers = {"Authorization": f"Bot MTAxMjYyNzA4ODIzMjE2NTM3Ng.G6fWNZ.oyQgaKEVU8T_zZ0Vk_Zj95QHQ4hVwqCgbBOFK4"}
         self.processing = [

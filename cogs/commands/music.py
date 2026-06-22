@@ -19,6 +19,7 @@ import os
 from wavelink import Player
 import async_timeout
 from utils.Tools import *
+from utils.emojis import e
 
 LYRICS_URL = "https://some-random-api.ml/lyrics?title="
 TIME_REGEX = r"([0-9]{1,2})[:ms](([0-9]{1,2})s?)?"
@@ -149,7 +150,7 @@ class Check:
         hacker5 = discord.Embed(
             title="VesTrol",
             description=
-            f"<a:red_cross:1103371611983327322> {ctx.author.mention} You are not connected in a voice channel",
+            f"{e.red_cross} {ctx.author.mention} You are not connected in a voice channel",
             color=0x2f3136)
         hacker5.set_footer(text=f"Requested By {ctx.author}",
                            icon_url=f"{ctx.author.avatar}")
@@ -168,7 +169,7 @@ class Check:
         hacker5 = discord.Embed(
             title="VesTrol",
             description=
-            f"<a:red_cross:1103371611983327322> {ctx.author.mention} I'm not connected in a voice channel",
+            f"{e.red_cross} {ctx.author.mention} I'm not connected in a voice channel",
             color=0x2f3136)
         hacker5.set_footer(text=f"Requested By {ctx.author}",
                            icon_url=f"{ctx.author.avatar}")
@@ -187,7 +188,7 @@ class Check:
         hacker5 = discord.Embed(
             title="VesTrol",
             description=
-            f"<a:red_cross:1103371611983327322> I'm already connected in a voice channel",
+            f"{e.red_cross} I'm already connected in a voice channel",
             color=0x2f3136)
         hacker5.set_footer(text=f"Requested By {ctx.author}",
                            icon_url=f"{ctx.author.avatar}")
@@ -207,7 +208,7 @@ class Check:
         hacker5 = discord.Embed(
             title="VesTrol",
             description=
-            f"<a:red_cross:1103371611983327322> You are not connected in the same voice channel that the bot",
+            f"{e.red_cross} You are not connected in the same voice channel that the bot",
             color=0x2f3136)
         hacker5.set_footer(text=f"Requested By {ctx.author}",
                            icon_url=f"{ctx.author.avatar}")
@@ -225,7 +226,7 @@ class Check:
         hacker5 = discord.Embed(
             title="VesTrol",
             description=
-            f"<a:red_cross:1103371611983327322> There is currently no song to replay",
+            f"{e.red_cross} There is currently no song to replay",
             color=0x2f3136)
         hacker5.set_footer(text=f"Requested By {ctx.author}",
                            icon_url=f"{ctx.author.avatar}")
@@ -347,9 +348,9 @@ class Buttons(discord.ui.View):
         super().__init__(timeout=None)
 
 
-#<:volume_down:1056039813712707654>
+#{e.volume_down}
 
-    @discord.ui.button(emoji="<:icons_speakerlow:1084727725513789474>",
+    @discord.ui.button(emoji=f"{e.speaker_low}",
                        style=discord.ButtonStyle.grey,
                        row=0)
     async def volume_button(self, interaction: discord.Interaction,
@@ -360,7 +361,7 @@ class Buttons(discord.ui.View):
         if player is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not connected to a voice channel.",
+                f"{e.red_cross} | I am not connected to a voice channel.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker,
                                                            ephemeral=True)
@@ -368,19 +369,19 @@ class Buttons(discord.ui.View):
             await player.set_volume(50)
             hacker1 = discord.Embed(
                 description=
-                "<a:green_tick:1103363669263405157> | Successfully changed player volume to : `50`",
+                f"{e.green_tick} | Successfully changed player volume to : `50`",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker1,
                                                            ephemeral=True)
         else:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker2,
                                                            ephemeral=True)
 
-    @discord.ui.button(emoji="<:emote:1083286116788097036>",
+    @discord.ui.button(emoji=f"{e.emote1}",
                        style=discord.ButtonStyle.grey,
                        row=0)
     async def seek_button(self, interaction: discord.Interaction,
@@ -391,7 +392,7 @@ class Buttons(discord.ui.View):
         if player is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not connected to a voice channel.",
+                f"{e.red_cross} | I am not connected to a voice channel.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker,
                                                            ephemeral=True)
@@ -400,19 +401,19 @@ class Buttons(discord.ui.View):
             await player.seek(10 * 1000)
             hacker1 = discord.Embed(
                 description=
-                "<a:green_tick:1103363669263405157> | Seeked the current player to `10 seconds` .",
+                f"{e.green_tick} | Seeked the current player to `10 seconds` .",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker1,
                                                            ephemeral=True)
         else:
             hacker2 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker2,
                                                            ephemeral=True)
 
-    @discord.ui.button(emoji="<:jk_stop:1072904929062170634>",
+    @discord.ui.button(emoji=f"{e.jk_stop}",
                        style=discord.ButtonStyle.danger,
                        row=0)
     async def stop_button(self, interaction: discord.Interaction,
@@ -423,7 +424,7 @@ class Buttons(discord.ui.View):
         if player is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not connected to a voice channel.",
+                f"{e.red_cross} | I am not connected to a voice channel.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker,
                                                            ephemeral=True)
@@ -433,19 +434,19 @@ class Buttons(discord.ui.View):
             await player.stop()
             hacker1 = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Destroyed the player.",
+                f"{e.green_tick} | Destroyed the player.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker1,
                                                            ephemeral=True)
         else:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker2,
                                                            ephemeral=True)
 
-    @discord.ui.button(emoji="<:emote:1083285893651107860>",
+    @discord.ui.button(emoji=f"{e.emote2}",
                        style=discord.ButtonStyle.grey,
                        row=0)
     async def skip_button(self, interaction: discord.Interaction,
@@ -456,7 +457,7 @@ class Buttons(discord.ui.View):
         if player is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not connected to a voice channel.",
+                f"{e.red_cross} | I am not connected to a voice channel.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker,
                                                            ephemeral=True)
@@ -465,19 +466,19 @@ class Buttons(discord.ui.View):
             await player.stop()
             hacker1 = discord.Embed(
                 description=
-                "<a:green_tick:1103363669263405157> | Successfully Skipped the track .",
+                f"{e.green_tick} | Successfully Skipped the track .",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker1,
                                                            ephemeral=True)
         else:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker2,
                                                            ephemeral=True)
 
-    @discord.ui.button(emoji="<:IconVoice:1084709816410308719>",
+    @discord.ui.button(emoji=f"{e.icon_voice2}",
                        style=discord.ButtonStyle.grey,
                        row=0)
     async def vol_button(self, interaction: discord.Interaction,
@@ -488,7 +489,7 @@ class Buttons(discord.ui.View):
         if player is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not connected to a voice channel.",
+                f"{e.red_cross} | I am not connected to a voice channel.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker,
                                                            ephemeral=True)
@@ -497,14 +498,14 @@ class Buttons(discord.ui.View):
             await player.set_volume(100)
             hacker1 = discord.Embed(
                 description=
-                "<a:green_tick:1103363669263405157> | Successfully changed player volume to : `100`",
+                f"{e.green_tick} | Successfully changed player volume to : `100`",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker1,
                                                            ephemeral=True)
         else:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             return await interaction.response.send_message(embed=hacker2,
                                                            ephemeral=True)
@@ -515,29 +516,29 @@ class Dropdown(discord.ui.Select):
     options = [
       discord.SelectOption(label="Slowed",
                            description="Enables Slowed Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
       discord.SelectOption(label="Chipmunk",
                            description="Enables Chipmunk Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
       discord.SelectOption(label="Reset",
                            description="Clears all Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
       discord.SelectOption(label="Nightcore",
                            description="Enables Nightcore Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
       discord.SelectOption(label="Lofi",
                            description="Enables Lofi Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
       discord.SelectOption(label="Rotation",
                            description="Enables Rotation Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
 
 discord.SelectOption(label="Karaoke",
                            description="Enables Karaoke Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>"),
+                           emoji=f"{e.black_diamond}"),
       discord.SelectOption(label="DeepBass",
                            description="Enables Deep Bass Filter",
-                           emoji="<a:Black_Diamond:1115859193103122483>")
+                           emoji=f"{e.black_diamond}")
    ]
     super().__init__(placeholder="Select Filter",
                      options=options,
@@ -635,7 +636,7 @@ class Music(commands.Cog):
         if not getattr(ctx.author, "voice", None):
             nv = discord.Embed(
                 description=
-                f'<a:red_cross:1103371611983327322> | You are not connected to a voice channel.',
+                f'{e.red_cross} | You are not connected to a voice channel.',
                 color=0x2f3136)
             await ctx.send(embed=nv)
             return
@@ -649,7 +650,7 @@ class Music(commands.Cog):
             embed.timestamp = discord.utils.utcnow()
             #embed.set_thumbnail(url = f"{ctx.author.avatar}")
             await ctx.send(
-                f"<a:green_tick:1103363669263405157> | Successfully Connected To {ctx.author.voice.channel.mention}"
+                f"{e.green_tick} | Successfully Connected To {ctx.author.voice.channel.mention}"
             )
         else:
             vc: wavelink.Player = ctx.voice_client
@@ -667,13 +668,13 @@ class Music(commands.Cog):
                 mbed = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:Playing:1103975756989747250> [{track.title}](https://discord.gg/HyWQdHjNPz)"
+                    f"{e.playing} [{track.title}](https://discord.gg/HyWQdHjNPz)"
                 )
-                # mbed.add_field(name="<a:Playing:1103975756989747250> ", value=f"[{track.title}](https://discord.gg/HyWQdHjNPz)")
-                # mbed.add_field(name="<:jk_users:1045213273273929738> Requested By", value=f"{ctx.author.mention}")
-                mbed.add_field(name="<:Room_icon_Stage:1103975106457387038> Song By",
+                # mbed.add_field(name=f"{e.playing} ", value=f"[{track.title}](https://discord.gg/HyWQdHjNPz)")
+                # mbed.add_field(name=f"{e.jk_users} Requested By", value=f"{ctx.author.mention}")
+                mbed.add_field(name=f"{e.stage_icon} Song By",
                                value=f"`{track.author}`")
-                mbed.add_field(name="<:artic_uptime:1103974519439372358> Duration",
+                mbed.add_field(name=f"{e.uptime} Duration",
                                value=f"`❯ { round(track.duration / 60, 2)}`")
                 mbed.set_author(name="NOW PLAYING",
                                 icon_url=f"{ctx.author.avatar}")
@@ -712,10 +713,10 @@ class Music(commands.Cog):
                 mbed = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:Playing:1103975756989747250> [{track1}](https://discord.gg/HyWQdHjNPz)"
+                    f"{e.playing} [{track1}](https://discord.gg/HyWQdHjNPz)"
                 )
                 mbed.add_field(name="Song Url", value=search)
-                # mbed.add_field(name="<a:Playing:1103975756989747250> ", value=f"[{track1}](https://discord.gg/HyWQdHjNPz)")
+                # mbed.add_field(name=f"{e.playing} ", value=f"[{track1}](https://discord.gg/HyWQdHjNPz)")
                 mbed.set_author(name="NOW PLAYING",
                                 icon_url=f"{ctx.author.avatar}")
                 mbed.set_thumbnail(url=self.bot.user.display_avatar.url)
@@ -752,13 +753,13 @@ class Music(commands.Cog):
                 mbed = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:Playing:1103975756989747250> [{track2.title}](https://discord.gg/HyWQdHjNPz)"
+                    f"{e.playing} [{track2.title}](https://discord.gg/HyWQdHjNPz)"
                 )
-                #mbed.add_field(name="<a:Playing:1103975756989747250> ", value=f"[{track2.title}](https://discord.gg/HyWQdHjNPz)")
-                #mbed.add_field(name="<:jk_users:1045213273273929738> Requested By", value=f"{ctx.author.mention}")
-                mbed.add_field(name="<:Room_icon_Stage:1103975106457387038> Song By",
+                #mbed.add_field(name=f"{e.playing} ", value=f"[{track2.title}](https://discord.gg/HyWQdHjNPz)")
+                #mbed.add_field(name=f"{e.jk_users} Requested By", value=f"{ctx.author.mention}")
+                mbed.add_field(name=f"{e.stage_icon} Song By",
                                value=f"`{track2.author}`")
-                mbed.add_field(name="<:artic_uptime:1103974519439372358> Duration",
+                mbed.add_field(name=f"{e.uptime} Duration",
                                value=f"`❯ { round(track2.duration / 60, 2)}`")
                 mbed.set_thumbnail(url=track2.thumb)
 
@@ -802,13 +803,13 @@ class Music(commands.Cog):
                 mbed = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:Playing:1103975756989747250> [{new_song.title}](https://discord.gg/HyWQdHjNPz)"
+                    f"{e.playing} [{new_song.title}](https://discord.gg/HyWQdHjNPz)"
                 )
-                #mbed.add_field(name="<a:Playing:1103975756989747250> ", value=f"[{new_song.title}](https://discord.gg/HyWQdHjNPz)")
-                #mbed.add_field(name="<:jk_users:1045213273273929738> Requested By", value=f"{ctx.author.mention}")
-                mbed.add_field(name="<:Room_icon_Stage:1103975106457387038> Song By",
+                #mbed.add_field(name=f"{e.playing} ", value=f"[{new_song.title}](https://discord.gg/HyWQdHjNPz)")
+                #mbed.add_field(name=f"{e.jk_users} Requested By", value=f"{ctx.author.mention}")
+                mbed.add_field(name=f"{e.stage_icon} Song By",
                                value=f"`{new_song.author}`")
-                mbed.add_field(name="<:artic_uptime:1103974519439372358> Duration",
+                mbed.add_field(name=f"{e.uptime} Duration",
                                value=f"`❯ {round(new_song.duration / 60, 2)}`")
 
                 mbed.set_author(name="NOW PLAYING",
@@ -822,16 +823,16 @@ class Music(commands.Cog):
                 mbed = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:Playing:1103975756989747250> [{new_song.title}](https://discord.gg/HyWQdHjNPz)"
+                    f"{e.playing} [{new_song.title}](https://discord.gg/HyWQdHjNPz)"
                 )
-                #mbed.add_field(name="<a:Playing:1103975756989747250> ", value=f"[{new_song.title}](https://discord.gg/HyWQdHjNPz)")
+                #mbed.add_field(name=f"{e.playing} ", value=f"[{new_song.title}](https://discord.gg/HyWQdHjNPz)")
                 mbed.add_field(
-                    name="<:users:1103964989800337460> Requested By",
+                    name=f"{e.users} Requested By",
                     value=f"{ctx.author.mention}")
-                mbed.add_field(name="<:Room_icon_Stage:1103975106457387038> Song By",
+                mbed.add_field(name=f"{e.stage_icon} Song By",
                                value=f"`{new_song.author}`")
 
-                mbed.add_field(name="<:artic_uptime:1103974519439372358> Duration",
+                mbed.add_field(name=f"{e.uptime} Duration",
                                value=f"`❯ {round(new_song.duration / 60, 2)}`")
 
                 mbed.set_author(name="NOW PLAYING",
@@ -856,7 +857,7 @@ class Music(commands.Cog):
         if not getattr(ctx.author, "voice", None):
             nv = discord.Embed(
                 description=
-                f'<a:red_cross:1103371611983327322> | You are not connected to a voice channel.',
+                f'{e.red_cross} | You are not connected to a voice channel.',
                 color=0x2f3136)
             await ctx.send(embed=nv)
             return
@@ -865,7 +866,7 @@ class Music(commands.Cog):
         elif ctx.voice_client:
             av = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am already connected to a voice channel.",
+                f"{e.red_cross} | I am already connected to a voice channel.",
                 color=0x2f3136)
             await ctx.send(embed=av)
             return
@@ -873,7 +874,7 @@ class Music(commands.Cog):
                                                     self_deaf=True)
         sc = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully connected to {channel.mention}.",
+            f"{e.green_tick} | Successfully connected to {channel.mention}.",
             color=0x2f3136)
         await ctx.send(embed=sc)
 
@@ -889,7 +890,7 @@ class Music(commands.Cog):
         if ctx.author.voice is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
 
             #hacker.set_thumbnail(url = f"{ctx.author.avatar}")
@@ -899,7 +900,7 @@ class Music(commands.Cog):
         await player.disconnect()
         hacker1 = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully disconnected from {ctx.author.voice.channel.mention}",
+            f"{e.green_tick} | Successfully disconnected from {ctx.author.voice.channel.mention}",
             color=0x2f3136)
 
         await ctx.send(embed=hacker1)
@@ -914,7 +915,7 @@ class Music(commands.Cog):
         if ctx.author.voice is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
             
             return await ctx.reply(embed=hacker)
@@ -924,14 +925,14 @@ class Music(commands.Cog):
             await player.stop()
             hacker1 = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Destroyed the player.",
+                f"{e.green_tick} | Destroyed the player.",
                 color=0x2f3136)
         
             await ctx.send(embed=hacker1)
         else:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             
             #hacker2.set_thumbnail(url = f"{ctx.author.avatar}")
@@ -948,7 +949,7 @@ class Music(commands.Cog):
         if ctx.author.voice is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
             return await ctx.reply(embed=hacker)
 
@@ -956,14 +957,14 @@ class Music(commands.Cog):
             await player.stop()
             hacker1 = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Skipped the track .",
+                f"{e.green_tick} | Successfully Skipped the track .",
                 color=0x2f3136)
 
             await ctx.send(embed=hacker1)
         else:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                f"{e.red_cross} | I am not playing anything.",
                 color=0x2f3136)
             return await ctx.reply(embed=hacker2)
 
@@ -977,7 +978,7 @@ class Music(commands.Cog):
         if ctx.author.voice is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
             hacker.set_footer(text=f"Requested By {ctx.author}",
                               icon_url=f"{ctx.author.avatar}")
@@ -990,20 +991,20 @@ class Music(commands.Cog):
                 await player.pause()
                 hacker1 = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully paused the player .",
+                    f"{e.green_tick} | Successfully paused the player .",
                     color=0x2f3136)
                 view = Buttons()
                 await ctx.send(embed=hacker1)
             else:
                 hacker2 = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | I am not playing anything.",
+                    f"{e.red_cross} | I am not playing anything.",
                     color=0x2f3136)
                 return await ctx.reply(embed=hacker2)
         else:
             hacker3 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | Player is already paused .",
+                f"{e.red_cross} | Player is already paused .",
                 color=0x2f3136)
 
             return await ctx.reply(embed=hacker3)
@@ -1018,7 +1019,7 @@ class Music(commands.Cog):
         if ctx.author.voice is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
 
             
@@ -1028,14 +1029,14 @@ class Music(commands.Cog):
             await player.resume()
             hacker1 = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully resumed the player .",
+                f"{e.green_tick} | Successfully resumed the player .",
                 color=0x2f3136)
 
             await ctx.send(embed=hacker1)
         else:
             hacker3 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | Player is already resumed .",
+                f"{e.red_cross} | Player is already resumed .",
                 color=0x2f3136)
             
             return await ctx.reply(embed=hacker3)
@@ -1059,7 +1060,7 @@ class Music(commands.Cog):
         if vc is None:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
             hacker.set_footer(text=f"Requested By {ctx.author}",
                               icon_url=f"{ctx.author.avatar}")
@@ -1074,7 +1075,7 @@ class Music(commands.Cog):
                             seek=True)
         hacker4 = discord.Embed(
             description=
-            "<a:green_tick:1103363669263405157> | Successfully enabled `bass boost` .",
+            f"{e.green_tick} | Successfully enabled `bass boost` .",
             color=0x2f3136)
 
         await ctx.reply(embed=hacker4)
@@ -1089,7 +1090,7 @@ class Music(commands.Cog):
             wavelink.Filter(equalizer=wavelink.Equalizer.flat()), seek=True)
         hacker4 = discord.Embed(
             description=
-            "<a:green_tick:1103363669263405157> | Successfully disabled `bass boost` .",
+            f"{e.green_tick} | Successfully disabled `bass boost` .",
             color=0x2f3136)
         await ctx.reply(embed=hacker4)
 
@@ -1120,7 +1121,7 @@ class Music(commands.Cog):
                 or (int(volume) > 500)):
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | Volume Must Be 0 To 500 .",
+                f"{e.red_cross} | Volume Must Be 0 To 500 .",
                 color=0x2f3136)
             hacker.set_footer(text=f"Requested By {ctx.author}",
                               icon_url=f"{ctx.author.avatar}")
@@ -1133,7 +1134,7 @@ class Music(commands.Cog):
         await player.set_volume(volume)
         hacker4 = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully changed player volume to : `{volume}%`",
+            f"{e.green_tick} | Successfully changed player volume to : `{volume}%`",
             color=0x2f3136)
 
         await ctx.send(embed=hacker4)
@@ -1145,7 +1146,7 @@ class Music(commands.Cog):
         if not ctx.voice_client:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | Not connected to a voice channel.",
+                f"{e.red_cross} | Not connected to a voice channel.",
                 color=0x2f3136)
             hacker.set_footer(text=f"Requested By {ctx.author}",
                               icon_url=f"{ctx.author.avatar}")
@@ -1155,7 +1156,7 @@ class Music(commands.Cog):
         elif not getattr(ctx.author.voice, "channel", None):
             hacker1 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
             hacker1.set_footer(text=f"Requested By {ctx.author}",
                                icon_url=f"{ctx.author.avatar}")
@@ -1168,7 +1169,7 @@ class Music(commands.Cog):
         if not vc.is_playing():
             hacker1 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | I am not playing anything .",
+                f"{e.red_cross} | I am not playing anything .",
                 color=0x2f3136)
             hacker1.set_footer(text=f"Requested By {ctx.author}",
                                icon_url=f"{ctx.author.avatar}")
@@ -1180,10 +1181,10 @@ class Music(commands.Cog):
             description=f"[{vc.track}](https://discord.gg/HyWQdHjNPz)",
             color=0x2f3136)
 
-        em.add_field(name="<:Room_icon_Stage:1103975106457387038> Song By",
+        em.add_field(name=f"{e.stage_icon} Song By",
                      value=f"`{vc.track.author}`")
         em.add_field(
-            name="<:artic_uptime:1103974519439372358> Duration",
+            name=f"{e.uptime} Duration",
             value=f"`❯ {datetime.timedelta(seconds=vc.track.length)}`")
         em.set_footer(text=f"Requested By {ctx.author}",
                       icon_url=f"{ctx.author.avatar}")
@@ -1199,7 +1200,7 @@ class Music(commands.Cog):
         if not ctx.voice_client:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | Not connected to a voice channel.",
+                f"{e.red_cross} | Not connected to a voice channel.",
                 color=0x2f3136)
 
             
@@ -1207,7 +1208,7 @@ class Music(commands.Cog):
         elif not getattr(ctx.author.voice, "channel", None):
             hacker1 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
 
             return await ctx.send(embed=hacker1)
@@ -1219,7 +1220,7 @@ class Music(commands.Cog):
         vc.queue = copy
         hacker2 = discord.Embed(
             description=
-            "<a:green_tick:1103363669263405157> | Successfully shuffled the current queue .",
+            f"{e.green_tick} | Successfully shuffled the current queue .",
             color=0x2f3136)
         await ctx.send(embed=hacker2)
 
@@ -1230,14 +1231,14 @@ class Music(commands.Cog):
         if not ctx.voice_client:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | Not connected to a voice channel.",
+                f"{e.red_cross} | Not connected to a voice channel.",
                 color=0x2f3136)
             
             return await ctx.send(embed=hacker)
         elif not getattr(ctx.author.voice, "channel", None):
             hacker1 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
             return await ctx.send(embed=hacker1)
         else:
@@ -1246,14 +1247,14 @@ class Music(commands.Cog):
         if index > len(vc.queue) or index < 1:
             hacker2 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | Must Be Between 1 And {len(vc.queue)} .",
+                f"{e.red_cross} | Must Be Between 1 And {len(vc.queue)} .",
                 color=0x2f3136)
             return await ctx.reply(embed=hacker2)
 
         removed = vc.queue.pop(index - 1)
         hacker3 = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully pulled out `{removed.title}` From Queue .",
+            f"{e.green_tick} | Successfully pulled out `{removed.title}` From Queue .",
             color=0x2f3136)
         await ctx.send(embed=hacker3)
 
@@ -1264,7 +1265,7 @@ class Music(commands.Cog):
         if not ctx.voice_client:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
 
             
@@ -1272,7 +1273,7 @@ class Music(commands.Cog):
         elif not getattr(ctx.author.voice, "channel", None):
             hacker1 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You need to join a voice channel to play something .",
+                f"{e.red_cross} | You need to join a voice channel to play something .",
                 color=0x2f3136)
             return await ctx.send(embed=hacker1)
         else:
@@ -1281,7 +1282,7 @@ class Music(commands.Cog):
         if vc.queue.is_empty:
             hacker3 = discord.Embed(
                 description=
-                f"<a:red_cross:1103371611983327322> | No songs in queue .",
+                f"{e.red_cross} | No songs in queue .",
                 color=0x2f3136)
             hacker3.set_footer(text=f"Requested By {ctx.author}",
                                icon_url=f"{ctx.author.avatar}")
@@ -1308,7 +1309,7 @@ class Music(commands.Cog):
         if not ctx.voice_client:
             hacker = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | Not connected to a voice channel.",
+                f"{e.red_cross} | Not connected to a voice channel.",
                 color=0x2f3136)
 
             
@@ -1316,7 +1317,7 @@ class Music(commands.Cog):
         elif not getattr(ctx.author.voice, "channel", None):
             hacker1 = discord.Embed(
                 description=
-                "<a:red_cross:1103371611983327322> | You are not connected to a voice channel.",
+                f"{e.red_cross} | You are not connected to a voice channel.",
                 color=0x2f3136)
 
             return await ctx.send(embed=hacker1)
@@ -1326,7 +1327,7 @@ class Music(commands.Cog):
         await vc.queue.clear()
         hacker3 = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully Clears The current Queue .",
+            f"{e.green_tick} | Successfully Clears The current Queue .",
             color=0x2f3136)
         hacker3.set_footer(text=f"Requested By {ctx.author}",
                            icon_url=f"{ctx.author.avatar}")
@@ -1350,6 +1351,6 @@ class Music(commands.Cog):
         await player.seek(secs * 1000)
         hacker3 = discord.Embed(
             description=
-            f"<a:green_tick:1103363669263405157> | Successfully Seeked the current player to {secs} .",
+            f"{e.green_tick} | Successfully Seeked the current player to {secs} .",
             color=0x2f3136)
         await ctx.reply(embed=hacker3)

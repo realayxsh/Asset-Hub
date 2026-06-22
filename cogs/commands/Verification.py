@@ -3,6 +3,7 @@ import json
 from discord.ext import commands
 from discord.ui import Button, View
 from utils.Tools import *
+from utils.emojis import e
 
 class Verification(commands.Cog):
   def __init__(self, client):
@@ -51,10 +52,10 @@ class Verification(commands.Cog):
       await ctx.send("Verification is already enabled in this server! first disable it using `verification disable` command and then try again")
     else:
       idk = await ctx.send(embed=discord.Embed(title="Verification", description="Setting Up Verification, Be Patient"))
-      btn = Button(style=discord.ButtonStyle.grey, label="", emoji="<:icon_verified:1104655495618379786>", custom_id="Verify")
+      btn = Button(style=discord.ButtonStyle.grey, label="", emoji=f"{e.verified}", custom_id="Verify")
       view = View()
       view.add_item(btn)
-      embed = discord.Embed(title='Verification', description=f"To Access In *{ctx.guild.name}* Press the <:icon_verified:1104655495618379786> Button Below", color=0x2f3136)
+      embed = discord.Embed(title='Verification', description=f"To Access In *{ctx.guild.name}* Press the {e.verified} Button Below", color=0x2f3136)
       lame = await channel.send(embed=embed, view=view)
       await idk.delete()
       await ctx.send("Successfully Completed Verification Setup!")

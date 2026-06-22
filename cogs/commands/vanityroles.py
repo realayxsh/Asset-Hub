@@ -5,6 +5,7 @@ from discord.ext import commands
 import datetime
 
 
+from utils.emojis import e
 class Vanityroles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -39,9 +40,9 @@ class Vanityroles(commands.Cog):
                     idk[str(ctx.guild.id)] = pop
                     embed = discord.Embed(color=0x2f3136)
                     embed.set_author(name=f"Vanity Roles Config For {ctx.guild}", icon_url=ctx.author.display_avatar.url, url="https://discord.gg/W9GQPFCKqq")
-                    embed.add_field(name="<:dot_white:1103476115709890682> **__Vanity__**", value='Not Set' if vanity is None else vanity, inline=False)
-                    embed.add_field(name="<:dot_white:1103476115709890682> **__Role__**", value='Not Set' if role is None else role.mention, inline=False)
-                    embed.add_field(name="<:dot_white:1103476115709890682> **__Channel__**", value='Not Set' if channel is None else channel.mention, inline=False)
+                    embed.add_field(name=f"{e.dot_white} **__Vanity__**", value='Not Set' if vanity is None else vanity, inline=False)
+                    embed.add_field(name=f"{e.dot_white} **__Role__**", value='Not Set' if role is None else role.mention, inline=False)
+                    embed.add_field(name=f"{e.dot_white} **__Channel__**", value='Not Set' if channel is None else channel.mention, inline=False)
 
                     await ctx.send(embed=embed, mention_author=False)
                     with open("vanityroles.json", "w") as f:
@@ -101,9 +102,9 @@ class Vanityroles(commands.Cog):
             role = ctx.guild.get_role(role)
             embed = discord.Embed(color=0x2f3136)
             embed.set_author(name=f"Vanity Roles Config For {ctx.guild}", icon_url=ctx.author.display_avatar.url, url="https://discord.gg/W9GQPFCKqq")
-            embed.add_field(name="<:dot_white:1103476115709890682> **__Vanity__**", value='Not Set' if vanity is None else vanity, inline=False)
-            embed.add_field(name="<:dot_white:1103476115709890682> **__Role__**", value='Not Set' if role is None else role.mention, inline=False)
-            embed.add_field(name="<:dot_white:1103476115709890682> **__Channel__**", value='Not Set' if channel is None else channel.mention, inline=False)
+            embed.add_field(name=f"{e.dot_white} **__Vanity__**", value='Not Set' if vanity is None else vanity, inline=False)
+            embed.add_field(name=f"{e.dot_white} **__Role__**", value='Not Set' if role is None else role.mention, inline=False)
+            embed.add_field(name=f"{e.dot_white} **__Channel__**", value='Not Set' if channel is None else channel.mention, inline=False)
 
             await ctx.send(embed=embed, mention_author=False)
 

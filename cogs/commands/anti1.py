@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class devansh1(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devansh1(commands.Cog):
     """Security commands"""
   
     def help_custom(self):
-		      emoji = '<:antinuke:1103357152149651496>'
+		      emoji = f'{e.antinuke}'
 		      label = "AntiNuke"
 		      description = ""
 		      return emoji, label, description

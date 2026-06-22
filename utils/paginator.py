@@ -9,6 +9,7 @@ from discord.ext.commands import Context
 from discord import Interaction, ButtonStyle
 
 
+from utils.emojis import e
 class Paginator(discord.ui.View):
 
     def __init__(
@@ -133,7 +134,7 @@ class Paginator(discord.ui.View):
         self.next_page_button.label = kwargs.get('next_button_emoji') or 'Next'
         self.last_page_button.label = kwargs.get('last_button_emoji') or '≫'
         self.stop_button.emoji = kwargs.get(
-            'stop_button_emoji') or '<a:red_cross:1103371611983327322>'
+            'stop_button_emoji') or f'{e.red_cross}'
 
         
         self.first_page_button.style = kwargs.get(

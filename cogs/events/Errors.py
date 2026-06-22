@@ -1,9 +1,10 @@
 import discord, json
 from discord.ext import commands
-from core import Ventura, Cog, Context
+from core import Dilbar, Cog, Context
 
+from utils.emojis import e
 class Errors(Cog):
-  def __init__(self, client:Ventura):
+  def __init__(self, client: Dilbar):
     self.client = client
 
 
@@ -20,7 +21,7 @@ class Errors(Cog):
       ctx.command.reset_cooldown(ctx)
     elif isinstance(error, commands.CheckFailure):
       if str(ctx.author.id) in data["ids"]:
-        embed = discord.Embed(title="<a:red_cross:1103371611983327322> Blacklisted", description="You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)", color=0x50101)
+        embed = discord.Embed(title=f"{e.red_cross} Blacklisted", description="You Are Blacklisted From Using My Commands.\nIf You Think That It Is A Mistake, You Can Appeal In Our Support Server By Clicking [here](https://discord.gg/HyWQdHjNPz)", color=0x50101)
         await ctx.reply(embed=embed, mention_author=False)
       if str(ctx.channel.id) in randi["ids"]:
         await ctx.reply(f"My all commands are disabled for {ctx.channel.mention}",mention_author=True, delete_after=6)
@@ -35,12 +36,12 @@ class Errors(Cog):
         
             
     elif isinstance(error, commands.CommandOnCooldown):
-      hacker = discord.Embed(color=0x50101,description=f"<a:war:1085999886459228292> | {ctx.author.name} is on cooldown retry after {error.retry_after:.2f} second(s)", timestamp=ctx.message.created_at)
+      hacker = discord.Embed(color=0x50101,description=f"{e.war} | {ctx.author.name} is on cooldown retry after {error.retry_after:.2f} second(s)", timestamp=ctx.message.created_at)
       hacker.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar}")
       hacker.set_thumbnail(url =f"{ctx.author.avatar}")
       await ctx.reply(embed=hacker,delete_after=10)
     elif isinstance(error, commands.MaxConcurrencyReached):
-      hacker = discord.Embed(color=0x50101,description=f"<a:war:1085999886459228292> | This Command is already going on, let it finish and retry after", timestamp=ctx.message.created_at)
+      hacker = discord.Embed(color=0x50101,description=f"{e.war} | This Command is already going on, let it finish and retry after", timestamp=ctx.message.created_at)
       hacker.set_author(name=f"{ctx.author.name}", icon_url=f"{ctx.author.avatar}")
       hacker.set_thumbnail(url =f"{ctx.author.avatar}")
       await ctx.reply(embed=hacker,delete_after=10)
@@ -54,7 +55,7 @@ class Errors(Cog):
                 fmt = "{}, and {}".format(", ".join(missing[:-1]), missing[-1])
       else:
                 fmt = " and ".join(missing)
-      hacker = discord.Embed(color=0x50101,description=f"<a:war:1085999886459228292> | You lack `{fmt}` permission(s) to run `{ctx.command.name}` command!", timestamp=ctx.message.created_at)
+      hacker = discord.Embed(color=0x50101,description=f"{e.war} | You lack `{fmt}` permission(s) to run `{ctx.command.name}` command!", timestamp=ctx.message.created_at)
       hacker.set_author(name=f"{ctx.author.name}", icon_url=f"{ctx.author.avatar}")
       hacker.set_thumbnail(url =f"{ctx.author.avatar}")
       await ctx.reply(embed=hacker,delete_after=6)

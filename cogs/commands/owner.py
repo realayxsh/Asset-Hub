@@ -1,6 +1,7 @@
 from __future__ import annotations
 from discord.ext import commands
 from utils.Tools import *
+from utils.emojis import e
 from discord import *
 from utils.config import OWNER_IDS, No_Prefix
 import json, discord
@@ -29,7 +30,7 @@ class Owner(commands.Cog):
         paginator = Paginator(source=DescriptionEmbedPaginator(
             entries=entries,
             description="",
-            title=f"Server List of Ventura - {len(self.client.guilds)}",
+            title=f"Server List of DILBAR < 3 - {len(self.client.guilds)}",
             color=0x2f3136,
             per_page=10),
                               ctx=ctx)
@@ -82,7 +83,7 @@ class Owner(commands.Cog):
                 paginator = Paginator(source=DescriptionEmbedPaginator(
                     entries=entries,
                     title=
-                    f"List of Blacklisted users of Ventura - {len(blacklist['ids'])}",
+                    f"List of Blacklisted users of DILBAR < 3 - {len(blacklist['ids'])}",
                     description="",
                     per_page=10,
                     color=0x2f3136),
@@ -128,7 +129,7 @@ class Owner(commands.Cog):
             embed = discord.Embed(
                 title="User removed from blacklist",
                 description=
-                f"<a:green_tick:1103363669263405157> | **{member.name}** has been successfully removed from the blacklist",
+                f"{e.green_tick} | **{member.name}** has been successfully removed from the blacklist",
                 color=0x2f3136)
             with open("blacklist.json") as file:
                 blacklist = json.load(file)
@@ -168,7 +169,7 @@ class Owner(commands.Cog):
             ]
             paginator = Paginator(source=DescriptionEmbedPaginator(
                 entries=entries,
-                title=f"No Prefix of Ventura - {len(nplist)}",
+                title=f"No Prefix of DILBAR < 3 - {len(nplist)}",
                 description="",
                 per_page=10,
                 color=0x2f3136),
@@ -194,7 +195,7 @@ class Owner(commands.Cog):
             json.dump(data, idk, indent=4)
             embed1 = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Added no prefix to {user} for all",
+                f"{e.green_tick} | Added no prefix to {user} for all",
                 color=0x2f3136)
           
             await ctx.reply(embed=embed1)
@@ -217,7 +218,7 @@ class Owner(commands.Cog):
             json.dump(data, idk, indent=4)
             embed2 = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Removed no prefix from {user} for all",
+                f"{e.green_tick} | Removed no prefix from {user} for all",
                 color=0x2f3136)
 
             await ctx.reply(embed=embed2)
@@ -235,103 +236,103 @@ class Owner(commands.Cog):
     async def badge_add(self, ctx, member: discord.Member, *, badge: str):
         ok = getbadges(member.id)
         if badge.lower() in ["own", "owner", "king"]:
-            idk = "**<:King:1103728930277556284> OWNER**"
+            idk = f"**{e.king} OWNER**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed2 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `OWNER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `OWNER` Badge To {member}**",
                 color=0x2f3136)
             await ctx.reply(embed=embed2)
         elif badge.lower() in ["staff", "support staff"]:
-            idk = "**<:StaffBadge:1103729149169905795> STAFF**"
+            idk = f"**{e.staff_badge} STAFF**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed3 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `STAFF` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `STAFF` Badge To {member}**",
                 color=0x2f3136)
             await ctx.reply(embed=embed3)
         elif badge.lower() in ["partner"]:
-            idk = "**<:partners:1103962673823088712> PARTNER**"
+            idk = f"**{e.partners} PARTNER**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed4 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `PARTNER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `PARTNER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed4)
         elif badge.lower() in ["sponsor"]:
-            idk = "**<:Owners:1081818301413466183> SPONSER**"
+            idk = f"**{e.owners} SPONSER**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed5 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `SPONSER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `SPONSER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed5)
         elif badge.lower() in [
                 "friend", "friends", "homies", "owner's friend"
         ]:
-            idk = "**<:friends:1103962999267528714> FRIENDS**"
+            idk = f"**{e.friends} FRIENDS**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed1 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `FRIENDS` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `FRIENDS` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed1)
         elif badge.lower() in ["early", "supporter", "support"]:
-            idk = "**<:EarlySupport:1103963190192259142> SUPPORTER**"
+            idk = f"**{e.early_support} SUPPORTER**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed6 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `SUPPORTER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `SUPPORTER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed6)
 
         elif badge.lower() in ["vip"]:
-            idk = "**<:vippnehbb:1103963381783855135> VIP**"
+            idk = f"**{e.vip_badge} VIP**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed7 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `VIP` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `VIP` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed7)
 
         elif badge.lower() in ["bug", "hunter"]:
-            idk = "**<:Bug_hunter_2:1103963588902801428> BUG HUNTER**"
+            idk = f"**{e.bug_hunter2} BUG HUNTER**"
             ok.append(idk)
             makebadges(member.id, ok)
             embed8 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `BUG HUNTER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Added `BUG HUNTER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed8)
         elif badge.lower() in ["all"]:
-            idk = "**<:King:1103728930277556284> OWNER\n<:StaffBadge:1103729149169905795> STAFF\n<:partners:1103962673823088712> PARTNER\n<:Owners:1081818301413466183> SPONSER\n<:friends:1103962999267528714> FRIENDS\n<:EarlySupport:1103963190192259142> SUPPORTER\n<:vippnehbb:1103963381783855135> VIP\n<:Bug_hunter_2:1103963588902801428> BUG HUNTER**"
+            idk = f"**{e.king} OWNER\n{e.staff_badge} STAFF\n{e.partners} PARTNER\n{e.owners} SPONSER\n{e.friends} FRIENDS\n{e.early_support} SUPPORTER\n{e.vip_badge} VIP\n{e.bug_hunter2} BUG HUNTER**"
             ok.append(idk)
             makebadges(member.id, ok)
             embedall = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Added `All` Badges To {member}**",
+                f"{e.green_tick} | **Successfully Added `All` Badges To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embedall)
@@ -349,49 +350,49 @@ class Owner(commands.Cog):
     async def badge_remove(self, ctx, member: discord.Member, *, badge: str):
         ok = getbadges(member.id)
         if badge.lower() in ["own", "owner", "king"]:
-            idk = "**<:crown1:1072718187147300924> OWNER**"
+            idk = f"**{e.crown} OWNER**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed2 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `OWNER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `OWNER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed2)
 
         elif badge.lower() in ["staff", "support staff"]:
-            idk = "**<a:ventura_staff:1072720458585223279> STAFF**"
+            idk = f"**{e.staff_anim} STAFF**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed3 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `STAFF` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `STAFF` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed3)
 
         elif badge.lower() in ["partner"]:
-            idk = "**<:PartneredServerOwner:1072720583973949511> PARTNER**"
+            idk = f"**{e.partnered_owner} PARTNER**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed4 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `PARTNER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `PARTNER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed4)
 
         elif badge.lower() in ["sponsor"]:
-            idk = "**<a:diamond:1073099102193197086> SPONSER**"
+            idk = f"**{e.diamond} SPONSER**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed5 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `SPONSER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `SPONSER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed5)
@@ -399,43 +400,43 @@ class Owner(commands.Cog):
         elif badge.lower() in [
                 "friend", "friends", "homies", "owner's friend"
         ]:
-            idk = "**<:ventura_friends:1073099248410841150> FRIENDS**"
+            idk = f"**{e.vip_friends} FRIENDS**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed1 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `FRIENDS` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `FRIENDS` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed1)
 
         elif badge.lower() in ["early", "supporter", "support"]:
-            idk = "**<a:astroz_early:1073099540221141084> SUPPORTER**"
+            idk = f"**{e.early_anim} SUPPORTER**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed6 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `SUPPORTER` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `SUPPORTER` Badge To {member}**",
                 color=0x2f3136)
             
             await ctx.reply(embed=embed6)
 
         elif badge.lower() in ["vip"]:
-            idk = "**<:VIP:1073099724678242355> VIP**"
+            idk = f"**{e.vip} VIP**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed7 = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `VIP` Badge To {member}**",
+                f"{e.green_tick} | **Successfully Removed `VIP` Badge To {member}**",
                 color=0x2f3136)
            
             await ctx.reply(embed=embed7)
 
         elif badge.lower() in ["bug", "hunter"]:
-            idk = "**<a:astroz_bug:1073100013938409482> BUG HUNTER**"
+            idk = f"**{e.bug_anim} BUG HUNTER**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embed8 = discord.Embed(
@@ -446,13 +447,13 @@ class Owner(commands.Cog):
             
             await ctx.reply(embed=embed8)
         elif badge.lower() in ["all"]:
-            idk = "**<a:CROWN:1096460289492393994> OWNER\n<a:staff:1096460645249064990> STAFF\n<a:partner:1096460876673990768> PARTNER\n<:Sponcer:1096461095637635134> SPONSER\n<:friends:1096461299770216531> FRIENDS\n<a:supporter_gif:1096461566670549085> SUPPORTER\n<:vip:1096461907935907870> VIP\n<a:bug_hunter:1096462124777218110> BUG HUNTER**"
+            idk = f"**{e.crown_anim} OWNER\n{e.staff_anim2} STAFF\n{e.partner_anim} PARTNER\n{e.sponsor} SPONSER\n{e.friends2} FRIENDS\n{e.supporter} SUPPORTER\n{e.vip2} VIP\n{e.bug_hunter} BUG HUNTER**"
             ok.remove(idk)
             makebadges(member.id, ok)
             embedall = discord.Embed(
                 
                 description=
-                f"<a:green_tick:1103363669263405157> | **Successfully Removed `All` Badges From {member}**",
+                f"{e.green_tick} | **Successfully Removed `All` Badges From {member}**",
                 color=0x2f3136)
             await ctx.reply(embed=embedall)
         else:
@@ -470,7 +471,7 @@ class Owner(commands.Cog):
         """ DM the user of your choice """
         try:
             await user.send(message)
-            await ctx.send(f"<a:green_tick:1103363669263405157> | Successfully Sent a DM to **{user}**")
+            await ctx.send(f"{e.green_tick} | Successfully Sent a DM to **{user}**")
         except discord.Forbidden:
             await ctx.send("This user might be having DMs blocked or it's a bot account...")           
 
@@ -490,9 +491,9 @@ class Owner(commands.Cog):
         try:
             await ctx.guild.me.edit(nick=name)
             if name:
-                await ctx.send(f"<a:green_tick:1103363669263405157> | Successfully changed nickname to **{name}**")
+                await ctx.send(f"{e.green_tick} | Successfully changed nickname to **{name}**")
             else:
-                await ctx.send("<a:green_tick:1103363669263405157> | Successfully removed nickname")
+                await ctx.send(f"{e.green_tick} | Successfully removed nickname")
         except Exception as err:
             await ctx.send(err)
 

@@ -1,8 +1,9 @@
 from discord.ext import commands
-from core import Ventura, Cog
+from core import Dilbar, Cog
 import discord, requests
 import json
 from utils.Tools import *
+from utils.emojis import e
 from discord.ui import View, Button
 import logging
 
@@ -12,7 +13,7 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 class Guild(Cog):
-  def __init__(self, client: Ventura):
+  def __init__(self, client: Dilbar):
     self.client = client
 
 
@@ -30,7 +31,7 @@ class Guild(Cog):
         ).set_footer(text=f"{guild.name}",icon_url=guild.me.display_avatar.url if guild.icon is None else guild.icon.url)
     embed.add_field(
             name="**__About__**",
-            value=f"**Name : ** {guild.name}\n**ID :** {guild.id}\n**Owner <:crown1:1072718187147300924> :** {guild.owner} (<@{guild.owner_id}>)\n**Created At : **{guild.created_at.month}/{guild.created_at.day}/{guild.created_at.year}\n**Members :** {len(guild.members)}",
+            value=f"**Name : ** {guild.name}\n**ID :** {guild.id}\n**Owner {e.crown} :** {guild.owner} (<@{guild.owner_id}>)\n**Created At : **{guild.created_at.month}/{guild.created_at.day}/{guild.created_at.year}\n**Members :** {len(guild.members)}",
             inline=False
         )
     embed.add_field(
@@ -109,7 +110,7 @@ Threads : {len(guild.threads)}
         ).set_footer(text=f"{guild.name}",icon_url=guild.me.display_avatar.url if guild.icon is None else guild.icon.url)
     embed.add_field(
             name="**__About__**",
-            value=f"**Name : ** {guild.name}\n**ID :** {guild.id}\n**Owner <:crown1:1072718187147300924> :** {guild.owner} (<@{guild.owner_id}>)\n**Created At : **{guild.created_at.month}/{guild.created_at.day}/{guild.created_at.year}\n**Members :** {len(guild.members)}",
+            value=f"**Name : ** {guild.name}\n**ID :** {guild.id}\n**Owner {e.crown} :** {guild.owner} (<@{guild.owner_id}>)\n**Created At : **{guild.created_at.month}/{guild.created_at.day}/{guild.created_at.year}\n**Members :** {len(guild.members)}",
             inline=False
         )
     embed.add_field(

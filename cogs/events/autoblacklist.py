@@ -1,10 +1,10 @@
 import discord
-from core import Ventura, Cog
+from core import Dilbar, Cog
 from discord.ext import commands
 from utils.Tools import add_user_to_blacklist, getConfig
 
 class AutoBlacklist(Cog):
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
       self.client = client
       self.spam_cd_mapping = commands.CooldownMapping.from_cooldown(5, 5, commands.BucketType.member)
       self.spam_command_mapping = commands.CooldownMapping.from_cooldown(6, 10, commands.BucketType.member)

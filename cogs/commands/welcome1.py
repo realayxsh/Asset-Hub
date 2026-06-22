@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class devanshshree3110(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class devanshshree3110(commands.Cog):
     """Welcome commands"""
   
     def help_custom(self):
-		      emoji = '<:welcome:1103358088922279986>'
+		      emoji = f'{e.welcome}'
 		      label = "Welcomer"
 		      description = ""
 		      return emoji, label, description

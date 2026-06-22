@@ -12,6 +12,7 @@ import time
 import datetime
 import platform
 from utils.Tools import *
+from utils.emojis import e
 import os
 import logging
 from discord.ext import commands
@@ -24,7 +25,7 @@ from typing import *
 from utils import *
 
 
-from core import Cog, Ventura, Context
+from core import Cog, Dilbar, Context
 from typing import Optional
 from discord import app_commands
 start_time = time.time()
@@ -141,9 +142,9 @@ class Utility(commands.Cog):
         )
 
         embed.add_field(
-            name='<:discord:1103964847709896765> • **Servers**',
+            name=f'{e.discord_icon} • **Servers**',
             value=f'```Total: {serverCount} Server```')
-        embed.add_field(name='<:users:1103964989800337460> • **Users**',
+        embed.add_field(name=f'{e.users} • **Users**',
                         value=f'```Total: {total_members} Users```')
         embed.add_field(
             name="💻 • **System**",
@@ -151,21 +152,21 @@ class Utility(commands.Cog):
             f"```RAM: {used_memory}/{total_memory} MB\nCPU: {cpu_used}% used.```"
         )
         embed.add_field(
-            name="<:python:1103965211762884728> • **Python Version**",
+            name=f"{e.python} • **Python Version**",
             value=f"```{sys.version}```"),
         embed.add_field(
             name=
-            '<:python:1103965211762884728> • **Discord.py Version**',
+            f'{e.python} • **Discord.py Version**',
             value=f'```{discord.__version__}```')
         embed.add_field(
-            name="<:IconPing:1103965446312575009> • **Ping**",
+            name=f"{e.ping} • **Ping**",
             value=f"```{round(self.bot.latency * 1000, 2)} ms```")
         devansh = await self.bot.fetch_user(599776766071930910)
         vinit = await self.bot.fetch_user(599776766071930910)
       
 
         embed.add_field(
-            name='<:developer:1103965691859697725> • **Developers**',
+            name=f'{e.developer} • **Developers**',
             value=
             f"[{devansh}](https://discord.com/users/599776766071930910)\n"
         )
@@ -267,7 +268,7 @@ class Utility(commands.Cog):
         embed.add_field(
             name="**__About__**",
             value=
-            f"**Name : ** {guild.name}\n**ID :** {guild.id}\n**Owner <:King:1103728930277556284> :** {guild.owner} (<@{guild.owner_id}>)\n**Created At : ** <t:{c_at}:F>\n**Members :** {len(guild.members)}",
+            f"**Name : ** {guild.name}\n**ID :** {guild.id}\n**Owner {e.king} :** {guild.owner} (<@{guild.owner_id}>)\n**Created At : ** <t:{c_at}:F>\n**Members :** {len(guild.members)}",
             inline=False)
 
         embed.add_field(
@@ -283,7 +284,7 @@ class Utility(commands.Cog):
             embed.add_field(
                 name="**__Features__**",
                 value="\n".join([
-                    f"<a:green_tick:1103363669263405157> : {feature.replace('_',' ').title()}"
+                    f"{e.green_tick} : {feature.replace('_',' ').title()}"
                     for feature in guild.features
                 ]))
 
@@ -315,7 +316,7 @@ Threads : {len(guild.threads)}
         embed.add_field(
             name="**__Boost Status__**",
             value=
-            f"Level : {guild.premium_tier} [<a:booster_icon:1103966226239209513> {guild.premium_subscription_count} Boosts ]\nBooster Role : <@&{guild.premium_subscriber_role.id}>",
+            f"Level : {guild.premium_tier} [{e.booster} {guild.premium_subscription_count} Boosts ]\nBooster Role : <@&{guild.premium_subscriber_role.id}>",
             inline=False)
         embed.add_field(name=f"**__Server Roles [ {len(guild.roles)} ]__**",
                         value=f"{roless}",
@@ -343,25 +344,25 @@ Threads : {len(guild.threads)}
 
         badges = ""
         if member.public_flags.hypesquad:
-            badges += "<:HYPERSQUAD_EVENTS:1103966515549712395> "
+            badges += f"{e.hypersquad_events} "
         if member.public_flags.hypesquad_balance:
-            badges += "<:hypersquad:1103966700635951165> "
+            badges += f"{e.hypersquad} "
         if member.public_flags.hypesquad_bravery:
-            badges += "<:bravery:1103966926142701638> "
+            badges += f"{e.bravery} "
         if member.public_flags.hypesquad_brilliance:
-            badges += "<:Brilliance:1103967070338687068> "
+            badges += f"{e.brilliance} "
         if member.public_flags.early_supporter:
-            badges += "<:EarlySupport:1103963190192259142> "
+            badges += f"{e.early_support} "
         if member.public_flags.active_developer:
-            badges += "<:active_developer:1103967384416559145> "
+            badges += f"{e.active_dev} "
         if member.public_flags.verified_bot_developer:
-            badges += "<:developer:1103965691859697725> "
+            badges += f"{e.developer} "
         if member.public_flags.discord_certified_moderator:
-            badges += "<:CertifiedModerator:1072720350900670576> "
+            badges += f"{e.certified_mod} "
         if member.public_flags.staff:
-            badges += "<a:ventura_staff:1072720458585223279> "
+            badges += f"{e.staff_anim} "
         if member.public_flags.partner:
-            badges += "<:partners:1103962673823088712> "
+            badges += f"{e.partners} "
         if badges == None or badges == "":
             badges += "None"
 
@@ -449,7 +450,7 @@ Threads : {len(guild.threads)}
             embed.add_field(
                 name="__Extra__",
                 value=
-                f"**Boosting:** {f'<t:{round(member.premium_since.timestamp())}:R>' if member in ctx.guild.premium_subscribers else 'None'}\n**Voice <:voice:1103967834658308138>:** {'None' if not member.voice else member.voice.channel.mention}",
+                f"**Boosting:** {f'<t:{round(member.premium_since.timestamp())}:R>' if member in ctx.guild.premium_subscribers else 'None'}\n**Voice {e.voice}:** {'None' if not member.voice else member.voice.channel.mention}",
                 inline=False)
         if member in ctx.guild.members:
             embed.add_field(name="__Key Permissions__",
@@ -539,7 +540,7 @@ Threads : {len(guild.threads)}
         else:
             status_location = "Not Applicable"
         await ctx.send(embed=discord.Embed(
-            title="**<a:status:1103968091311972352> | status**",
+            title=f"**{e.status_anim} | status**",
             description="`%s`: `%s`" % (status_location, status),
             color=0x2f3136))
 
@@ -550,7 +551,7 @@ Threads : {len(guild.threads)}
     @ignore_check()
     async def emoji(self, ctx, emoji: discord.Emoji):
         return await ctx.send(embed=discord.Embed(
-            title="**<a:status:1103968091311972352> | emoji**",
+            title=f"**{e.status_anim} | emoji**",
             description="emoji: %s\nid: **`%s`**" % (emoji, emoji.id),
             color=0x2f3136))
 
@@ -634,7 +635,7 @@ Threads : {len(guild.threads)}
     async def removeemoji(self, ctx, emoji: discord.Emoji):
         await emoji.delete()
         await ctx.send(
-            "**<a:green_tick:1103363669263405157> emoji has been deleted.**")
+            f"**{e.green_tick} emoji has been deleted.**")
 
     @commands.hybrid_command(name="unbanall",
                              help="Unbans Everyone In The Guild!",
@@ -649,10 +650,10 @@ Threads : {len(guild.threads)}
     async def unbanall(self, ctx):
         button = Button(label="Yes",
                         style=discord.ButtonStyle.green,
-                        emoji="<a:green_tick:1103363669263405157>")
+                        emoji=f"{e.green_tick}")
         button1 = Button(label="No",
                          style=discord.ButtonStyle.red,
-                         emoji="<a:red_cross:1103371611983327322>")
+                         emoji=f"{e.red_cross}")
 
         async def button_callback(interaction: discord.Interaction):
             a = 0
@@ -914,18 +915,18 @@ Threads : {len(guild.threads)}
         if mem.public_flags.hypesquad:
             badges += "Hypesquad\n"
         elif mem.public_flags.hypesquad_balance:
-            badges += "<:hypersquad:1103966700635951165> **HypeSquad Balance**\n"
+            badges += f"{e.hypersquad} **HypeSquad Balance**\n"
 
         elif mem.public_flags.hypesquad_bravery:
-            badges += "<:bravery:1103966926142701638> **HypeSquad Bravery**\n"
+            badges += f"{e.bravery} **HypeSquad Bravery**\n"
         elif mem.public_flags.hypesquad_brilliance:
-            badges += "<:Brilliance:1103967070338687068> **Hypesquad Brilliance**\n"
+            badges += f"{e.brilliance} **Hypesquad Brilliance**\n"
         if mem.public_flags.early_supporter:
-            badges += "<:EarlySupport:1103963190192259142> **Early Supporter**\n"
+            badges += f"{e.early_support} **Early Supporter**\n"
         elif mem.public_flags.verified_bot_developer:
-            badges += "<:developer:1103965691859697725> **Verified Bot Developer**\n"
+            badges += f"{e.developer} **Verified Bot Developer**\n"
         elif mem.public_flags.active_developer:
-            badges += "<:active_developer:1103967384416559145> **Active Developer**\n"
+            badges += f"{e.active_dev} **Active Developer**\n"
         if badges == "":
             badges = "None"
         if bdgs == []:
@@ -935,7 +936,7 @@ Threads : {len(guild.threads)}
                              inline=False)
             embed2.add_field(
                 name="**Bot Badges:**",
-                value="<a:red_cross:1103371611983327322> NO BADGES",
+                value=f"{e.red_cross} NO BADGES",
                 inline=False)
             embed2.set_author(name=f"{mem}",
                               icon_url=mem.avatar.url
@@ -965,7 +966,7 @@ Threads : {len(guild.threads)}
     @blacklist_check()
     async def ping(self, ctx):
         embed = discord.Embed(
-            title="""<:IconPing:1103965446312575009> Ping <:IconPing:1103965446312575009>""",
+            title=f"""{e.ping} Ping {e.ping}""",
             description=f"```My Ping Is {int(self.bot.latency * 1000)} ms```",
             color=0x2f3136)
         embed.set_footer(text=f"Requested by {ctx.author.name}",

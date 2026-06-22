@@ -13,6 +13,7 @@ from discord.ext.commands.errors import BadArgument
 from discord.colour import Color
 import hashlib
 from utils.Tools import *
+from utils.emojis import e
 import contextlib
 from traceback import format_exception
 import discord
@@ -137,12 +138,12 @@ Aliases""")
             description="Here is **`%s`**'s member information" %
             (ctx.guild.name),
             color=0x2f3136)
-        embed.add_field(name="*<:online:1103971128445239388> Online*", value="`%s`" % (online), inline=False)
-        embed.add_field(name="*<:offline:1103971376320221216> Offline*",
+        embed.add_field(name=f"*{e.online} Online*", value="`%s`" % (online), inline=False)
+        embed.add_field(name=f"*{e.offline} Offline*",
                         value="`%s`" % (offline),
                         inline=False)
-        embed.add_field(name="*<:idle:1103971198464954479> Idle*", value="`%s`" % (idle), inline=False)
-        embed.add_field(name="*<:dnd:1103971230454910996> Do Not Disturb*",
+        embed.add_field(name=f"*{e.idle} Idle*", value="`%s`" % (idle), inline=False)
+        embed.add_field(name=f"*{e.dnd} Do Not Disturb*",
                         value="`%s`" % (dnd),
                         inline=False)
         embed.add_field(name="*Bots*", value="`%s`" % (bots), inline=False)
@@ -160,8 +161,8 @@ Aliases""")
                             description=f"{message}",
                             color=0x2f3136)
         msg = await ctx.send(embed=emp)
-        await msg.add_reaction("<:Fb_Like:1103969818572509224>")
-        await msg.add_reaction("<:Dislike:1103969904933216266>")
+        await msg.add_reaction(f"{e.fb_like}")
+        await msg.add_reaction(f"{e.dislike}")
 
     @commands.hybrid_command(name="hack",
                              help="hack someone's discord account",

@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class shree3110(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class shree3110(commands.Cog):
     """Music commands"""
   
     def help_custom(self):
-		      emoji = '<:icons_music:1103357638080737320>'
+		      emoji = f'{e.music}'
 		      label = "Music"
 		      description = ""
 		      return emoji, label, description

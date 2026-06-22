@@ -5,6 +5,7 @@ import os
 import logging
 from discord.ext import commands
 from utils.Tools import *
+from utils.emojis import e
 from discord.ext.commands import Context
 from discord import app_commands
 import time
@@ -12,7 +13,7 @@ import datetime
 import re
 from typing import *
 from time import strftime
-from core import Cog, Ventura, Context
+from core import Cog, Dilbar, Context
 from discord.ext import commands
 
 logging.basicConfig(
@@ -112,7 +113,7 @@ class Welcomer(commands.Cog):
             if rl == []:
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | This server don't have any autoroles setupped .",
+                    f"{e.red_cross} | This server don't have any autoroles setupped .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
@@ -121,7 +122,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | Succesfully cleared all human autoroles for {ctx.guild.name} .",
+                        f"{e.green_tick} | Succesfully cleared all human autoroles for {ctx.guild.name} .",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -148,7 +149,7 @@ class Welcomer(commands.Cog):
             if rl == []:
                 embed = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | This server don't have any autoroles setupped .",
+                    f"{e.red_cross} | This server don't have any autoroles setupped .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
@@ -157,7 +158,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | Succesfully cleared all bot autoroles for this server .",
+                        f"{e.green_tick} | Succesfully cleared all bot autoroles for this server .",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -185,7 +186,7 @@ class Welcomer(commands.Cog):
             if len(brl) == 0 and len(hrl) == 0:
                 embed = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | This server don't have any autoroles setupped .",
+                    f"{e.red_cross} | This server don't have any autoroles setupped .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
@@ -195,7 +196,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | Succesfully cleared all autoroles for this server .",
+                        f"{e.green_tick} | Succesfully cleared all autoroles for this server .",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -235,14 +236,14 @@ class Welcomer(commands.Cog):
             if len(rl) == 5:
                 embed = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | You have reached maximum channel limit for autorole humans which is five .",
+                    f"{e.red_cross} | You have reached maximum channel limit for autorole humans which is five .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
                 if str(role.id) in rl:
                     embed1 = discord.Embed(
                         description=
-                        "<a:red_cross:1103371611983327322> | {} is already in human autoroles ."
+                        f"{e.red_cross} | {} is already in human autoroles ."
                         .format(role.mention),
                         color=0x2f3136)
                     await ctx.send(embed=embed1)
@@ -251,7 +252,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | {role.mention} has been added to human autoroles .",
+                        f"{e.green_tick} | {role.mention} has been added to human autoroles .",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -279,7 +280,7 @@ class Welcomer(commands.Cog):
             if len(rl) == 0:
                 embed = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | This server dont have any autrole humans setupped yet .",
+                    f"{e.red_cross} | This server dont have any autrole humans setupped yet .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
@@ -294,7 +295,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | {role.mention} has been removed from human autoroles .",
+                        f"{e.green_tick} | {role.mention} has been removed from human autoroles .",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -333,14 +334,14 @@ class Welcomer(commands.Cog):
             if len(rl) == 5:
                 embed = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | You have reached maximum role limit for autorole bots which is five.",
+                    f"{e.red_cross} | You have reached maximum role limit for autorole bots which is five.",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
                 if str(role.id) in rl:
                     embed1 = discord.Embed(
                         description=
-                        "<a:red_cross:1103371611983327322> | {} is already in bot autoroles."
+                        f"{e.red_cross} | {} is already in bot autoroles."
                         .format(role.mention),
                         color=0x2f3136)
                     await ctx.send(embed=embed1)
@@ -349,7 +350,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | {role.mention} has been added to bot autoroles .",
+                        f"{e.green_tick} | {role.mention} has been added to bot autoroles .",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -377,14 +378,14 @@ class Welcomer(commands.Cog):
             if len(rl) == 0:
                 embed = discord.Embed(
                     description=
-                    f"<a:red_cross:1103371611983327322> | This server dont have any autrole humans setupped yet .",
+                    f"{e.red_cross} | This server dont have any autrole humans setupped yet .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
                 if str(role.id) not in rl:
                     embed1 = discord.Embed(
                         description=
-                        "<a:red_cross:1103371611983327322> | {} is not in bot autoroles."
+                        f"{e.red_cross} | {} is not in bot autoroles."
                         .format(role.mention),
                         color=0x2f3136)
                     await ctx.send(embed=embed1)
@@ -393,7 +394,7 @@ class Welcomer(commands.Cog):
                     updateDB(ctx.guild.id, data)
                     hacker = discord.Embed(
                         description=
-                        f"<a:green_tick:1103363669263405157> | {role.mention} has been removed from bot autoroles.",
+                        f"{e.green_tick} | {role.mention} has been removed from bot autoroles.",
                         color=0x2f3136)
                     await ctx.send(embed=hacker)
         else:
@@ -444,7 +445,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:green_tick:1103363669263405157> | Successfully updated the welcome thumbnail url .",
+                    f"{e.green_tick} | Successfully updated the welcome thumbnail url .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -486,7 +487,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    "<a:green_tick:1103363669263405157> | Successfully updated the welcome image url .",
+                    f"{e.green_tick} | Successfully updated the welcome image url .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -519,7 +520,7 @@ class Welcomer(commands.Cog):
             hacker = discord.Embed(
                 color=0x2f3136,
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully updated the welcome autodelete second to {autodelete_second} .\nFrom now welcome message will be deleted after {autodelete_second} .",
+                f"{e.green_tick} | Successfully updated the welcome autodelete second to {autodelete_second} .\nFrom now welcome message will be deleted after {autodelete_second} .",
                 timestamp=ctx.message.created_at)
             hacker.set_author(name=f"{ctx.author.name}",
                               icon_url=f"{ctx.author.avatar}")
@@ -567,7 +568,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully updated the welcome message .",
+                    f"{e.green_tick} | Successfully updated the welcome message .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -598,7 +599,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:green_tick:1103363669263405157> | Okay, Now your embed is removed and welcome message will be a plain message .",
+                    f"{e.green_tick} | Okay, Now your embed is removed and welcome message will be a plain message .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -609,7 +610,7 @@ class Welcomer(commands.Cog):
                 hacker1 = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:green_tick:1103363669263405157> | Okay, Now your embed is enabled and welcome message will be a embed message.",
+                    f"{e.green_tick} | Okay, Now your embed is enabled and welcome message will be a embed message.",
                     timestamp=ctx.message.created_at)
                 hacker1.set_author(name=f"{ctx.author.name}",
                                    icon_url=f"{ctx.author.avatar}")
@@ -640,7 +641,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:green_tick:1103363669263405157> | Okay, Now your embed ping is disabled and users won't get pinged upon welcome .",
+                    f"{e.green_tick} | Okay, Now your embed ping is disabled and users won't get pinged upon welcome .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -651,7 +652,7 @@ class Welcomer(commands.Cog):
                 hacker1 = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:green_tick:1103363669263405157> | Okay, Now your embed ping is enabled and I will ping new users outside the embed .",
+                    f"{e.green_tick} | Okay, Now your embed ping is enabled and I will ping new users outside the embed .",
                     timestamp=ctx.message.created_at)
                 hacker1.set_author(name=f"{ctx.author.name}",
                                    icon_url=f"{ctx.author.avatar}")
@@ -693,7 +694,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:red_cross:1103371611983327322> | You have reached maximum channel limit for channel which is three .",
+                    f"{e.red_cross} | You have reached maximum channel limit for channel which is three .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -703,7 +704,7 @@ class Welcomer(commands.Cog):
                     hacker1 = discord.Embed(
                         color=0x2f3136,
                         description=
-                        f"<a:red_cross:1103371611983327322> | This channel is already in the welcome channels list .",
+                        f"{e.red_cross} | This channel is already in the welcome channels list .",
                         timestamp=ctx.message.created_at)
                     hacker1.set_author(name=f"{ctx.author.name}",
                                        icon_url=f"{ctx.author.avatar}")
@@ -714,7 +715,7 @@ class Welcomer(commands.Cog):
                     hacker4 = discord.Embed(
                         color=0x2f3136,
                         description=
-                        f"<a:green_tick:1103363669263405157> | Successfully added {channel.mention} to welcome channel list .",
+                        f"{e.green_tick} | Successfully added {channel.mention} to welcome channel list .",
                         timestamp=ctx.message.created_at)
                     hacker4.set_author(name=f"{ctx.author.name}",
                                        icon_url=f"{ctx.author.avatar}")
@@ -746,7 +747,7 @@ class Welcomer(commands.Cog):
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"<a:red_cross:1103371611983327322> | This server dont have any welcome channel setupped yet .",
+                    f"{e.red_cross} | This server dont have any welcome channel setupped yet .",
                     timestamp=ctx.message.created_at)
                 hacker.set_author(name=f"{ctx.author.name}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -756,7 +757,7 @@ class Welcomer(commands.Cog):
                     hacker1 = discord.Embed(
                         color=0x2f3136,
                         description=
-                        f"<a:red_cross:1103371611983327322> | This channel is not in the welcome channels list .",
+                        f"{e.red_cross} | This channel is not in the welcome channels list .",
                         timestamp=ctx.message.created_at)
                     hacker1.set_author(name=f"{ctx.author.name}",
                                        icon_url=f"{ctx.author.avatar}")
@@ -767,7 +768,7 @@ class Welcomer(commands.Cog):
                     hacker3 = discord.Embed(
                         color=0x2f3136,
                         description=
-                        f"<a:green_tick:1103363669263405157> | Successfully removed {channel.mention} from welcome channel list .",
+                        f"{e.green_tick} | Successfully removed {channel.mention} from welcome channel list .",
                         timestamp=ctx.message.created_at)
                     hacker3.set_author(name=f"{ctx.author.name}",
                                        icon_url=f"{ctx.author.avatar}")
@@ -802,7 +803,7 @@ class Welcomer(commands.Cog):
             hacker = discord.Embed(
                 color=0x2f3136,
                 description=
-                f"<a:red_cross:1103371611983327322> | Oops, Kindly setup your welcome channel first .",
+                f"{e.red_cross} | Oops, Kindly setup your welcome channel first .",
                 timestamp=ctx.message.created_at)
             hacker.set_author(name=f"{ctx.author.name}",
                               icon_url=f"{ctx.author.avatar}")
@@ -922,7 +923,7 @@ class Welcomer(commands.Cog):
             if data["welcome"]["channel"] == []:
                 embed = discord.Embed(
                     description=
-                    "<a:red_cross:1103371611983327322> | This server don't have any greet channel setuped yet .",
+                    f"{e.red_cross} | This server don't have any greet channel setuped yet .",
                     color=0x2f3136)
                 await ctx.send(embed=embed)
             else:
@@ -933,7 +934,7 @@ class Welcomer(commands.Cog):
                 updateDB(ctx.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    "<a:green_tick:1103363669263405157> | Succesfully cleared all greet config for this server .",
+                    f"{e.green_tick} | Succesfully cleared all greet config for this server .",
                     color=0x2f3136)
                 await ctx.send(embed=hacker)
         else:

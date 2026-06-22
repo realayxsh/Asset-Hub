@@ -1,5 +1,5 @@
 from __future__ import annotations
-from core import Ventura
+from core import Dilbar
 
 
 

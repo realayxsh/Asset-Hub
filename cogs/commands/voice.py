@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 
+from utils.emojis import e
 class shree00(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -9,7 +10,7 @@ class shree00(commands.Cog):
     """Voice commands"""
   
     def help_custom(self):
-		      emoji = '<:IconVoice:1103360243276206322>'
+		      emoji = f'{e.icon_voice}'
 		      label = "Voice"
 		      description = ""
 		      return emoji, label, description

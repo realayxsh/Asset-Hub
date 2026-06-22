@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 from utils.Tools import *
+from utils.emojis import e
 import json
 import re
 
@@ -15,12 +16,12 @@ class Server(commands.Cog):
     async def add_role(self, *, role: int, member: discord.Member):
         if member.guild.me.guild_permissions.manage_roles:
             role = discord.Object(id=int(role))
-            await member.add_roles(role, reason="VesTrol | Role Added ")
+            await member.add_roles(role, reason="DILBAR < 3 | Role Added ")
 
     async def remove_role(self, *, role: int, member: discord.Member):
         if member.guild.me.guild_permissions.manage_roles:
             role = discord.Object(id=int(role))
-            await member.remove_roles(role, reason="VesTrol | Role Removed")
+            await member.remove_roles(role, reason="DILBAR < 3 | Role Removed")
 
     @commands.command(name="owner",
                       description="Gives the owner role to the user .",
@@ -36,7 +37,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -45,7 +46,7 @@ class Server(commands.Cog):
         elif data["owner"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Owner role is not setuped in {context.guild.name}",
+                f"{e.war} | Owner role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -66,7 +67,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -75,7 +76,7 @@ class Server(commands.Cog):
         elif data["coown"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Co Owner role is not setuped in {context.guild.name}",
+                f"{e.war} | Co Owner role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -97,7 +98,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -106,7 +107,7 @@ class Server(commands.Cog):
         elif data["headadmin"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Head Admin role is not setuped in {context.guild.name}",
+                f"{e.war} | Head Admin role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -126,7 +127,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -135,7 +136,7 @@ class Server(commands.Cog):
         elif data["admin"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Admin role is not setuped in {context.guild.name}",
+                f"{e.war} | Admin role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -157,7 +158,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -166,7 +167,7 @@ class Server(commands.Cog):
         elif data["gadmin"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Girl Admin role is not setuped in {context.guild.name}",
+                f"{e.war} | Girl Admin role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -187,7 +188,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -195,7 +196,7 @@ class Server(commands.Cog):
             await context.send(embed=hacker)
         elif data["gadmin"] == None:
             hacker1 = discord.Embed(
-                f"<a:war:1085999886459228292> | Head Mod role is not setuped in {context.guild.name}",
+                f"{e.war} | Head Mod role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -215,7 +216,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -224,7 +225,7 @@ class Server(commands.Cog):
         elif data["mod"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Mod role is not setuped in {context.guild.name}",
+                f"{e.war} | Mod role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -245,7 +246,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -254,7 +255,7 @@ class Server(commands.Cog):
         elif data["gmod"] == None:
             hacker1 = discord.Embed(
                 description=
-                f"<a:war:1085999886459228292> | Girl Mod role is not setuped in {context.guild.name}",
+                f"{e.war} | Girl Mod role is not setuped in {context.guild.name}",
                 color=0x2f3136)
             hacker1.set_author(name=f"{context.author}",
                                icon_url=f"{context.author.avatar}")
@@ -287,7 +288,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Staff` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Staff` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -317,7 +318,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `girl` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `girl` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -347,7 +348,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `vip` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `vip` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -377,7 +378,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `guest` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `guest` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -407,7 +408,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `friend` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `friend` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -438,7 +439,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Owner` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Owner` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -469,7 +470,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Co Owner` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Co Owner` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -500,7 +501,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Head Admin` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Head Admin` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -530,7 +531,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Admin` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Admin` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -561,7 +562,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Head Mod` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Head Mod` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -591,7 +592,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Mod` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Mod` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -622,7 +623,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Girl Admin` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Girl Admin` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -653,7 +654,7 @@ class Server(commands.Cog):
                 updateConfig(context.guild.id, data)
                 hacker = discord.Embed(
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Setuped `Girl Mod` Role To {role.mention}",
+                    f"{e.green_tick} | Successfully Setuped `Girl Mod` Role To {role.mention}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{context.author}",
                                   icon_url=f"{context.author.avatar}")
@@ -769,53 +770,53 @@ class Server(commands.Cog):
                 title=f"Custom roles Settings For {context.guild.name}",
                 color=0x2f3136)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Staff Role:",
+                name=f"{e.dot_white} Staff Role:",
                 value=f"{staffr}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Girl Role:",
+                name=f"{e.dot_white} Girl Role:",
                 value=f"{girlr}",
                 inline=False)
-            embed.add_field(name="<:dot_white:1103476115709890682> Vip Role:",
+            embed.add_field(name=f"{e.dot_white} Vip Role:",
                             value=f"{vipr}",
                             inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Guest Role:",
+                name=f"{e.dot_white} Guest Role:",
                 value=f"{guestr}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Friend Role:",
+                name=f"{e.dot_white} Friend Role:",
                 value=f"{frndr}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Owner Role:",
+                name=f"{e.dot_white} Owner Role:",
                 value=f"{own}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Co Owner Role:",
+                name=f"{e.dot_white} Co Owner Role:",
                 value=f"{coown}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Head Admin Role:",
+                name=f"{e.dot_white} Head Admin Role:",
                 value=f"{headmin}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Admin Role:",
+                name=f"{e.dot_white} Admin Role:",
                 value=f"{adminss}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Girl Admin Role:",
+                name=f"{e.dot_white} Girl Admin Role:",
                 value=f"{gadminss}",
                 inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Head Mod Role:",
+                name=f"{e.dot_white} Head Mod Role:",
                 value=f"{hmod}",
                 inline=False)
-            embed.add_field(name="<:dot_white:1103476115709890682> Mod Role:",
+            embed.add_field(name=f"{e.dot_white} Mod Role:",
                             value=f"{mod}",
                             inline=False)
             embed.add_field(
-                name="<:dot_white:1103476115709890682> Girl Mod Role:",
+                name=f"{e.dot_white} Girl Mod Role:",
                 value=f"{gmod}",
                 inline=False)
             
@@ -835,7 +836,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -856,7 +857,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -876,7 +877,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -895,7 +896,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -916,7 +917,7 @@ class Server(commands.Cog):
             await self.add_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Given <@&{role}> To {member.mention}",
+                f"{e.green_tick} | Successfully Given <@&{role}> To {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -948,7 +949,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -969,7 +970,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -989,7 +990,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1009,7 +1010,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1030,7 +1031,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1051,7 +1052,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1072,7 +1073,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1095,7 +1096,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1115,7 +1116,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1138,7 +1139,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1159,7 +1160,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1179,7 +1180,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1200,7 +1201,7 @@ class Server(commands.Cog):
             await self.remove_role(role=role, member=member)
             hacker = discord.Embed(
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Removed <@&{role}> From {member.mention}",
+                f"{e.green_tick} | Successfully Removed <@&{role}> From {member.mention}",
                 color=0x2f3136)
             hacker.set_author(name=f"{context.author}",
                               icon_url=f"{context.author.avatar}")
@@ -1232,7 +1233,7 @@ class Server(commands.Cog):
                 hacker6 = discord.Embed(
                     title="VesTrol",
                     description=
-                    f"<a:red_cross:1103371611983327322> You can\'t add more than 20 autoresponses in {ctx.guild.name}",
+                    f"{e.red_cross} You can\'t add more than 20 autoresponses in {ctx.guild.name}",
                     color=0x2f3136)
                 hacker6.set_author(name=f"{ctx.author}",
                                    icon_url=f"{ctx.author.avatar}")
@@ -1243,7 +1244,7 @@ class Server(commands.Cog):
                 hacker = discord.Embed(
                     title="VesTrol",
                     description=
-                    f"<a:red_cross:1103371611983327322> The autoresponse with the `{name}` is already in {ctx.guild.name}",
+                    f"{e.red_cross} The autoresponse with the `{name}` is already in {ctx.guild.name}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{ctx.author}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -1256,7 +1257,7 @@ class Server(commands.Cog):
             hacker1 = discord.Embed(
                 title="VesTrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Created Autoresponder in {ctx.guild.name} with the `{name}`",
+                f"{e.green_tick} | Successfully Created Autoresponder in {ctx.guild.name} with the `{name}`",
                 color=0x2f3136)
             hacker1.set_author(name=f"{ctx.author}",
                                icon_url=f"{ctx.author.avatar}")
@@ -1273,7 +1274,7 @@ class Server(commands.Cog):
             hacker2 = discord.Embed(
                 title="VesTrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Created Autoresponder  in {ctx.guild.name} with the `{name}`",
+                f"{e.green_tick} | Successfully Created Autoresponder  in {ctx.guild.name} with the `{name}`",
                 color=0x2f3136)
             hacker2.set_author(name=f"{ctx.author}",
                                icon_url=f"{ctx.author.avatar}")
@@ -1296,7 +1297,7 @@ class Server(commands.Cog):
                 hacker1 = discord.Embed(
                     title="VesTrol",
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Deleted Autoresponder in {ctx.guild.name} with the `{name}`",
+                    f"{e.green_tick} | Successfully Deleted Autoresponder in {ctx.guild.name} with the `{name}`",
                     color=0x2f3136)
                 hacker1.set_author(name=f"{ctx.author}",
                                    icon_url=f"{ctx.author.avatar}")
@@ -1306,7 +1307,7 @@ class Server(commands.Cog):
                 hacker = discord.Embed(
                     title="VesTrol",
                     description=
-                    f"<a:red_cross:1103371611983327322> No Autoresponder Found With The Name `{name}` In {ctx.guild.name}",
+                    f"{e.red_cross} No Autoresponder Found With The Name `{name}` In {ctx.guild.name}",
                     color=0x2f3136)
                 hacker.set_author(name=f"{ctx.author}",
                                   icon_url=f"{ctx.author.avatar}")
@@ -1316,7 +1317,7 @@ class Server(commands.Cog):
             hacker2 = discord.Embed(
                 title="VesTrol",
                 description=
-                f"<a:red_cross:1103371611983327322> There is no Autoresponder in {ctx.guild.name}",
+                f"{e.red_cross} There is no Autoresponder in {ctx.guild.name}",
                 color=0x2f3136)
             hacker2.set_author(name=f"{ctx.author}",
                                icon_url=f"{ctx.author.avatar}")
@@ -1362,7 +1363,7 @@ class Server(commands.Cog):
                 hacker1 = discord.Embed(
                     title="VesTrol",
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Edited Autoresponder in {ctx.guild.name} with the `{name}`",
+                    f"{e.green_tick} | Successfully Edited Autoresponder in {ctx.guild.name} with the `{name}`",
                     color=0x2f3136)
                 hacker1.set_author(name=f"{ctx.author}",
                                    icon_url=f"{ctx.author.avatar}")
@@ -1372,7 +1373,7 @@ class Server(commands.Cog):
             hacker2 = discord.Embed(
                 title="VesTrol",
                 description=
-                f"<a:red_cross:1103371611983327322> No Autoresponder Found With The Name `{name}` In {ctx.guild.name}",
+                f"{e.red_cross} No Autoresponder Found With The Name `{name}` In {ctx.guild.name}",
                 color=0x2f3136)
             hacker2.set_author(name=f"{ctx.author}",
                                icon_url=f"{ctx.author.avatar}")

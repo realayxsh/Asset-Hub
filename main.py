@@ -1,5 +1,5 @@
 import os
-from core.Ventura import Ventura
+from core.Dilbar import Dilbar
 import asyncio, json
 import jishaku, cogs
 from discord.ext import commands, tasks
@@ -9,6 +9,7 @@ import traceback
 from discord.ext.commands import Context
 from discord import Spotify
 from utils.components import patch_discord
+from utils.emojis import e
 
 patch_discord()
 
@@ -17,11 +18,11 @@ os.environ["JISHAKU_HIDE"] = "True"
 os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 os.environ["JISHAKU_FORCE_PAGINATOR"] = "True"
 
-client = Ventura()
+client = Dilbar()
 tree = client.tree
 
 
-async def Ventura_stats():
+async def dilbar_stats():
   while True:
     servers = len(client.guilds)
     users = sum(g.member_count for g in client.guilds
@@ -85,7 +86,7 @@ class Devansh(discord.ui.Modal, title='Embed Configuration'):
     traceback.print_tb(error.__traceback__)
 
 
-@tree.command(name="embed", description="Create A Embed Using Ventura")
+@tree.command(name="embed", description="Create A Embed Using DILBAR < 3")
 async def _embed(interaction: discord.Interaction) -> None:
   await interaction.response.send_modal(Devansh())
 
@@ -99,7 +100,7 @@ async def on_ready():
   print(f"Logged in as: {client.user}")
   print(f"Connected to: {len(client.guilds)} guilds")
   print(f"Connected to: {len(client.users)} users")
-  await client.loop.create_task(Ventura_stats())
+  await client.loop.create_task(dilbar_stats())
   try:
     synced = await client.tree.sync()
     print(f"synced {len(synced)} commands")
@@ -144,21 +145,21 @@ async def on_command_completion(context: Context) -> None:
         name=f"Executed {executed_command} Command By : {context.author}",
         icon_url=f"{context.author.avatar}")
       embed.set_thumbnail(url=f"{context.author.avatar}")
-      embed.add_field(name="<:dot_white:1103476115709890682> Command Name :",
+      embed.add_field(name=f"{e.dot_white} Command Name :",
                       value=f"{executed_command}",
                       inline=False)
       embed.add_field(
-        name="<:dot_white:1103476115709890682> Command Executed By :",
+        name=f"{e.dot_white} Command Executed By :",
         value=
         f"{context.author} | ID: [{context.author.id}](https://discord.com/users/{context.author.id})",
         inline=False)
       embed.add_field(
-        name="<:dot_white:1103476115709890682> Command Executed In :",
+        name=f"{e.dot_white} Command Executed In :",
         value=
         f"{context.guild.name}  | ID: [{context.guild.id}](https://discord.com/users/{context.author.id})",
         inline=False)
       embed.add_field(
-        name="<:dot_white:1103476115709890682> Command Executed In Channel :",
+        name=f"{e.dot_white} Command Executed In Channel :",
         value=
         f"{context.channel.name}  | ID: [{context.channel.id}](https://discord.com/channel/{context.channel.id})",
         inline=False)
@@ -175,11 +176,11 @@ async def on_command_completion(context: Context) -> None:
         name=f"Executed {executed_command} Command By : {context.author}",
         icon_url=f"{context.author.avatar}")
       embed1.set_thumbnail(url=f"{context.author.avatar}")
-      embed1.add_field(name="<a:arrow:1096441081031295026> Command Name :",
+      embed1.add_field(name=f"{e.arrow} Command Name :",
                        value=f"{executed_command}",
                        inline=False)
       embed1.add_field(
-        name="<a:arrow:1096441081031295026> Command Executed By :",
+        name=f"{e.arrow} Command Executed By :",
         value=
         f"{context.author} | ID: [{context.author.id}](https://discord.com/users/{context.author.id})",
         inline=False)

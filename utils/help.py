@@ -1,6 +1,7 @@
 import discord
 import functools
 from utils.Tools import *
+from utils.emojis import e
 
 
 class Dropdown(discord.ui.Select):
@@ -18,7 +19,7 @@ class Dropdown(discord.ui.Select):
       if not index: index = 0
       await self.view.set_page(index, interaction)
     else:
-      await interaction.response.send_message("<a:war:1085999886459228292> Hey its not your session !",
+      await interaction.response.send_message(f"{e.war} Hey its not your session !",
                                               ephemeral=True)
 
 
@@ -45,7 +46,7 @@ class Buttons(discord.ui.Button):
       else:
         await self.command(interaction)
     else:
-      await interaction.response.send_message("<a:war:1085999886459228292> Hey it's not your session !",
+      await interaction.response.send_message(f"{e.war} Hey it's not your session !",
                                               ephemeral=True)
 
 
@@ -66,27 +67,27 @@ class View(discord.ui.View):
       self.add_item(Dropdown(ctx=self.ctx, options=self.options))
 
   def add_buttons(self):
-    self.startB = Buttons(emoji="<:emote:1083286116788097036>",
+    self.startB = Buttons(emoji=f"{e.emote1}",
                           style=discord.ButtonStyle.grey,
                           command=self.set_page,
                           args=0,
                           ctx=self.ctx)
-    self.backB = Buttons(emoji="<:emote:1083285630148169748>",
+    self.backB = Buttons(emoji=f"{e.emote3}",
                          style=discord.ButtonStyle.grey,
                          command=self.to_page,
                          args=-1,
                          ctx=self.ctx)
-    self.nextB = Buttons(emoji="<:emote:1083285725845409842>",
+    self.nextB = Buttons(emoji=f"{e.emote4}",
                          style=discord.ButtonStyle.grey,
                          command=self.to_page,
                          args=+1,
                          ctx=self.ctx)
-    self.endB = Buttons(emoji="<:emote:1083285893651107860>",
+    self.endB = Buttons(emoji=f"{e.emote2}",
                         style=discord.ButtonStyle.grey,
                         command=self.set_page,
                         args=len(self.options) - 1,
                         ctx=self.ctx)
-    self.quitB = Buttons(emoji="<:IconHome:1083286181283901511>",
+    self.quitB = Buttons(emoji=f"{e.icon_home}",
                          style=discord.ButtonStyle.grey,
                          command=self.quit,
                          ctx=self.ctx)
@@ -112,7 +113,7 @@ class View(discord.ui.View):
   def gen_embeds(self):
     options, embeds = [], []
     options.append(
-      discord.SelectOption(label="Home", emoji='<a:dev:1072465734338363463>'))
+      discord.SelectOption(label="Home", emoji=f'{e.dev_anim}'))
     embeds.append(self.home)
     for cog in self.get_cogs():
       if "help_custom" in dir(cog):

@@ -3,12 +3,13 @@ from discord.ext import commands
 import datetime
 import re
 import json
-from core import Ventura, Cog
+from core import Dilbar, Cog
 from utils.Tools import getConfig
+from utils.emojis import e
 
 
 class AntiSpam(Cog):
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client
         self.spam_cd_mapping = commands.CooldownMapping.from_cooldown(4, 7, commands.BucketType.member)
         self.spam_punish_cooldown_cd_mapping = commands.CooldownMapping.from_cooldown(1, 10, commands.BucketType.member)
@@ -40,24 +41,24 @@ class AntiSpam(Cog):
                   
                       if data["punishment"] == "kick":
                         now = discord.utils.utcnow()
-                        await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Spam")
-                        hacker = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Spamming")
+                        await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Spam")
+                        hacker = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Spamming")
                         hacker.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                         hacker.set_thumbnail(url =f"{message.author.avatar}")
                         await message.channel.send(embed=hacker)
 
                       if data["punishment"] == "ban":
                         now = discord.utils.utcnow()
-                        await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Spam")
-                        hacker1 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Spamming")
+                        await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Spam")
+                        hacker1 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Spamming")
                         hacker1.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                         hacker1.set_thumbnail(url =f"{message.author.avatar}")
                         await message.channel.send(embed=hacker1)
 
                       if data["punishment"] == "none":
                         now = discord.utils.utcnow()
-                        await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Spam")
-                        hacker2 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Spamming")
+                        await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Spam")
+                        hacker2 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Spamming")
                         hacker2.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                         hacker2.set_thumbnail(url =f"{message.author.avatar}")
                         await message.channel.send(embed=hacker2)
@@ -69,30 +70,30 @@ class AntiSpam(Cog):
                         await message.delete()
 
                         if data["punishment"] == "kick":
-                            await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Discord Invites")
-                            hacker3 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Sending Discord Server Invites")
+                            await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Discord Invites")
+                            hacker3 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Sending Discord Server Invites")
                             hacker3.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                             hacker3.set_thumbnail(url =f"{message.author.avatar}")
                             await message.channel.send(embed=hacker3)
 
                         if data["punishment"] == "ban":
-                            await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Discord Invites")
-                            hacker4 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Sending Discord Server Invites")
+                            await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Discord Invites")
+                            hacker4 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Sending Discord Server Invites")
                             hacker4.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                             hacker4.set_thumbnail(url =f"{message.author.avatar}")
                             await message.channel.send(embed=hacker4)
 
                         if data["punishment"] == "none":
                              now = discord.utils.utcnow()
-                             await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Discord Invites")
-                             hacker5 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Sending Discord Server Invites")
+                             await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Discord Invites")
+                             hacker5 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Sending Discord Server Invites")
                              hacker5.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                              hacker5.set_thumbnail(url =f"{message.author.avatar}")
                              await message.channel.send(embed=hacker5)
                     if link_matches:
                         if data["punishment"] == "kick":
-                          await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Link")
-                          hacker6 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Sending Links")
+                          await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Link")
+                          hacker6 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Sending Links")
                           hacker6.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                           hacker6.set_thumbnail(url =f"{message.author.avatar}") 
                           await message.channel.send(embed=hacker6)
@@ -100,16 +101,16 @@ class AntiSpam(Cog):
 
 
                         if data["punishment"] == "ban":
-                          await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Link")
-                          hacker7 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Sending Links")
+                          await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Link")
+                          hacker7 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Sending Links")
                           hacker7.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                           hacker7.set_thumbnail(url =f"{message.author.avatar}")  
                           await message.channel.send(embed=hacker7)
 
                         if data["punishment"] == "none":
                           now = discord.utils.utcnow()
-                          await message.author.timeout(now + datetime.timedelta(minutes=15), reason="VesTrol | Anti Link")
-                          hacker8 = discord.Embed(color=0x2f3136,description=f"<a:green_tick:1103363669263405157> | Successfully Muted {message.author} For Sending Links")
+                          await message.author.timeout(now + datetime.timedelta(minutes=15), reason="DILBAR < 3 | Anti Link")
+                          hacker8 = discord.Embed(color=0x2f3136,description=f"{e.green_tick} | Successfully Muted {message.author} For Sending Links")
                           hacker8.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar}")
                           hacker8.set_thumbnail(url =f"{message.author.avatar}") 
                           await message.channel.send(embed=hacker8)

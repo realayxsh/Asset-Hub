@@ -1,8 +1,9 @@
 from __future__ import annotations
 from discord.ext import commands
-from core import Cog, Ventura, Context
+from core import Cog, Dilbar, Context
 import discord
 from utils.Tools import *
+from utils.emojis import e
 from discord.ui import Button, View
 import datetime
 from typing import Optional
@@ -12,7 +13,7 @@ from utils import Paginator, DescriptionEmbedPaginator, FieldPagePaginator, Text
 class Security(Cog):
     """Shows a list of commands regarding antinuke"""
 
-    def __init__(self, client: Ventura):
+    def __init__(self, client: Dilbar):
         self.client = client
 
     @commands.group(name="Antinuke",
@@ -53,7 +54,7 @@ class Security(Cog):
                 embed = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"**{ctx.guild.name} Security Settings **<:role:1103972602294304778>\nOhh uh! looks like your server has already enabled security\n\nCurrent Status: <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n\n> To disable use `antinuke disable`",
+                    f"**{ctx.guild.name} Security Settings **{e.role}\nOhh uh! looks like your server has already enabled security\n\nCurrent Status: {e.no}{e.yes}\n\n> To disable use `antinuke disable`",
                     color=0x2f3136)
 
                 await ctx.reply(embed=embed, mention_author=False)
@@ -63,7 +64,7 @@ class Security(Cog):
                 embed2 = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"**{ctx.guild.name} Security Settings** <:role:1103972602294304778>\nAlso move my role to top of roles for me to work properly.\n\nPunishments:\n\n**Anti Bot:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Ban:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Kick:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>/n**Anti Prune:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Channel Create/Delete/Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Role Create/Delete/Update:** <:ventura_no:1096442460999274597><:ventura_yes:1096442570466414713>\n**Anti Webhook Create:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Emoji Create/Delete/Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Guild Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Community Spam:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Integration Create:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Everyone/Here/Role Mention:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Whitelisted Users:** {len(wled)}\n\n**Auto Recovery:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>",
+                    f"**{ctx.guild.name} Security Settings** {e.role}\nAlso move my role to top of roles for me to work properly.\n\nPunishments:\n\n**Anti Bot:** {e.no}{e.yes}\n**Anti Ban:** {e.no}{e.yes}\n**Anti Kick:** {e.no}{e.yes}/n**Anti Prune:** {e.no}{e.yes}\n**Anti Channel Create/Delete/Update:** {e.no}{e.yes}\n**Anti Role Create/Delete/Update:** {e.no}{e.yes}\n**Anti Webhook Create:** {e.no}{e.yes}\n**Anti Emoji Create/Delete/Update:** {e.no}{e.yes}\n**Anti Guild Update:** {e.no}{e.yes}\n**Anti Community Spam:** {e.no}{e.yes}\n**Anti Integration Create:** {e.no}{e.yes}\n**Anti Everyone/Here/Role Mention:** {e.no}{e.yes}\n**Whitelisted Users:** {len(wled)}\n\n**Auto Recovery:** {e.no}{e.yes}",
                     color=0x2f3136)
                 embed2.add_field(
                     name="Other Settings",
@@ -100,7 +101,7 @@ class Security(Cog):
                 emb = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"**{ctx.guild.name} Security Settings **<:role:1103972602294304778>\nOhh NO! looks like your server has already disabled security\n\nCurrent Status: <:Disabled:1103972013963481138>\n\n> To enable use `antinuke enable`",
+                    f"**{ctx.guild.name} Security Settings **{e.role}\nOhh NO! looks like your server has already disabled security\n\nCurrent Status: {e.disabled}\n\n> To enable use `antinuke enable`",
                     color=0x2f3136)
                 await ctx.reply(embed=emb, mention_author=False)
             else:
@@ -109,7 +110,7 @@ class Security(Cog):
                 final = discord.Embed(
                     title="SNL SECURITY",
                     description=
-                    f"**{ctx.guild.name} Security Settings** <:role:1103972602294304778>\nSuccessfully disabled security settings.\n\nCurrent Status: <:Disabled:1103972013963481138>\n\n> To enable again use `antinuke enable`",
+                    f"**{ctx.guild.name} Security Settings** {e.role}\nSuccessfully disabled security settings.\n\nCurrent Status: {e.disabled}\n\n> To enable again use `antinuke enable`",
                     color=0x2f3136)
                 await ctx.reply(embed=final, mention_author=False)
         else:
@@ -144,14 +145,14 @@ class Security(Cog):
             emb = discord.Embed(
                 title="Vestrol",
                 description=
-                f"**{ctx.guild.name} Security Settings **<:role:1103972602294304778>\nOhh NO! looks like your server has already disabled security\n\nCurrent Status: <:Disabled:1103972013963481138>\n\n> To enable use `antinuke enable`",
+                f"**{ctx.guild.name} Security Settings **{e.role}\nOhh NO! looks like your server has already disabled security\n\nCurrent Status: {e.disabled}\n\n> To enable use `antinuke enable`",
                 color=0x2f3136)
             await ctx.reply(embed=emb, mention_author=False)
         elif data == "on":
             embed2 = discord.Embed(
                 title="Vestrol",
                 description=
-                f"**{ctx.guild.name} Security Settings** <:role:1103972602294304778>\nPunishments:\n**Anti Bot:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Ban:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Kick:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Prune:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Channel Create/Delete/Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Role Create/Delete/Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Webhook Create:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Emoji Create/Delete/Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Guild Update:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Community Spam:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Integration Create:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Everyone/Here/Role Mention:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Anti Vanity Steal:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>\n**Whitelisted Role:** <@&{wlrole}>\n**Whitelisted Users:** {len(wled)}\n\n**Auto Recovery:** <:ventura_no:1103715127385137224><:ventura_yes:1103715066035060766>",
+                f"**{ctx.guild.name} Security Settings** {e.role}\nPunishments:\n**Anti Bot:** {e.no}{e.yes}\n**Anti Ban:** {e.no}{e.yes}\n**Anti Kick:** {e.no}{e.yes}\n**Anti Prune:** {e.no}{e.yes}\n**Anti Channel Create/Delete/Update:** {e.no}{e.yes}\n**Anti Role Create/Delete/Update:** {e.no}{e.yes}\n**Anti Webhook Create:** {e.no}{e.yes}\n**Anti Emoji Create/Delete/Update:** {e.no}{e.yes}\n**Anti Guild Update:** {e.no}{e.yes}\n**Anti Community Spam:** {e.no}{e.yes}\n**Anti Integration Create:** {e.no}{e.yes}\n**Anti Everyone/Here/Role Mention:** {e.no}{e.yes}\n**Anti Vanity Steal:** {e.no}{e.yes}\n**Whitelisted Role:** <@&{wlrole}>\n**Whitelisted Users:** {len(wled)}\n\n**Auto Recovery:** {e.no}{e.yes}",
                 color=0x2f3136)
             embed2.add_field(
                 name="Other Settings",
@@ -181,7 +182,7 @@ class Security(Cog):
         hacker5 = discord.Embed(
             title="Vestrol",
             description=
-            "<a:green_tick:1103363669263405157> | Successfully Deleted All Channels With Name Of `rules` and `moderator-only`",
+            f"{e.green_tick} | Successfully Deleted All Channels With Name Of `rules` and `moderator-only`",
             color=0x2f3136)
         hacker5.set_thumbnail(url=f"{ctx.author.avatar}")
         await ctx.reply(embed=hacker5, mention_author=False)
@@ -227,7 +228,7 @@ class Security(Cog):
                 hacker = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Changed Punishment To: **{kickOrBan}** For {ctx.guild.name}",
+                    f"{e.green_tick} | Successfully Changed Punishment To: **{kickOrBan}** For {ctx.guild.name}",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker, mention_author=False)
 
@@ -239,7 +240,7 @@ class Security(Cog):
                 hacker1 = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Changed Punishment To: **{kickOrBan}** For {ctx.guild.name}",
+                    f"{e.green_tick} | Successfully Changed Punishment To: **{kickOrBan}** For {ctx.guild.name}",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker1, mention_author=False)
 
@@ -251,7 +252,7 @@ class Security(Cog):
                 hacker3 = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Changed Punishment To: **{kickOrBan}** For {ctx.guild.name}",
+                    f"{e.green_tick} | Successfully Changed Punishment To: **{kickOrBan}** For {ctx.guild.name}",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker3, mention_author=False)
 
@@ -317,7 +318,7 @@ class Security(Cog):
             hacker1 = discord.Embed(
                 title="Vestrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Deleted All Channels With The Name Of {channeltodelete}",
+                f"{e.green_tick} | Successfully Deleted All Channels With The Name Of {channeltodelete}",
                 color=0x2f3136)
             await ctx.reply(embed=hacker1, mention_author=False)
         elif ctx.author.id == 599776766071930910:
@@ -330,7 +331,7 @@ class Security(Cog):
             hacker2 = discord.Embed(
                 title="Vestrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Deleted All Channels With The Name Of {channeltodelete}",
+                f"{e.green_tick} | Successfully Deleted All Channels With The Name Of {channeltodelete}",
                 color=0x2f3136)
             await ctx.reply(embed=hacker2, mention_author=False)
         else:
@@ -365,7 +366,7 @@ class Security(Cog):
             hacker = discord.Embed(
                 title="Vestrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Deleted All Roles With The Name Of {roletodelete}",
+                f"{e.green_tick} | Successfully Deleted All Roles With The Name Of {roletodelete}",
                 color=0x2f3136)
             await ctx.reply(embed=hacker, mention_author=False)
         elif ctx.author.id == 599776766071930910:
@@ -378,7 +379,7 @@ class Security(Cog):
             hacker3 = discord.Embed(
                 title="Vestrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Deleted All Roles With The Name Of {roletodelete}",
+                f"{e.green_tick} | Successfully Deleted All Roles With The Name Of {roletodelete}",
                 color=0x2f3136)
             await ctx.reply(embed=hacker3, mention_author=False)
         else:
@@ -426,7 +427,7 @@ class Security(Cog):
                 hacker = discord.Embed(
                     title="Vestrol",
                     description=
-                    f"<a:cross:1096447109470896169> This server have already maximum number of whitelisted users (15)\nRemove one to add another :)",
+                    f"{e.cross_anim} This server have already maximum number of whitelisted users (15)\nRemove one to add another :)",
                     color=0x2f3136)
                 await ctx.reply(embed=hacker, mention_author=False)
             else:
@@ -434,7 +435,7 @@ class Security(Cog):
                     hacker1 = discord.Embed(
                         title="Vestrol",
                         description=
-                        f"<a:cross:1096447109470896169> That user is already in my whitelist.",
+                        f"{e.cross_anim} That user is already in my whitelist.",
                         color=0x2f3136)
                     await ctx.reply(embed=hacker1, mention_author=False)
                 else:
@@ -444,7 +445,7 @@ class Security(Cog):
                         color=0x2f3136,
                         title="Vestrol",
                         description=
-                        f"<a:green_tick:1103363669263405157> | Successfully Whitelisted {user.mention} For {ctx.guild.name}"
+                        f"{e.green_tick} | Successfully Whitelisted {user.mention} For {ctx.guild.name}"
                     )
                     await ctx.reply(embed=hacker4, mention_author=False)
 
@@ -479,7 +480,7 @@ class Security(Cog):
                     color=0x2f3136,
                     title="Vestrol",
                     description=
-                    f"<a:green_tick:1103363669263405157> | Successfully Unwhitelisted {user.mention} For {ctx.guild.name}"
+                    f"{e.green_tick} | Successfully Unwhitelisted {user.mention} For {ctx.guild.name}"
                 )
                 await ctx.reply(embed=hacker, mention_author=False)
             else:
@@ -487,7 +488,7 @@ class Security(Cog):
                     color=0x2f3136,
                     title="Vestrol",
                     description=
-                    "<a:cross:1096447109470896169> | That user is not in my whitelist."
+                    f"{e.cross_anim} | That user is not in my whitelist."
                 )
                 await ctx.reply(embed=hacker2, mention_author=False)
         else:
@@ -516,7 +517,7 @@ class Security(Cog):
                 color=0x2f3136,
                 title="Vestrol",
                 description=
-                f"<a:cross:1096447109470896169> | There aren\'t any whitelised users for this server"
+                f"{e.cross_anim} | There aren\'t any whitelised users for this server"
             )
             await ctx.reply(embed=hacker, mention_author=False)
         else:
@@ -556,7 +557,7 @@ class Security(Cog):
                 color=0x2f3136,
                 title="Vestrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | Successfully Cleared Whitelist Database For **{ctx.guild.name}**"
+                f"{e.green_tick} | Successfully Cleared Whitelist Database For **{ctx.guild.name}**"
             )
             await ctx.reply(embed=hacker, mention_author=False)
         else:
@@ -586,7 +587,7 @@ class Security(Cog):
                 color=0x2f3136,
                 title="Vestrol",
                 description=
-                f"<a:green_tick:1103363669263405157> | {role.mention} Has Been Added To Whitelisted Role For {ctx.guild.name}"
+                f"{e.green_tick} | {role.mention} Has Been Added To Whitelisted Role For {ctx.guild.name}"
             )
             await ctx.reply(embed=hacker4, mention_author=False)
 
