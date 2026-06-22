@@ -40,6 +40,17 @@ class Owner(commands.Cog):
 
 
 
+    @commands.command(name="say", help="Make the bot send a message in a channel.", usage="say <#channel> <message>")
+    @commands.is_owner()
+    async def say(self, ctx, channel: discord.TextChannel, *, message: str):
+        try:
+            await channel.send(message)
+            await ctx.message.add_reaction("✅")
+        except discord.Forbidden:
+            await ctx.reply("❌ I don't have permission to send messages in that channel.")
+        except Exception as ex:
+            await ctx.reply(f"❌ Error: {ex}")
+
     @commands.command(name="restart", help="Restarts the client.")
     @commands.is_owner()
     async def _restart(self, ctx: Context):
