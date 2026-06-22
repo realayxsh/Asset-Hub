@@ -16,11 +16,9 @@ from utils.emojis import e
 import os
 import logging
 from discord.ext import commands
-import motor.motor_asyncio
-from pymongo import MongoClient
+import json
 from discord.ext.commands import BucketType, cooldown
 import requests
-import motor.motor_asyncio as mongodb
 from typing import *
 from utils import *
 
@@ -38,21 +36,38 @@ def datetime_to_seconds(thing: datetime.datetime):
         (current_time - thing.replace(tzinfo=None)).total_seconds())
 
 
-cluster = motor.motor_asyncio.AsyncIOMotorClient(
-    "mongodb+srv://RANDI:SHREEXD3110@cluster0.l8dzjae.mongodb.net/?retryWrites=true&w=majority"
-)
+# ── local JSON helpers for notes ────────────────────────────────────────
 
-notedb = cluster["discord"]["note"]
+def _load_notes():
+    with open("notes.json", "r") as f:
+        return json.load(f)
+
+def _save_notes(data):
+    with open("notes.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+def _get_user_notes(user_id: int):
+    data = _load_notes()
+    return data["users"].get(str(user_id), [])
+
+def _add_user_note(user_id: int, note: str):
+    data = _load_notes()
+    uid  = str(user_id)
+    if uid not in data["users"]:
+        data["users"][uid] = []
+    data["users"][uid].append(note)
+    _save_notes(data)
+
+def _clear_user_notes(user_id: int):
+    data = _load_notes()
+    data["users"].pop(str(user_id), None)
+    _save_notes(data)
 
 
 class Utility(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.connection = mongodb.AsyncIOMotorClient(
-            "mongodb+srv://RANDI:SHREEXD3110@cluster0.l8dzjae.mongodb.net/?retryWrites=true&w=majority"
-        )
-        self.db = self.connection["VesTrol"]["servers"]
 
     @commands.group(name="banner")
     async def banner(self, ctx):
@@ -829,77 +844,53 @@ Threads : {len(guild.threads)}
         await ctx.send(embed=data)
 
     @commands.command(name="note",
-                      help="Creates a note for you",
-                      usage="Note <message>")
+                      help="Creates a note for you (max 3 notes, 50 chars each)",
+                      usage="note <message>")
     @cooldown(1, 10, BucketType.user)
     @blacklist_check()
     @ignore_check()
     async def note(self, ctx, *, message):
         message = str(message)
-        print(message)
-        stats = await notedb.find_one({"id": ctx.author.id})
-        if len(message) <= 50:
-            #
-            if stats is None:
-                newuser = {"id": ctx.author.id, "note": message}
-                await notedb.insert_one(newuser)
-                await ctx.send("**Your note has been stored**")
-                await ctx.message.delete()
+        if len(message) > 50:
+            return await ctx.send("**Message cannot be greater than 50 characters**")
+        existing = _get_user_notes(ctx.author.id)
+        if len(existing) >= 3:
+            return await ctx.send("**You cannot add more than 3 notes**")
+        _add_user_note(ctx.author.id, message)
+        await ctx.send("**Your note has been stored**")
+        await ctx.message.delete()
 
-            else:
-                x = notedb.find({"id": ctx.author.id})
-                z = 0
-                async for i in x:
-                    z += 1
-                if z > 2:
-                    await ctx.send("**You cannot add more than 3 notes**")
-                else:
-                    newuser = {"id": ctx.author.id, "note": message}
-                    await notedb.insert_one(newuser)
-                    await ctx.send("**Yout note has been stored**")
-                    await ctx.message.delete()
-
-        else:
-            await ctx.send("**Message cannot be greater then 50 characters**")
-
-    @commands.command(name="notes", help="Shows your note", usage="Notes")
+    @commands.command(name="notes", help="Shows your notes", usage="notes")
     @blacklist_check()
     @ignore_check()
     async def notes(self, ctx):
-        stats = await notedb.find_one({"id": ctx.author.id})
-        if stats is None:
+        user_notes = _get_user_notes(ctx.author.id)
+        if not user_notes:
             embed = discord.Embed(
                 timestamp=ctx.message.created_at,
                 title="Notes",
                 description=f"{ctx.author.mention} has no notes",
                 color=0x2f3136,
             )
-            await ctx.send(embed=embed)
-
-        else:
-            embed = discord.Embed(title="Notes",
-                                  description=f"Here are your notes",
-                                  color=0x2f3136)
-            x = notedb.find({"id": ctx.author.id})
-            z = 1
-            async for i in x:
-                msg = i["note"]
-                embed.add_field(name=f"Note {z}", value=f"{msg}", inline=False)
-                z += 1
-            await ctx.send(embed=embed)
-        #  await ctx.send("**Please check your private messages to see your notes**")
+            return await ctx.send(embed=embed)
+        embed = discord.Embed(title="Notes",
+                              description="Here are your notes",
+                              color=0x2f3136)
+        for i, note_text in enumerate(user_notes, 1):
+            embed.add_field(name=f"Note {i}", value=note_text, inline=False)
+        await ctx.send(embed=embed)
 
     @commands.command(name="trashnotes",
-                      help="Delete the notes , it's a good practice",
-                      usage="Trashnotes",with_app_command = True)
+                      help="Delete all your notes",
+                      usage="trashnotes")
     @blacklist_check()
     @ignore_check()
     async def trashnotes(self, ctx):
-        try:
-            await notedb.delete_many({"id": ctx.author.id})
-            await ctx.send("**Your notes have been deleted , thank you**")
-        except:
-            await ctx.send("**You have no record**")
+        existing = _get_user_notes(ctx.author.id)
+        if not existing:
+            return await ctx.send("**You have no notes to delete**")
+        _clear_user_notes(ctx.author.id)
+        await ctx.send("**Your notes have been deleted, thank you**")
 
     @commands.hybrid_command(name="badges",
                              help="Check what premium badges a user have.",
