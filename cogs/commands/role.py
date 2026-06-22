@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 from utils.Tools import *
+from utils.permissions import admin_check, coowner_check, server_owner_check
 from utils.emojis import e
 import json
 import re
@@ -29,7 +30,7 @@ class Server(commands.Cog):
                       help="Gives the owner role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give owner")
     async def _owner(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -59,7 +60,7 @@ class Server(commands.Cog):
                       help="Gives the owner role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give co owner")
     async def _coowner(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -89,7 +90,7 @@ class Server(commands.Cog):
                       help="Gives the head admin role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give head admin")
     async def _headadmin(self, context: Context,
                          member: discord.Member) -> None:
@@ -119,7 +120,7 @@ class Server(commands.Cog):
                       help="Gives the admin role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give admin")
     async def _admin(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -149,7 +150,7 @@ class Server(commands.Cog):
                       help="Gives the admin role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give girl admin")
     async def _girladmin(self, context: Context,
                          member: discord.Member) -> None:
@@ -180,7 +181,7 @@ class Server(commands.Cog):
                       help="Gives the head mod role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give head mod")
     async def _headmod(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -208,7 +209,7 @@ class Server(commands.Cog):
                       help="Gives the mod role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give mod")
     async def _mod(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -238,7 +239,7 @@ class Server(commands.Cog):
                       help="Gives the girl mod role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give girl mod")
     async def _girlmod(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -267,7 +268,7 @@ class Server(commands.Cog):
                            help="Setups custom roles for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     async def set(self, context: Context):
         if context.subcommand_passed is None:
             await context.send_help(context.command)
@@ -278,7 +279,7 @@ class Server(commands.Cog):
                  help="Setups staff role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def staff(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -308,7 +309,7 @@ class Server(commands.Cog):
                  help="Setups girl role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def girl(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -338,7 +339,7 @@ class Server(commands.Cog):
                  help="Setups vip role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def vip(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -368,7 +369,7 @@ class Server(commands.Cog):
                  help="Setups guest role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def guest(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -398,7 +399,7 @@ class Server(commands.Cog):
                  help="Setups friend role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def friend(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -429,7 +430,7 @@ class Server(commands.Cog):
                  help="Setups owner role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def owner(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -460,7 +461,7 @@ class Server(commands.Cog):
                  help="Setups co owner role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def coowner(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -491,7 +492,7 @@ class Server(commands.Cog):
                  help="Setups head admin role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def headadmin(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -521,7 +522,7 @@ class Server(commands.Cog):
                  help="Setups admin role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def admin(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -552,7 +553,7 @@ class Server(commands.Cog):
                  help="Setups head mod role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def headmod(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -582,7 +583,7 @@ class Server(commands.Cog):
                  help="Setups mod role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def mod(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -613,7 +614,7 @@ class Server(commands.Cog):
                  help="Setups girl admin role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def girladmin(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -644,7 +645,7 @@ class Server(commands.Cog):
                  help="Setups girl mod role for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(role="Role to be added")
     async def girlmod(self, context: Context, role: discord.Role) -> None:
         if context.author == context.guild.owner or context.author.top_role.position > context.guild.me.top_role.position:
@@ -675,7 +676,7 @@ class Server(commands.Cog):
                  help="Shows custom role settings for the server .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     async def rsta(self, context: Context) -> None:
         if data := getConfig(context.guild.id):
             staff = data['staff']
@@ -828,7 +829,7 @@ class Server(commands.Cog):
                              help="Gives the staff role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give staff")
     async def _staff(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -849,7 +850,7 @@ class Server(commands.Cog):
                              help="Gives the girl role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give girl")
     async def _girl(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -869,7 +870,7 @@ class Server(commands.Cog):
                              help="Gives the vip role to the user .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give vip")
     async def _vip(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -888,7 +889,7 @@ class Server(commands.Cog):
                              description="Gives the guest role to the user .",
                              help="Gives the guest role to the user .")
     @blacklist_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give guest")
     async def _guest(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -909,7 +910,7 @@ class Server(commands.Cog):
                              help="Gives the friend role to the user .")
     @ignore_check()
     @blacklist_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to give friend")
     async def _friend(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -929,7 +930,7 @@ class Server(commands.Cog):
                            aliases=['r'])
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     async def remove(self, context: Context):
         if context.subcommand_passed is None:
             await context.send_help(context.command)
@@ -941,7 +942,7 @@ class Server(commands.Cog):
                     help="Removes the staff role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove staff")
     async def rstaff(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -962,7 +963,7 @@ class Server(commands.Cog):
                     hep="Removes the girl role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove girl")
     async def rgirl(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -982,7 +983,7 @@ class Server(commands.Cog):
                     help="Removes the vip role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove vip")
     async def rvip(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1002,7 +1003,7 @@ class Server(commands.Cog):
                     help="Removes the guest role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove guest")
     async def rguest(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1023,7 +1024,7 @@ class Server(commands.Cog):
                     help="Removes the friend role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove friend")
     async def rfriend(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1044,7 +1045,7 @@ class Server(commands.Cog):
                     help="Removes the owner role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove owner")
     async def _owner(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1065,7 +1066,7 @@ class Server(commands.Cog):
                     help="Removes the co owner role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove co owner")
     async def _coowner(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1087,7 +1088,7 @@ class Server(commands.Cog):
         help="Removes the head admin role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove head admin")
     async def _headadmin(self, context: Context,
                          member: discord.Member) -> None:
@@ -1108,7 +1109,7 @@ class Server(commands.Cog):
                     help="Removes the admin role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove admin")
     async def _admin(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1130,7 +1131,7 @@ class Server(commands.Cog):
         help="Removes the girl admin role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove girl admin")
     async def _girladmin(self, context: Context,
                          member: discord.Member) -> None:
@@ -1152,7 +1153,7 @@ class Server(commands.Cog):
                     help="Removes the head mod role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove head mod")
     async def _headmod(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1172,7 +1173,7 @@ class Server(commands.Cog):
                     help="Removes the mod role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove mod")
     async def _mod(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1193,7 +1194,7 @@ class Server(commands.Cog):
                     help="Removes the girl mod role from the member .")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @app_commands.describe(member="member to remove girl mod")
     async def _girlmod(self, context: Context, member: discord.Member) -> None:
         if data := getConfig(context.guild.id):
@@ -1219,7 +1220,7 @@ class Server(commands.Cog):
             ctx.command.reset_cooldown(ctx)
 
     @_ar.command(name="create")
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @blacklist_check()
     @ignore_check()
     async def _create(self, ctx, name, *, message):
@@ -1282,7 +1283,7 @@ class Server(commands.Cog):
             return await ctx.reply(embed=hacker2)
 
     @_ar.command(name="delete")
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @blacklist_check()
     @ignore_check()
     async def _delete(self, ctx, name):
@@ -1325,7 +1326,7 @@ class Server(commands.Cog):
             return await ctx.reply(embed=hacker2)
 
     @_ar.command(name="config")
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @blacklist_check()
     @ignore_check()
     async def _config(self, ctx):
@@ -1350,7 +1351,7 @@ class Server(commands.Cog):
         await ctx.send(embed=embed)
 
     @_ar.command(name="edit")
-    @commands.has_permissions(administrator=True)
+    @admin_check()
     @blacklist_check()
     async def _edit(self, ctx, name, *, message):
         with open("autoresponse.json", "r") as f:

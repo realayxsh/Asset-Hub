@@ -8,6 +8,7 @@ import asyncio
 import typing
 from utils.config import OWNER_IDS, EXTENSIONS, No_Prefix
 from utils import getConfig, updateConfig, DotEnv
+from utils.permissions import global_permission_check
 from .Context import Context
 from discord.ext import commands, tasks
 
@@ -33,6 +34,9 @@ class Dilbar(commands.AutoShardedBot):
                          sync_commands_debug=True,
                          sync_commands=True,
                          shard_count=1)
+
+    async def setup_hook(self):
+        self.add_check(global_permission_check)
 
     async def on_ready(self):
         print("Connected as {}".format(self.user))

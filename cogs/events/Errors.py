@@ -3,6 +3,8 @@ from discord.ext import commands
 from core import Dilbar, Cog, Context
 
 from utils.emojis import e
+from utils.permissions import NotServerOwner, NotCoOwnerOrAbove, NotAdminOrAbove
+
 class Errors(Cog):
   def __init__(self, client: Dilbar):
     self.client = client
@@ -16,6 +18,33 @@ class Errors(Cog):
       data = json.load(f)
     if isinstance(error, commands.CommandNotFound):
       return
+
+    # ── DILBAR < 3 custom permission errors ──────────────────────────────
+    elif isinstance(error, NotServerOwner):
+      embed = discord.Embed(
+        description=f"{e.red_cross} | **Server Owner Only**\nOnly the server owner can use this command.",
+        color=0x50101,
+      )
+      embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+      return await ctx.reply(embed=embed, mention_author=False, delete_after=8)
+
+    elif isinstance(error, NotCoOwnerOrAbove):
+      embed = discord.Embed(
+        description=f"{e.red_cross} | **No Permission**\nYou need the **Co Owner** role or higher to use this command.",
+        color=0x50101,
+      )
+      embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+      return await ctx.reply(embed=embed, mention_author=False, delete_after=8)
+
+    elif isinstance(error, NotAdminOrAbove):
+      embed = discord.Embed(
+        description=f"{e.red_cross} | **No Permission**\nYou need the **Admin** role or higher to use this command.",
+        color=0x50101,
+      )
+      embed.set_author(name=str(ctx.author), icon_url=ctx.author.display_avatar.url)
+      return await ctx.reply(embed=embed, mention_author=False, delete_after=8)
+
+    # ── Standard discord.py errors ───────────────────────────────────────
     elif isinstance(error, commands.MissingRequiredArgument):
       await ctx.send_help(ctx.command)
       ctx.command.reset_cooldown(ctx)
@@ -72,8 +101,3 @@ class Errors(Cog):
       pass
     elif isinstance(error, commands.CommandInvokeError):
       pass
-      
-
-
-
-

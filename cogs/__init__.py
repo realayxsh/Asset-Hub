@@ -27,6 +27,7 @@ from .commands.jsk import Jsk
 from .commands.encryption import Encryption
 from .commands.fun import Fun
 from .commands.Verification import Verification
+from .commands.setup import Setup
 
 
 
@@ -103,6 +104,7 @@ async def setup(bot: Astroz):
   await bot.add_cog(Jsk(bot))
   await bot.add_cog(Encryption(bot))
   await bot.add_cog(Verification(bot))
+  await bot.add_cog(Setup(bot))
   
  
   

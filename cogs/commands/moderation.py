@@ -16,6 +16,7 @@ from datetime import datetime
 from discord.ext.commands.cooldowns import BucketType
 from discord.ext import commands
 from utils.Tools import *
+from utils.permissions import coowner_check, admin_check
 from utils.emojis import e
 from core import Cog, Dilbar, Context
 
@@ -116,7 +117,7 @@ class Moderation(commands.Cog):
                       usage="unlockall")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.cooldown(1, 5, commands.BucketType.channel)
     async def unlockall(self,
                         ctx,
@@ -153,7 +154,7 @@ class Moderation(commands.Cog):
                       usage="lockall")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.cooldown(1, 5, commands.BucketType.channel)
     async def lockall(self, ctx, server: discord.Guild = None, *, reason=None):
         hacker = discord.Embed(
@@ -190,7 +191,7 @@ class Moderation(commands.Cog):
         aliases=["fuckoff", "fuckyou"])
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def hackban(self, ctx, userid, *, reason=None):
         try:
             userid = int(userid)
@@ -215,7 +216,7 @@ class Moderation(commands.Cog):
                       aliases=["addrole"])
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def give(
         self,
         ctx,
@@ -364,7 +365,7 @@ Reason: `{entry.reason}`\n\n''')
         help="Allows you to change prefix of the bot for this server")
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     @commands.guild_only()
@@ -616,32 +617,28 @@ Reason: `{entry.reason}`\n\n''')
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Day(s)"
-                    .format(member, ok),
+                    f"{e.green_tick} | Successfully Muted {member.mention} For {ok} Day(s)",
                     timestamp=ctx.message.created_at)
             elif till.lower() == "m":
                 t = datetime.timedelta(seconds=tame)
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Minute(s)"
-                    .format(member, ok),
+                    f"{e.green_tick} | Successfully Muted {member.mention} For {ok} Minute(s)",
                     timestamp=ctx.message.created_at)
             elif till.lower() == "s":
                 t = datetime.timedelta(seconds=tame)
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Second(s)"
-                    .format(member, ok),
+                    f"{e.green_tick} | Successfully Muted {member.mention} For {ok} Second(s)",
                     timestamp=ctx.message.created_at)
             elif till.lower() == "h":
                 t = datetime.timedelta(seconds=tame)
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"{e.green_tick} | Successfully Muted {0.mention} For {1} Hour(s)"
-                    .format(member, ok),
+                    f"{e.green_tick} | Successfully Muted {member.mention} For {ok} Hour(s)",
                     timestamp=ctx.message.created_at)
         try:
             if member.guild_permissions.administrator:
@@ -667,7 +664,7 @@ Reason: `{entry.reason}`\n\n''')
     @commands.cooldown(1, 20, commands.BucketType.member)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def untimeout(self, ctx, member: discord.Member):
         if member.is_timed_out():
             try:
@@ -678,19 +675,17 @@ Reason: `{entry.reason}`\n\n''')
                     f"{e.green_tick} | Successfully Unmuted {member.name}",
                     timestamp=ctx.message.created_at)
                 await ctx.reply(embed=hacker5)
-            except Exception as e:
+            except Exception as err:
                 hacker = discord.Embed(
                     color=0x2f3136,
                     description=
-                    f"{e.red_cross} | Unable to Remove Timeout:\n```py\n{}```"
-                    .format(e),
+                    f"{e.red_cross} | Unable to Remove Timeout:\n```py\n{err}```",
                     timestamp=ctx.message.created_at)
                 await ctx.send(embed=hacker)
         else:
             hacker1 = discord.Embed(
                 color=0x2f3136,
-                description=f"{e.red_cross} | {} Is Not Muted".
-                format(member.mention),
+                description=f"{e.red_cross} | {member.mention} Is Not Muted",
                 timestamp=ctx.message.created_at)
             await ctx.send(embed=hacker1)
 
@@ -1201,7 +1196,7 @@ Reason: `{entry.reason}`\n\n''')
                              aliases=['searchemoji', 'findemoji', 'emojifind'])
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     @commands.guild_only()
@@ -1237,7 +1232,7 @@ Reason: `{entry.reason}`\n\n''')
         aliases=['searchsticker', 'findsticker', 'stickerfind'])
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     @commands.guild_only()
@@ -1274,7 +1269,7 @@ Reason: `{entry.reason}`\n\n''')
                            aliases=['stickers', 'stickerinfo'])
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     @commands.guild_only()
@@ -1333,7 +1328,7 @@ Reason: `{entry.reason}`\n\n''')
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @blacklist_check()
     async def role(self, ctx):
         if ctx.subcommand_passed is None:
@@ -1344,7 +1339,7 @@ Reason: `{entry.reason}`\n\n''')
     @commands.bot_has_permissions(manage_roles=True)
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def temp(self, ctx, role: discord.Role, time, *,
                    user: discord.Member):
         '''Temporarily give a role to any member'''
@@ -1374,7 +1369,7 @@ Reason: `{entry.reason}`\n\n''')
     @role.command()
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.bot_has_permissions(manage_roles=True)
     async def remove(self, ctx, user: discord.Member, role: discord.Role):
         ''' Remove a role from any member'''
@@ -1401,7 +1396,7 @@ Reason: `{entry.reason}`\n\n''')
     @role.command()
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.bot_has_permissions(manage_roles=True)
     async def delete(self, ctx, role: discord.Role):
         '''Deletes the role from server'''
@@ -1434,7 +1429,7 @@ Reason: `{entry.reason}`\n\n''')
     @role.command()
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.bot_has_permissions(manage_roles=True)
     async def create(self, ctx, *, name):
         '''Creates a role in the server'''
@@ -1459,7 +1454,7 @@ Reason: `{entry.reason}`\n\n''')
     @role.command()
     @blacklist_check()
     @ignore_check()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     @commands.bot_has_permissions(manage_roles=True)
     async def rename(self, ctx, role: discord.Role, *, newname):
         '''Renames any role '''
@@ -1485,7 +1480,7 @@ Reason: `{entry.reason}`\n\n''')
             await ctx.send(embed=hacker5)
           
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def roleallhumans(self,ctx,role:discord.Role):
         ''' Gives all the humans any role '''
         humans = [mem for mem in ctx.guild.members if not mem.bot]
@@ -1495,7 +1490,7 @@ Reason: `{entry.reason}`\n\n''')
         await ctx.reply(f'{e.green_tick} | Added mentioned role to all members')
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def roleallbots(self,ctx,role:discord.Role):
         ''' Give all bots any role '''
         humans = [mem for mem in ctx.guild.members if mem.bot]
@@ -1505,7 +1500,7 @@ Reason: `{entry.reason}`\n\n''')
         await ctx.reply(f'{e.green_tick} | Added mentioned role to all bots')
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def removeallhumans(self,ctx,role:discord.Role):
         ''' Removes a role from all human members '''
         humans = [mem for mem in ctx.guild.members if not mem.bot]
@@ -1515,7 +1510,7 @@ Reason: `{entry.reason}`\n\n''')
         await ctx.reply(f'{e.green_tick} | Removed mentioned role from all members')
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @coowner_check()
     async def removeallbots(self,ctx,role:discord.Role):
         ''' Removes a role from all the bots '''
         humans = [mem for mem in ctx.guild.members if mem.bot]
